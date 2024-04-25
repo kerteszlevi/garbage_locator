@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:garbage_locator/state/camera/camera_bloc.dart';
+import 'package:garbage_locator/themes/myTheme.dart';
 
 class InitialScreen extends StatelessWidget {
   const InitialScreen({super.key});
@@ -15,7 +18,18 @@ class InitialView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Theme.of(context).primaryColor,
+    ));
     return Scaffold(
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Theme.of(context).colorScheme.background,
+
+          statusBarIconBrightness: Brightness.dark, // For Android
+          statusBarBrightness: Brightness.light, // For iOS
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -41,16 +55,15 @@ class InitialView extends StatelessWidget {
                     ),
                   ),
                 ],
-        
               ),
             ),
             Expanded(
               flex: 3,
               child: Container(
                 alignment: Alignment.bottomCenter,
-                decoration: const BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.only(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
@@ -66,11 +79,16 @@ class InitialView extends StatelessWidget {
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.all(15),
-                          ),
+                           ),
                           onPressed: () {
                             //TODO: navigate to the submit photo screen
                           },
-                          child: const Text('Submit Photo'),
+                          child: const Text(
+                              'Submit Photo',
+                              style: TextStyle(
+                                color: Colors.black,
+                              )
+                          ),
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -79,7 +97,12 @@ class InitialView extends StatelessWidget {
                           onPressed: () {
                             //TODO: navigate to the my garbage collection screen
                           },
-                          child: const Text('My garbage collection'),
+                          child: const Text(
+                              'My garbage collection',
+                              style: TextStyle(
+                                color: Colors.black,
+                              )
+                          ),
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -88,7 +111,11 @@ class InitialView extends StatelessWidget {
                           onPressed: () {
                             //TODO: navigate to the map screen
                           },
-                          child: const Text('Map'),
+                          child: const Text('Map',
+                            style: TextStyle(
+                                color: Colors.black,
+                              )
+                          ),
                         ),
                       ],
                     ),

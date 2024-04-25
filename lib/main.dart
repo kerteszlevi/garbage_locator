@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:garbage_locator/screens/initial_screen.dart';
+import 'package:garbage_locator/screens/publish_screen.dart';
+import 'package:garbage_locator/themes/myTheme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,11 +15,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const InitialScreen(),
+      theme: myTheme,
+      // theme:
+      // ThemeData(
+      //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      //   useMaterial3: true,
+      // ),
+      //home: const InitialScreen(),
+      home: const PublishScreen(),
     );
   }
 }
