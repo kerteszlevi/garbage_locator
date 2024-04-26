@@ -9,8 +9,8 @@ part 'camera_state.dart';
 class CameraBloc extends Bloc<CameraEvent, CameraState> {
   CameraBloc() : super(CameraInitial()) {
     on<CameraStarted>((event, emit) async{
-      final ImagePicker _picker = ImagePicker();
-      final XFile? file = await _picker.pickImage(source: ImageSource.camera);
+      final ImagePicker picker = ImagePicker();
+      final XFile? file = await picker.pickImage(source: ImageSource.camera);
       if (file != null) {
         emit(PictureTakenState(file.path));
       } else {
@@ -18,7 +18,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
       }
     });
     on<PictureTaken>((event, emit) {
-      //TODO: navigate to the publish screen
+      //TODO: navigate to the publish screen, actually its done in the initial screen rn.
       emit(PictureTakenState(event.imagePath));
     });
   }

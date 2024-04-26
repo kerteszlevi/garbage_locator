@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       //   useMaterial3: true,
       // ),
       //home: const InitialScreen(),
-      initialRoute: CameraScreen.route,
+      initialRoute: InitialScreen.route,
       routes: {
         InitialScreen.route: (context) => const InitialScreen(),
         CameraScreen.route: (context) => const CameraScreen(),

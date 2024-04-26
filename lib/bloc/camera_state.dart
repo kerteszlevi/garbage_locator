@@ -16,6 +16,5 @@ final class PictureTakenState extends CameraState {
 
   PictureTakenState(this.imagePath);
 }
-final class CameraLoading extends CameraState {}
 
 

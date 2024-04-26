@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CameraScreen extends StatelessWidget {
-  static String route = '/camera';
+  static String route = '/camera_screen';
   const CameraScreen({super.key});
 
   @override

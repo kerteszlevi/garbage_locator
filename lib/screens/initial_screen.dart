@@ -5,6 +5,7 @@ import 'package:garbage_locator/screens/publish_screen.dart';
 import 'package:garbage_locator/themes/myTheme.dart';
 
 import '../bloc/camera_bloc.dart';
+import 'camera_screen.dart';
 
 class InitialScreen extends StatelessWidget {
   const InitialScreen({super.key});
@@ -13,7 +14,6 @@ class InitialScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: create a bloc
     final cb = CameraBloc();
     return InitialView(cameraBloc: cb);
   }
@@ -36,14 +36,16 @@ class InitialView extends StatelessWidget {
       bloc: cameraBloc,
       listener: (context, state) {
         if (state is PictureTakenState) {
+          //TODO: fix the push pop mess with the camera waiting screen
+          Navigator.pop(context);
           Navigator.push(
             context,
             MaterialPageRoute(
+              //navigating to the publish screen and passing the image path of the taken photo
               builder: (context) => PublishScreen(imagePath: state.imagePath),
             ),
           );
         }
-
       },
       child: Scaffold(
         // appBar: AppBar(
@@ -106,6 +108,8 @@ class InitialView extends StatelessWidget {
                             onPressed: () {
                               //TODO: navigate to the submit photo screen
                               //Navigator.pushNamed(context, '/publish');
+                              //TODO: push pop mess also here.
+                              Navigator.pushNamed(context, '/camera_screen');
                               cameraBloc.add(CameraStarted());
                             },
                             child: const Text('Submit Photo',
