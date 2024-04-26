@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:garbage_locator/screens/camera_screen.dart';
 import 'package:garbage_locator/screens/initial_screen.dart';
 import 'package:garbage_locator/screens/publish_screen.dart';
 import 'package:garbage_locator/themes/myTheme.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Garbage Locator',
       theme: myTheme,
       // theme:
       // ThemeData(
@@ -22,7 +24,12 @@ class MyApp extends StatelessWidget {
       //   useMaterial3: true,
       // ),
       //home: const InitialScreen(),
-      home: const PublishScreen(),
+      initialRoute: CameraScreen.route,
+      routes: {
+        InitialScreen.route: (context) => const InitialScreen(),
+        CameraScreen.route: (context) => const CameraScreen(),
+       // PublishScreen.route: (context) => const PublishScreen(imagePath: '',),
+      },
     );
   }
 }

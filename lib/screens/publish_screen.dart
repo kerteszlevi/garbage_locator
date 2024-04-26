@@ -1,24 +1,35 @@
+import 'dart:io';
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart';
 
 class PublishScreen extends StatelessWidget {
-  const PublishScreen({super.key});
+  final String imagePath;
+  const PublishScreen({super.key, required this.imagePath});
+
+  static String route = '/publish';
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light, // For Android
+      statusBarBrightness: Brightness.light, // For iOS
+    ));
     return Scaffold(
       body: DecoratedBox(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/publish_photo.png'),
+              //open the image from the camera
+              image: FileImage(File(imagePath)),
               fit: BoxFit.cover,
             ),
           ),
           child: Stack(
             children: [
+              //comment box
               Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(30),
@@ -55,20 +66,18 @@ class PublishScreen extends StatelessWidget {
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20),
-                                    borderSide: const BorderSide(
-                                        color: Colors.white),
+                                    borderSide:
+                                        const BorderSide(color: Colors.white),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20),
-                                    borderSide: const BorderSide(
-                                        color: Colors
-                                            .green),
+                                    borderSide:
+                                        const BorderSide(color: Colors.green),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20),
-                                    borderSide: const BorderSide(
-                                        color: Colors
-                                            .white),
+                                    borderSide:
+                                        const BorderSide(color: Colors.white),
                                   ),
                                 ),
                               ),
@@ -78,6 +87,7 @@ class PublishScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              //submit button
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
@@ -85,20 +95,37 @@ class PublishScreen extends StatelessWidget {
                   child: SizedBox(
                     width: 300,
                     child: ElevatedButton(
-                      onPressed: () {  },
+                      onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).primaryColor,
                         padding: const EdgeInsets.all(8),
                       ),
                       child: const Padding(
                         padding: EdgeInsets.all(8.0),
-                        child: Text(
-                            'Submit',
+                        child: Text('Submit',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
-                            )
-                        ),
+                            )),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              //close button
+              SafeArea(
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.close,
+                        color: Colors.white,
+                        size: 50,
                       ),
                     ),
                   ),
