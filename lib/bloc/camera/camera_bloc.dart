@@ -7,19 +7,25 @@ part 'camera_event.dart';
 part 'camera_state.dart';
 
 class CameraBloc extends Bloc<CameraEvent, CameraState> {
-  CameraBloc() : super(CameraInitial()) {
-    on<CameraStarted>((event, emit) async{
+  CameraBloc() : super(CameraInitialState()) {
+    //when the camera screen has been navigated to,
+    //start the camera and request the user to take a picture
+    on<CameraScreenUp>((event, emit) async {
       final ImagePicker picker = ImagePicker();
       final XFile? file = await picker.pickImage(source: ImageSource.camera);
       if (file != null) {
+        //when the picture is taken we navigate to the publish screen
         emit(PictureTakenState(file.path));
       } else {
-        emit(CameraError('Error taking picture'));
+        //TODO:this is not used rn. do i need an error state?
+        emit(CameraErrorState('Error taking picture'));
       }
     });
     on<PictureTaken>((event, emit) {
-      //TODO: navigate to the publish screen, actually its done in the initial screen rn.
       emit(PictureTakenState(event.imagePath));
+    });
+    on<CameraRequest>((event, emit) {
+      emit(CameraStartingState());
     });
   }
 }

@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:garbage_locator/bloc/camera/camera_bloc.dart';
 import 'package:garbage_locator/screens/camera_screen.dart';
 import 'package:garbage_locator/screens/initial_screen.dart';
-import 'package:garbage_locator/screens/publish_screen.dart';
 import 'package:garbage_locator/themes/myTheme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(
+    //TODO: decide where to define status bar and navigation bar color later on, for now it is defined here
+    const SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.light, // For iOS
+      statusBarIconBrightness: Brightness.dark, // For Android
+    )
+  );
   runApp(const MyApp());
 }
 
@@ -15,21 +24,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Garbage Locator',
-      theme: myTheme,
-      // theme:
-      // ThemeData(
-      //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      //   useMaterial3: true,
-      // ),
-      //home: const InitialScreen(),
-      initialRoute: InitialScreen.route,
-      routes: {
-        InitialScreen.route: (context) => const InitialScreen(),
-        CameraScreen.route: (context) => const CameraScreen(),
-       // PublishScreen.route: (context) => const PublishScreen(imagePath: '',),
-      },
+    return BlocProvider(
+      create: (context) => CameraBloc(),
+      child: MaterialApp(
+        title: 'Garbage Collector',
+        theme: myTheme,
+        //home: const InitialScreen(),
+        initialRoute: InitialScreen.route,
+        routes: {
+          InitialScreen.route: (context) => const InitialScreen(),
+          CameraScreen.route: (context) => const CameraScreen(),
+        },
+      ),
     );
   }
 }
