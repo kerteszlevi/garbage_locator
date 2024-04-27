@@ -6,15 +6,17 @@ import 'package:garbage_locator/screens/camera_screen.dart';
 import 'package:garbage_locator/screens/initial_screen.dart';
 import 'package:garbage_locator/themes/myTheme.dart';
 
+//design todos:
+//TODO: splash screen
+//TODO: icon
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
-    //TODO: decide where to define status bar and navigation bar color later on, for now it is defined here
-    const SystemUiOverlayStyle(
-      statusBarBrightness: Brightness.light, // For iOS
-      statusBarIconBrightness: Brightness.dark, // For Android
-    )
-  );
+      //TODO: decide where to define status bar and navigation bar color later on, for now it is defined here
+      const SystemUiOverlayStyle(
+    statusBarBrightness: Brightness.light, // For iOS
+    statusBarIconBrightness: Brightness.dark, // For Android
+  ));
   runApp(const MyApp());
 }
 
