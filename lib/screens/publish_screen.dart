@@ -95,7 +95,9 @@ class PublishScreen extends StatelessWidget {
                   child: SizedBox(
                     width: 300,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        //PhotoProvider.of(context).addPhoto(photo);
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).primaryColor,
                         padding: const EdgeInsets.all(8),

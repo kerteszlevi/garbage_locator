@@ -18,11 +18,16 @@ dependencies:
   path_provider: ^2.0.5
   image_picker: ^0.8.4+4
   equatable: ^2.0.3
+  floor: ^1.4.2
+  sqflite: ^2.3.3
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+  floor_generator: ^1.4.2
+  build_runner: ^2.1.2
 
 flutter:
   uses-material-design: true
