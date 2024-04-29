@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:garbage_locator/models/garbage.dart';
 import 'package:garbage_locator/repository/data_source.dart';
+import 'package:garbage_locator/screens/collection_screen/garbage_list_item.dart';
 import 'package:provider/provider.dart';
 
 class CollectionScreen extends StatefulWidget {
@@ -40,28 +41,29 @@ class _CollectionScreenState extends State<CollectionScreen> {
               itemCount: garbages.length,
               itemBuilder: (context, index) {
                 final garbage = garbages[index];
-                return Container(
-                  height: 200,
-                  margin: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                      image: FileImage(File(garbage.imagePath)),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                          color: Colors.white70,
-                          child: ListTile(
-                            title: Text(garbage.comment),
-                            subtitle: Text(garbage.location),
-                          ))
-                    ],
-                  ),
-                );
+                return GarbageListItem(garbage: garbage);
+                // return Container(
+                //   height: 200,
+                //   margin: const EdgeInsets.all(8.0),
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(10),
+                //     image: DecorationImage(
+                //       image: FileImage(File(garbage.imagePath)),
+                //       fit: BoxFit.cover,
+                //     ),
+                //   ),
+                //   child: Column(
+                //     mainAxisAlignment: MainAxisAlignment.end,
+                //     children: [
+                //       Container(
+                //           color: Colors.white70,
+                //           child: ListTile(
+                //             title: Text(garbage.comment),
+                //             subtitle: Text(garbage.location),
+                //           ))
+                //     ],
+                //   ),
+                // );
               },
             );
           }

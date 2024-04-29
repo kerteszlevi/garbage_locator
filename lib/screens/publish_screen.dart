@@ -7,14 +7,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garbage_locator/bloc/publish/publish_bloc.dart';
 import 'package:garbage_locator/models/garbage.dart';
 import 'package:garbage_locator/repository/data_source.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class PublishScreen extends StatelessWidget {
   final String imagePath;
-  const PublishScreen({super.key, required this.imagePath});
+  final _commentController = TextEditingController();
+  PublishScreen({super.key, required this.imagePath});
 
   static String route = '/publish';
+
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +74,7 @@ class PublishScreen extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextField(
+                                controller: _commentController,
                                 decoration: InputDecoration(
                                   filled: true,
                                   hintText: 'Type in comment...',
@@ -114,7 +116,7 @@ class PublishScreen extends StatelessWidget {
                         //TODO: bloc
                         final garbage = Garbage(
                           imagePath: imagePath,
-                          comment: 'comment_test',
+                          comment: _commentController.text,
                           location: 'location_test',
                         );
                         context.read<PublishBloc>().add(PublishGarbage(garbage));

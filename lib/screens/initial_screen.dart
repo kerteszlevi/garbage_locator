@@ -35,8 +35,8 @@ class InitialView extends StatelessWidget {
       listener: (context, state) {
         if (state is PictureTakenState) {
           //TODO: fix the push pop mess with the camera waiting screen
-          Navigator.pop(context);
-          Navigator.push(
+          //Navigator.pop(context);
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               //navigating to the publish screen and passing the image path of the taken photo
