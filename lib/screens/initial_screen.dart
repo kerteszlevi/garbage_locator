@@ -47,6 +47,14 @@ class InitialView extends StatelessWidget {
           Navigator.pushNamed(context, '/camera_screen');
         } else if (state is CameraErrorState) {
           Navigator.pop(context);
+        } else if (state is PictureSelectedState) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              //navigating to the publish screen and passing the image path of the taken photo
+              builder: (context) => PublishScreen(imagePath: state.imagePath),
+            ),
+          );
         }
       },
       child: Scaffold(
@@ -95,8 +103,8 @@ class InitialView extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primary,
                   borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
                   ),
                 ),
                 child: SafeArea(
@@ -115,11 +123,32 @@ class InitialView extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.all(15),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
+                            //TODO: popup menu is ugly find something usable an aesthetically pleasing
+                            final selected = await showMenu(
+                                context: context,
+                                position: RelativeRect.fill,
+                                items: [
+                                  PopupMenuItem(
+                                    value: 'camera',
+                                    child: const Text('Open Camera'),
+                                  ),
+                                  PopupMenuItem(
+                                    value: 'gallery',
+                                    child: const Text('Select from Gallery'),
+                                  ),
+                                ]);
+                            if (selected == 'camera') {
+                              BlocProvider.of<CameraBloc>(context)
+                                  .add(CameraRequest());
+                            } else if (selected == 'gallery') {
+                              BlocProvider.of<CameraBloc>(context)
+                                  .add(GalleryRequested());
+                            }
+
                             //TODO: push pop mess also here.
                             //TODO: ui jitter fix when opening camera
-                            BlocProvider.of<CameraBloc>(context)
-                                .add(CameraRequest());
+                            //BlocProvider.of<CameraBloc>(context).add(CameraRequest());
                           },
                           child: const Text('Submit Photo',
                               style: TextStyle(

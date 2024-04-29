@@ -23,3 +23,5 @@ final class PictureTaken extends CameraEvent {
   @override
   List<Object> get props => [imagePath];
 }
+
+final class GalleryRequested extends CameraEvent {}

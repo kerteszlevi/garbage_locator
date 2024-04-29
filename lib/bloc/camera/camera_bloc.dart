@@ -21,6 +21,16 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
         emit(CameraErrorState('Error taking picture'));
       }
     });
+    on<GalleryRequested>((event, emit) async {
+      final ImagePicker picker = ImagePicker();
+      final XFile? file = await picker.pickImage(source: ImageSource.gallery);
+      if (file != null) {
+        //when the picture is taken we navigate to the publish screen
+        emit(PictureSelectedState(file.path));
+      } else {
+        emit(CameraErrorState('Error selecting photo from gallery'));
+      }
+    });
     on<PictureTaken>((event, emit) {
       emit(PictureTakenState(event.imagePath));
     });

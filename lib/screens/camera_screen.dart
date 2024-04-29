@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garbage_locator/bloc/camera/camera_bloc.dart';
 
+//TODO: make selecting from gallery an option
 class CameraScreen extends StatefulWidget {
   static String route = '/camera_screen';
   const CameraScreen({super.key});
@@ -12,11 +13,17 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> {
+  bool _showButton = false;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       BlocProvider.of<CameraBloc>(context).add(CameraScreenUp());
+    });
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        _showButton = true;
+      });
     });
   }
 
@@ -28,14 +35,41 @@ class _CameraScreenState extends State<CameraScreen> {
       statusBarIconBrightness: Brightness.light, // For Android
       statusBarBrightness: Brightness.light, // For iOS
     ));
-    return const Scaffold(
-        backgroundColor: Colors.black,
-        body: Center(
-          child: Icon(
-            Icons.camera_alt,
-            color: Colors.grey,
-            size: 100,
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          const Center(
+            child: Icon(
+              Icons.camera_alt,
+              color: Colors.grey,
+              size: 100,
+            ),
           ),
-        ));
+          if (_showButton)
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(15),
+                  ),
+                  onPressed: () {
+                    BlocProvider.of<CameraBloc>(context)
+                        .add(GalleryRequested());
+                  },
+                  child: const Text(
+                    'Open from Gallery',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }

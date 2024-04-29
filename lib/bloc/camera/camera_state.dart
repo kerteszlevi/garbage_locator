@@ -21,3 +21,9 @@ final class PictureTakenState extends CameraState {
 
 //state for when the camera is starting up and the user is waiting
 final class CameraStartingState extends CameraState {}
+
+final class PictureSelectedState extends CameraState {
+  final String imagePath;
+
+  PictureSelectedState(this.imagePath);
+}
