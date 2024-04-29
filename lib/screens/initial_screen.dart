@@ -129,13 +129,13 @@ class InitialView extends StatelessWidget {
                                 context: context,
                                 position: RelativeRect.fill,
                                 items: [
-                                  PopupMenuItem(
+                                  const PopupMenuItem(
                                     value: 'camera',
-                                    child: const Text('Open Camera'),
+                                    child: Text('Open Camera'),
                                   ),
-                                  PopupMenuItem(
+                                  const PopupMenuItem(
                                     value: 'gallery',
-                                    child: const Text('Select from Gallery'),
+                                    child: Text('Select from Gallery'),
                                   ),
                                 ]);
                             if (selected == 'camera') {
@@ -155,19 +155,21 @@ class InitialView extends StatelessWidget {
                                 color: Colors.black,
                               )),
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.all(15),
+                        Hero(
+                          tag: 'myGarbageCollection',
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(15),
+                            ),
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, '/collection_screen');
+                            },
+                            child: const Text('My garbage collection',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                )),
                           ),
-                          onPressed: () {
-                            //TODO: navigate to the my garbage collection screen
-
-                            Navigator.pushNamed(context, '/collection_screen');
-                          },
-                          child: const Text('My garbage collection',
-                              style: TextStyle(
-                                color: Colors.black,
-                              )),
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
