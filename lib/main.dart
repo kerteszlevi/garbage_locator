@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garbage_locator/bloc/camera/camera_bloc.dart';
 import 'package:garbage_locator/repository/data_source.dart';
 import 'package:garbage_locator/repository/floor_garbage_repository.dart';
-import 'package:garbage_locator/repository/photo_provider.dart';
 import 'package:garbage_locator/screens/camera_screen.dart';
 import 'package:garbage_locator/screens/initial_screen.dart';
 import 'package:garbage_locator/screens/my_collection_screen.dart';
@@ -27,7 +26,12 @@ void main() async {
   final dataSource = DataSource(FloorGarbageRepository());
   await dataSource.init();
 
-  runApp(Provider<DataSource>(create: (_) => dataSource, child: const MyApp()));
+  runApp(
+    Provider<DataSource>(
+      create: (_) => dataSource,
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -46,7 +50,7 @@ class MyApp extends StatelessWidget {
         routes: {
           InitialScreen.route: (context) => const InitialScreen(),
           CameraScreen.route: (context) => const CameraScreen(),
-          //CollectionScreen.route: (context) => CollectionScreen(),
+          CollectionScreen.route: (context) => const CollectionScreen(),
         },
       ),
     );

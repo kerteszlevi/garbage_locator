@@ -132,6 +132,8 @@ class InitialView extends StatelessWidget {
                           ),
                           onPressed: () {
                             //TODO: navigate to the my garbage collection screen
+
+                            Navigator.pushNamed(context, '/collection_screen');
                           },
                           child: const Text('My garbage collection',
                               style: TextStyle(

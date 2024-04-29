@@ -3,6 +3,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:garbage_locator/bloc/publish/publish_bloc.dart';
+import 'package:garbage_locator/models/garbage.dart';
+import 'package:garbage_locator/repository/data_source.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 
 class PublishScreen extends StatelessWidget {
   final String imagePath;
@@ -18,6 +24,15 @@ class PublishScreen extends StatelessWidget {
       statusBarIconBrightness: Brightness.light, // For Android
       statusBarBrightness: Brightness.light, // For iOS
     ));
+    return BlocProvider(
+      create: (context) => PublishBloc(Provider.of<DataSource>(context, listen: false)),
+  child: BlocConsumer<PublishBloc, PublishState>(
+  listener: (context, state) {
+    if(state is PublishPublishedState){
+      Navigator.pop(context);
+    }
+  },
+  builder: (context, state) {
     return Scaffold(
       body: DecoratedBox(
           decoration: BoxDecoration(
@@ -96,7 +111,13 @@ class PublishScreen extends StatelessWidget {
                     width: 300,
                     child: ElevatedButton(
                       onPressed: () {
-                        //PhotoProvider.of(context).addPhoto(photo);
+                        //TODO: bloc
+                        final garbage = Garbage(
+                          imagePath: imagePath,
+                          comment: 'comment_test',
+                          location: 'location_test',
+                        );
+                        context.read<PublishBloc>().add(PublishGarbage(garbage));
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).primaryColor,
@@ -136,5 +157,8 @@ class PublishScreen extends StatelessWidget {
             ],
           )),
     );
+  },
+),
+);
   }
 }
