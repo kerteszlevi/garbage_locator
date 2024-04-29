@@ -12,7 +12,7 @@ class InitialScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //final cb = CameraBloc();
-    return InitialView(/*cameraBloc: cb*/);
+    return const InitialView(/*cameraBloc: cb*/);
   }
 }
 
@@ -55,6 +55,19 @@ class InitialView extends StatelessWidget {
               builder: (context) => PublishScreen(imagePath: state.imagePath),
             ),
           );
+        } else if (state is GalleryErrorState) {
+          //TODO: remove this  later
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              content: Text(
+                state.message,
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          );
         }
       },
       child: Scaffold(
@@ -67,130 +80,257 @@ class InitialView extends StatelessWidget {
         //   ),
         // ),
 
-        body: Column(
-          children: [
-            //TODO: animate trash falling and popping, and flies looping
-            Expanded(
-              //upper part, logo and title
-              flex: 5,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Image.asset(
-                      'assets/images/garbage.png',
-                      width: 200,
-                      height: 200,
-                    ),
+        body: OrientationBuilder(builder: (context, orientation) {
+          if (orientation == Orientation.portrait) {
+            return Column(
+              children: [
+                //TODO: animate trash falling and popping, and flies looping
+                Expanded(
+                  //upper part, logo and title
+                  flex: 5,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Image.asset(
+                          'assets/images/garbage.png',
+                          width: 200,
+                          height: 200,
+                        ),
+                      ),
+                      const Center(
+                        child: Text(
+                          'Garbage Collector',
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  const Center(
-                    child: Text(
-                      'Garbage Collector',
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
+                ),
+
+                Expanded(
+                  //lower part, buttons
+                  flex: 3,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      ),
+                    ),
+                    child: SafeArea(
+                      bottom: true,
+                      top: false,
+                      left: false,
+                      right: false,
+                      child: Container(
+                        margin: const EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            //TODO: make buttons scale dynamically
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.all(15),
+                              ),
+                              onPressed: () async {
+                                //TODO: popup menu is ugly find something usable an aesthetically pleasing
+                                final selected = await showMenu(
+                                    context: context,
+                                    position: RelativeRect.fill,
+                                    items: [
+                                      const PopupMenuItem(
+                                        value: 'camera',
+                                        child: Text('Open Camera'),
+                                      ),
+                                      const PopupMenuItem(
+                                        value: 'gallery',
+                                        child: Text('Select from Gallery'),
+                                      ),
+                                    ]);
+                                if (selected == 'camera') {
+                                  BlocProvider.of<CameraBloc>(context)
+                                      .add(CameraRequest());
+                                } else if (selected == 'gallery') {
+                                  BlocProvider.of<CameraBloc>(context)
+                                      .add(GalleryRequested());
+                                }
+
+                                //TODO: push pop mess also here.
+                                //TODO: ui jitter fix when opening camera
+                                //BlocProvider.of<CameraBloc>(context).add(CameraRequest());
+                              },
+                              child: const Text('Submit Photo',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  )),
+                            ),
+                            Hero(
+                              tag: 'myGarbageCollection',
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.all(15),
+                                ),
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/collection_screen');
+                                },
+                                child: const Text('My garbage collection',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    )),
+                              ),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.all(15),
+                              ),
+                              onPressed: () {
+                                //TODO: navigate to the map screen
+                              },
+                              child: const Text('Map',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  )),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
-
-            Expanded(
-              //lower part, buttons
-              flex: 3,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
+                ),
+              ],
+            );
+          } else {
+            return Row(
+              children: [
+                Expanded(
+                  //upper part, logo and title
+                  flex: 5,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Image.asset(
+                          'assets/images/garbage.png',
+                          width: 200,
+                          height: 200,
+                        ),
+                      ),
+                      const Center(
+                        child: Text(
+                          'Garbage Collector',
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                child: SafeArea(
-                  bottom: true,
-                  top: false,
-                  left: false,
-                  right: false,
+                Expanded(
+                  //lower part, buttons
+                  flex: 3,
                   child: Container(
-                    margin: const EdgeInsets.all(20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        //TODO: make buttons scale dynamically
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.all(15),
-                          ),
-                          onPressed: () async {
-                            //TODO: popup menu is ugly find something usable an aesthetically pleasing
-                            final selected = await showMenu(
-                                context: context,
-                                position: RelativeRect.fill,
-                                items: [
-                                  const PopupMenuItem(
-                                    value: 'camera',
-                                    child: Text('Open Camera'),
-                                  ),
-                                  const PopupMenuItem(
-                                    value: 'gallery',
-                                    child: Text('Select from Gallery'),
-                                  ),
-                                ]);
-                            if (selected == 'camera') {
-                              BlocProvider.of<CameraBloc>(context)
-                                  .add(CameraRequest());
-                            } else if (selected == 'gallery') {
-                              BlocProvider.of<CameraBloc>(context)
-                                  .add(GalleryRequested());
-                            }
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      ),
+                    ),
+                    child: SafeArea(
+                      bottom: true,
+                      top: false,
+                      left: false,
+                      right: false,
+                      child: Container(
+                        margin: const EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            //TODO: make buttons scale dynamically
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.all(15),
+                              ),
+                              onPressed: () async {
+                                //TODO: popup menu is ugly find something usable an aesthetically pleasing
+                                final selected = await showMenu(
+                                    context: context,
+                                    position: RelativeRect.fill,
+                                    items: [
+                                      const PopupMenuItem(
+                                        value: 'camera',
+                                        child: Text('Open Camera'),
+                                      ),
+                                      const PopupMenuItem(
+                                        value: 'gallery',
+                                        child: Text('Select from Gallery'),
+                                      ),
+                                    ]);
+                                if (selected == 'camera') {
+                                  BlocProvider.of<CameraBloc>(context)
+                                      .add(CameraRequest());
+                                } else if (selected == 'gallery') {
+                                  BlocProvider.of<CameraBloc>(context)
+                                      .add(GalleryRequested());
+                                }
 
-                            //TODO: push pop mess also here.
-                            //TODO: ui jitter fix when opening camera
-                            //BlocProvider.of<CameraBloc>(context).add(CameraRequest());
-                          },
-                          child: const Text('Submit Photo',
-                              style: TextStyle(
-                                color: Colors.black,
-                              )),
-                        ),
-                        Hero(
-                          tag: 'myGarbageCollection',
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.all(15),
+                                //TODO: push pop mess also here.
+                                //TODO: ui jitter fix when opening camera
+                                //BlocProvider.of<CameraBloc>(context).add(CameraRequest());
+                              },
+                              child: const Text('Submit Photo',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  )),
                             ),
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                  context, '/collection_screen');
-                            },
-                            child: const Text('My garbage collection',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                )),
-                          ),
+                            Hero(
+                              tag: 'myGarbageCollection',
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.all(15),
+                                ),
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/collection_screen');
+                                },
+                                child: const Text('My garbage collection',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    )),
+                              ),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.all(15),
+                              ),
+                              onPressed: () {
+                                //TODO: navigate to the map screen
+                              },
+                              child: const Text('Map',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  )),
+                            ),
+                          ],
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.all(15),
-                          ),
-                          onPressed: () {
-                            //TODO: navigate to the map screen
-                          },
-                          child: const Text('Map',
-                              style: TextStyle(
-                                color: Colors.black,
-                              )),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-          ],
-        ),
+              ],
+            );
+          }
+        }),
       ),
     );
   }

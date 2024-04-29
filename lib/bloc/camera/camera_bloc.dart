@@ -28,7 +28,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
         //when the picture is taken we navigate to the publish screen
         emit(PictureSelectedState(file.path));
       } else {
-        emit(CameraErrorState('Error selecting photo from gallery'));
+        emit(GalleryErrorState('Error selecting photo from gallery'));
       }
     });
     on<PictureTaken>((event, emit) {

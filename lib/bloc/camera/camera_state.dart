@@ -12,6 +12,12 @@ final class CameraErrorState extends CameraState {
   CameraErrorState(this.message);
 }
 
+final class GalleryErrorState extends CameraState {
+  final String message;
+
+  GalleryErrorState(this.message);
+}
+
 //state for when a picture has already been taken and selected
 final class PictureTakenState extends CameraState {
   final String imagePath;
