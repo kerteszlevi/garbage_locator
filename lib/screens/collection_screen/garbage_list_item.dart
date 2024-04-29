@@ -20,18 +20,17 @@ class GarbageListItem extends StatelessWidget {
     const borderThickness = 1.0;
     return Container(
       height: 200,
-      margin: const EdgeInsets.only(left:35, right: 35, top: 10, bottom: 10),
+      margin: const EdgeInsets.only(left: 35, right: 35, top: 10, bottom: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(outerRadius),
-        image: DecorationImage(
-          image: FileImage(File(garbage.imagePath)),
-          fit: BoxFit.cover,
-        ),
-        border: Border.all(
-          color: Colors.grey,
-          width: 1,
-        )
-      ),
+          borderRadius: BorderRadius.circular(outerRadius),
+          image: DecorationImage(
+            image: FileImage(File(garbage.imagePath)),
+            fit: BoxFit.cover,
+          ),
+          border: Border.all(
+            color: Colors.grey,
+            width: 1,
+          )),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -44,58 +43,69 @@ class GarbageListItem extends StatelessWidget {
               filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
               child: Container(
                 color: Colors.white70,
-                child: Stack(
-                  children: [
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 15, right: 15, top: 5, bottom: 5),
+                  child: Row(children: [
                     //TODO: rework this mess listtitle is not the way to go...
-                    ListTile(
-                      title: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            //insert a green icon of location here
-                            Icon(Icons.location_on, color: Theme.of(context).primaryColor,
-                              size: 20,
-                            ),
-                            Text(garbage.location.toUpperCase(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              //insert a green icon of location here
+                              Icon(
+                                Icons.location_on,
                                 color: Theme.of(context).primaryColor,
+                                size: 20,
+                              ),
+                              Text(
+                                garbage.location.toUpperCase(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 7),
+                            child: Text(
+                              garbage.comment,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.normal,
                               ),
                             ),
-                          ]
-                      ),
-                      subtitle: Padding(
-                        padding: const EdgeInsets.only(left:5.0),
-                        child: Text(garbage.comment,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
+                          )
+                        ],
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: ListTile(
-                        title: Text('Score',
-                          textAlign: TextAlign.right,
+                    Column(
+                      children: [
+                        Text(
+                          'Score',
+                          //textAlign: TextAlign.right,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                             color: Theme.of(context).primaryColor,
                           ),
                         ),
-                        subtitle: Text('999',
-                          textAlign: TextAlign.right,
-                          style: const TextStyle(
+                        const Text(
+                          '999',
+                          //  textAlign: TextAlign.right,
+                          style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.normal,
                           ),
                         ),
-                      ),
+                      ],
                     )
-
-                  ]
+                  ]),
                 ),
               ),
             ),
