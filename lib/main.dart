@@ -7,6 +7,7 @@ import 'package:garbage_locator/repository/floor_garbage_repository.dart';
 import 'package:garbage_locator/screens/camera_screen.dart';
 import 'package:garbage_locator/screens/initial_screen.dart';
 import 'package:garbage_locator/screens/collection_screen/my_collection_screen.dart';
+import 'package:garbage_locator/screens/map_screen.dart';
 import 'package:garbage_locator/themes/myTheme.dart';
 import 'package:provider/provider.dart';
 
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
           InitialScreen.route: (context) => const InitialScreen(),
           CameraScreen.route: (context) => const CameraScreen(),
           CollectionScreen.route: (context) => const CollectionScreen(),
+          MapScreen.route: (context) => const MapScreen(),
         },
       ),
     );

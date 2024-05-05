@@ -191,7 +191,8 @@ class InitialView extends StatelessWidget {
                                 padding: const EdgeInsets.all(15),
                               ),
                               onPressed: () {
-                                //TODO: navigate to the map screen
+                                //navigate to the map screen
+                                Navigator.pushNamed(context, '/map_screen');
                               },
                               child: const Text('Map',
                                   style: TextStyle(
