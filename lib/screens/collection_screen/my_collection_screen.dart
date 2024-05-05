@@ -6,6 +6,9 @@ import 'package:garbage_locator/repository/data_source.dart';
 import 'package:garbage_locator/screens/collection_screen/garbage_list_item.dart';
 import 'package:provider/provider.dart';
 
+import '../camera_screen.dart';
+import 'garbage_navigation_bar.dart';
+
 class CollectionScreen extends StatefulWidget {
   static String route = '/collection_screen';
 
@@ -15,41 +18,65 @@ class CollectionScreen extends StatefulWidget {
 }
 
 class _CollectionScreenState extends State<CollectionScreen> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        Navigator.popUntil(context, (route) => route.isFirst);
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const CameraScreen(),
+          ),
+        );
+      case 2:
+        //TODO: implement location screen
+        break;
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final dataSource = Provider.of<DataSource>(context);
     //final garbages = dataSource.getAllGarbage();
     return Scaffold(
+      bottomNavigationBar: GarbageNavigationBar(onTap: _onItemTapped),
       appBar: AppBar(
         title: const Text('My Collection'),
       ),
       body: Hero(
         tag: 'myGarbageCollection',
-        child: Container(
-          child: FutureBuilder<List<Garbage>>(
-            future: dataSource.getAllGarbage(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              if (snapshot.hasError) {
-                return const Center(
-                  child: Text('An error occurred!'),
-                );
-              } else {
-                final garbages = snapshot.data!;
-                return ListView.builder(
-                  itemCount: garbages.length,
-                  itemBuilder: (context, index) {
-                    final garbage = garbages[index];
-                    return GarbageListItem(garbage: garbage);
-                  },
-                );
-              }
-            },
-          ),
+        child: StreamBuilder<List<Garbage>>(
+          stream: dataSource.allGarbageStream,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (snapshot.hasError) {
+              return const Center(
+                child: Text('An error occurred!'),
+              );
+            } else {
+              final garbages = snapshot.data!;
+              return ListView.builder(
+                itemCount: garbages.length,
+                itemBuilder: (context, index) {
+                  final garbage = garbages[index];
+                  return GarbageListItem(garbage: garbage);
+                },
+              );
+            }
+          },
         ),
       ),
     );

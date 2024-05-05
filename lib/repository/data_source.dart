@@ -15,6 +15,15 @@ class DataSource {
     return garbages.map((floorGarbage) => floorGarbage).toList();
   }
 
+  Stream<List<Garbage>> get allGarbageStream {
+    return _getAllGarbageStream().asBroadcastStream();
+  }
+  Stream<List<Garbage>> _getAllGarbageStream() async* {
+    while (true) {
+      yield await getAllGarbage();
+    }
+  }
+
   Future<Garbage> getGarbage(int id) async {
     final floorTodo = await database.getGarbage(id);
     return floorTodo;

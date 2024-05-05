@@ -42,7 +42,7 @@ class GarbageListItem extends StatelessWidget {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
               child: Container(
-                color: Colors.white70,
+                color: Colors.white, //TODO:blur not looking great remains white for now
                 child: Padding(
                   padding: const EdgeInsets.only(
                       left: 15, right: 15, top: 5, bottom: 5),
@@ -98,9 +98,10 @@ class GarbageListItem extends StatelessWidget {
                         const Text(
                           '999',
                           //  textAlign: TextAlign.right,
+                          //TODO: font doesnt look right
                           style: TextStyle(
                             fontSize: 15,
-                            fontWeight: FontWeight.normal,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
