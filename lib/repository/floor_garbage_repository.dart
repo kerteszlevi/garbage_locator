@@ -38,29 +38,4 @@ class FloorGarbageRepository implements GarbageRepository<Garbage> {
   Future<void> insertGarbage(Garbage garbage) {
     return garbageDao.insertGarbage(garbage);
   }
-
-  // @override
-  // Future<List<GarbagePhoto>> getAll() {
-  //   return garbagePhotoDao.getAllTodos();
-  // }
-
-  // @override
-  // Future<GarbagePhoto> getGarbagePhoto(int id) async {
-  //   final todo = await garbagePhotoDao.getGarbagePhoto(id);
-  //   if(todo == null) {
-  //     throw Exception("Invalid TODO ID");
-  //   } else {
-  //     return todo;
-  //   }
-  // }
-
-  // @override
-  // Future<void> deleteTodo(FloorTodo todo) {
-  //   return todoDao.deleteTodo(todo.id ?? -1);
-  // }
-
-  // @override
-  // Future<void> upsertTodo(FloorTodo todo) {
-  //   return todoDao.upsertTodo(todo);
-  // }
 }
