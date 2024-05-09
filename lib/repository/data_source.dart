@@ -1,12 +1,20 @@
 import 'package:garbage_locator/models/garbage.dart';
 import 'package:garbage_locator/repository/garbage_repository.dart';
+import 'package:logger/logger.dart';
 
 class DataSource {
   final GarbageRepository<Garbage> database;
-
-  DataSource(this.database);
+  final Logger _logger;
+  DataSource(this.database) : _logger = Logger();
 
   Future<void> init() async {
+    _logger.i('Initializing data source');
+    try {
+      await database.init();
+      _logger.i('Database initialized successfully');
+    } catch (e) {
+      _logger.e('Error initializing database', error: e);
+    }
     await database.init();
   }
 
