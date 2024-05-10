@@ -6,21 +6,34 @@ part of 'floor_garbage_database.dart';
 // FloorGenerator
 // **************************************************************************
 
+abstract class $FloorGarbageDatabaseBuilderContract {
+  /// Adds migrations to the builder.
+  $FloorGarbageDatabaseBuilderContract addMigrations(
+      List<Migration> migrations);
+
+  /// Adds a database [Callback] to the builder.
+  $FloorGarbageDatabaseBuilderContract addCallback(Callback callback);
+
+  /// Creates the database and initializes it.
+  Future<FloorGarbageDatabase> build();
+}
+
 // ignore: avoid_classes_with_only_static_members
 class $FloorFloorGarbageDatabase {
   /// Creates a database builder for a persistent database.
   /// Once a database is built, you should keep a reference to it and re-use it.
-  static _$FloorGarbageDatabaseBuilder databaseBuilder(String name) =>
+  static $FloorGarbageDatabaseBuilderContract databaseBuilder(String name) =>
       _$FloorGarbageDatabaseBuilder(name);
 
   /// Creates a database builder for an in memory database.
   /// Information stored in an in memory database disappears when the process is killed.
   /// Once a database is built, you should keep a reference to it and re-use it.
-  static _$FloorGarbageDatabaseBuilder inMemoryDatabaseBuilder() =>
+  static $FloorGarbageDatabaseBuilderContract inMemoryDatabaseBuilder() =>
       _$FloorGarbageDatabaseBuilder(null);
 }
 
-class _$FloorGarbageDatabaseBuilder {
+class _$FloorGarbageDatabaseBuilder
+    implements $FloorGarbageDatabaseBuilderContract {
   _$FloorGarbageDatabaseBuilder(this.name);
 
   final String? name;
@@ -29,19 +42,20 @@ class _$FloorGarbageDatabaseBuilder {
 
   Callback? _callback;
 
-  /// Adds migrations to the builder.
-  _$FloorGarbageDatabaseBuilder addMigrations(List<Migration> migrations) {
+  @override
+  $FloorGarbageDatabaseBuilderContract addMigrations(
+      List<Migration> migrations) {
     _migrations.addAll(migrations);
     return this;
   }
 
-  /// Adds a database [Callback] to the builder.
-  _$FloorGarbageDatabaseBuilder addCallback(Callback callback) {
+  @override
+  $FloorGarbageDatabaseBuilderContract addCallback(Callback callback) {
     _callback = callback;
     return this;
   }
 
-  /// Creates the database and initializes it.
+  @override
   Future<FloorGarbageDatabase> build() async {
     final path = name != null
         ? await sqfliteDatabaseFactory.getDatabasePath(name!)
@@ -85,7 +99,7 @@ class _$FloorGarbageDatabase extends FloorGarbageDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `garbage` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `imagePath` TEXT NOT NULL, `location` TEXT NOT NULL, `comment` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `garbage` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `imagePath` TEXT NOT NULL, `latitude` TEXT NOT NULL, `longitude` TEXT NOT NULL, `comment` TEXT NOT NULL, `location` TEXT NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -110,8 +124,10 @@ class _$GarbageDao extends GarbageDao {
             (Garbage item) => <String, Object?>{
                   'id': item.id,
                   'imagePath': item.imagePath,
-                  'location': item.location,
-                  'comment': item.comment
+                  'latitude': item.latitude,
+                  'longitude': item.longitude,
+                  'comment': item.comment,
+                  'location': item.location
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -129,6 +145,8 @@ class _$GarbageDao extends GarbageDao {
             id: row['id'] as int?,
             imagePath: row['imagePath'] as String,
             location: row['location'] as String,
+            latitude: row['latitude'] as String,
+            longitude: row['longitude'] as String,
             comment: row['comment'] as String));
   }
 
@@ -145,6 +163,8 @@ class _$GarbageDao extends GarbageDao {
             id: row['id'] as int?,
             imagePath: row['imagePath'] as String,
             location: row['location'] as String,
+            latitude: row['latitude'] as String,
+            longitude: row['longitude'] as String,
             comment: row['comment'] as String),
         arguments: [id]);
   }

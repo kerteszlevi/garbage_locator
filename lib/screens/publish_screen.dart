@@ -118,6 +118,8 @@ class PublishScreen extends StatelessWidget {
                           imagePath: imagePath,
                           comment: _commentController.text,
                           location: 'location_test',
+                          latitude: 'latitude_test',
+                          longitude: 'longitude_test',
                         );
                         context.read<PublishBloc>().add(PublishGarbage(garbage));
                       },
