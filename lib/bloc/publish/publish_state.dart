@@ -12,3 +12,9 @@ class PublishPublishedState extends PublishState {
 
   PublishPublishedState(this.garbage);
 }
+
+class PublishSavingImageState extends PublishState {}
+
+class PublishGettingLocationState extends PublishState {}
+
+class PublishGettingPlacemarkState extends PublishState {}

@@ -34,7 +34,7 @@ class PublishScreen extends StatelessWidget {
       child: BlocConsumer<PublishBloc, PublishState>(
         listener: (context, state) {
           if (state is PublishPublishedState) {
-            Navigator.pop(context);
+            //Navigator.pop(context);
             Navigator.popUntil(context, ModalRoute.withName('/'));
             _loadingTextController.close();
           } else if (state is PublishPublishingState) {
@@ -48,6 +48,12 @@ class PublishScreen extends StatelessWidget {
               ),
             );
             _loadingTextController.add('Publishing...');
+          } else if (state is PublishSavingImageState) {
+            _loadingTextController.add('Saving image...');
+          } else if (state is PublishGettingLocationState) {
+            _loadingTextController.add('Getting location data...');
+          } else if (state is PublishGettingPlacemarkState) {
+            _loadingTextController.add('Getting placemark data...');
           }
         },
         builder: (context, state) {

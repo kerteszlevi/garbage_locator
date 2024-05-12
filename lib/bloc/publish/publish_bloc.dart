@@ -23,6 +23,8 @@ class PublishBloc extends Bloc<PublishEvent, PublishState> {
       emit(PublishPublishingState());
       try {
         //loadingBloc.add(ShowLoading('Saving image...'));
+        emit(PublishSavingImageState());
+        await Future.delayed(const Duration(seconds: 2));
         final imageFile = File(event.garbage.imagePath);
         final savedImage = await saveImage(imageFile);
 
@@ -30,11 +32,18 @@ class PublishBloc extends Bloc<PublishEvent, PublishState> {
         //TODO: extract location from image exif, or disable gallery import option alltogether
 
         //get location of the user
+        emit(PublishGettingLocationState());
+        //TODO: remove debug delays
+        await Future.delayed(const Duration(seconds: 2));
+
         //loadingBloc.add(UpdateLoadingText('Getting location data...'));
         final locationData = await getCurrentLocation();
         //final GarbageLocation garbageLocation = await buildGarbageLocation(locationData!);
         String placemarkString;
-        placemarkString = await getPlacemarkString(locationData?.latitude, locationData?.longitude);
+        emit(PublishGettingPlacemarkState());
+        await Future.delayed(const Duration(seconds: 2));
+        placemarkString = await getPlacemarkString(
+            locationData?.latitude, locationData?.longitude);
 
         final garbage = Garbage(
           imagePath: savedImage.path,
@@ -62,6 +71,7 @@ class PublishBloc extends Bloc<PublishEvent, PublishState> {
     final imageName = DateTime.now().millisecondsSinceEpoch;
     return await imageFile.copy('$path/$imageName.jpg');
   }
+
   Future<Map<String, IfdTag>> readExifData(String imagePath) async {
     final bytes = await File(imagePath).readAsBytes();
     return readExifFromBytes(bytes);

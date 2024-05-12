@@ -11,11 +11,13 @@ class LoadingScreen extends StatelessWidget {
       canPop: false,
       //when the user tries to pop show a snack about wait
       onPopInvoked: (bool didPop) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please wait...'),
-          ),
-        );
+        if (didPop == false) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Please wait...'),
+            ),
+          );
+        }
       },
       child: Scaffold(
         body: Center(
