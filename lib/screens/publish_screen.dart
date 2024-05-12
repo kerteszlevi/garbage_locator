@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -133,37 +134,40 @@ class PublishScreen extends StatelessWidget {
                       ),
                     ),
                     //submit button
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 100),
-                        child: SizedBox(
-                          width: 300,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              //TODO: bloc
-                              final garbage = Garbage(
-                                imagePath: imagePath,
-                                comment: _commentController.text,
-                                location: 'Unknown',
-                                latitude: -1,
-                                longitude: -1,
-                              );
-                              context
-                                  .read<PublishBloc>()
-                                  .add(PublishGarbage(garbage));
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context).primaryColor,
-                              padding: const EdgeInsets.all(8),
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('Submit',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                  )),
+                    SafeArea(
+                      maintainBottomViewPadding: true,
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 30),
+                          child: SizedBox(
+                            width: 300,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                //TODO: bloc
+                                final garbage = Garbage(
+                                  imagePath: imagePath,
+                                  comment: _commentController.text,
+                                  location: 'Unknown',
+                                  latitude: -1,
+                                  longitude: -1,
+                                );
+                                context
+                                    .read<PublishBloc>()
+                                    .add(PublishGarbage(garbage));
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context).primaryColor,
+                                padding: const EdgeInsets.all(8),
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text('Submit',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    )),
+                              ),
                             ),
                           ),
                         ),
