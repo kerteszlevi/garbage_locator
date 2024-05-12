@@ -26,7 +26,7 @@ dependencies:
   logger: ^2.2.0
   exif: ^3.3.0
   location: ^6.0.2
-  geocoding: ^3.0.0
+  geocoding: ^3.0.0 #TODO: doesnt work under android 12 and under, find something else
 
 dev_dependencies:
   flutter_test:
