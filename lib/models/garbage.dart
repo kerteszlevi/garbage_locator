@@ -6,8 +6,8 @@ class Garbage {
   final int? id;
 
   final String imagePath;
-  final String latitude;
-  final String longitude;
+  final double? latitude;
+  final double? longitude;
   final String comment;
   final String location;
 
@@ -15,8 +15,8 @@ class Garbage {
     this.id,
     required this.imagePath,
     required this.location,
-    required this.latitude,
-    required this.longitude,
+    this.latitude,
+    this.longitude,
     required this.comment,
   });
 }

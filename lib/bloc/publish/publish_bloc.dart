@@ -1,12 +1,17 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:exif/exif.dart';
+import 'package:garbage_locator/models/garbage_location.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:meta/meta.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../models/garbage.dart';
 import '../../repository/data_source.dart';
+import '../../utils.dart';
+import '../loading/loading_bloc.dart';
 
 part 'publish_event.dart';
 part 'publish_state.dart';
@@ -17,17 +22,26 @@ class PublishBloc extends Bloc<PublishEvent, PublishState> {
     on<PublishGarbage>((event, emit) async {
       emit(PublishPublishingState());
       try {
+        //loadingBloc.add(ShowLoading('Saving image...'));
         final imageFile = File(event.garbage.imagePath);
         final savedImage = await saveImage(imageFile);
 
         final exifData = await readExifData(savedImage.path);
+        //TODO: extract location from image exif, or disable gallery import option alltogether
+
+        //get location of the user
+        //loadingBloc.add(UpdateLoadingText('Getting location data...'));
+        final locationData = await getCurrentLocation();
+        //final GarbageLocation garbageLocation = await buildGarbageLocation(locationData!);
+        String placemarkString;
+        placemarkString = await getPlacemarkString(locationData?.latitude, locationData?.longitude);
 
         final garbage = Garbage(
           imagePath: savedImage.path,
           comment: event.garbage.comment,
-          location: event.garbage.location,
-          latitude: event.garbage.latitude,
-          longitude: event.garbage.longitude,
+          location: placemarkString,
+          latitude: locationData?.latitude,
+          longitude: locationData?.longitude,
         );
 
         await dataSource.insertGarbage(garbage);

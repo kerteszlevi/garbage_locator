@@ -99,7 +99,7 @@ class _$FloorGarbageDatabase extends FloorGarbageDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `garbage` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `imagePath` TEXT NOT NULL, `latitude` TEXT NOT NULL, `longitude` TEXT NOT NULL, `comment` TEXT NOT NULL, `location` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `garbage` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `imagePath` TEXT NOT NULL, `latitude` REAL, `longitude` REAL, `comment` TEXT NOT NULL, `location` TEXT NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -145,8 +145,8 @@ class _$GarbageDao extends GarbageDao {
             id: row['id'] as int?,
             imagePath: row['imagePath'] as String,
             location: row['location'] as String,
-            latitude: row['latitude'] as String,
-            longitude: row['longitude'] as String,
+            latitude: row['latitude'] as double?,
+            longitude: row['longitude'] as double?,
             comment: row['comment'] as String));
   }
 
@@ -163,8 +163,8 @@ class _$GarbageDao extends GarbageDao {
             id: row['id'] as int?,
             imagePath: row['imagePath'] as String,
             location: row['location'] as String,
-            latitude: row['latitude'] as String,
-            longitude: row['longitude'] as String,
+            latitude: row['latitude'] as double?,
+            longitude: row['longitude'] as double?,
             comment: row['comment'] as String),
         arguments: [id]);
   }

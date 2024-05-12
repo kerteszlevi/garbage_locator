@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garbage_locator/screens/publish_screen.dart';
 import '../bloc/camera/camera_bloc.dart';
+import '../bloc/loading/loading_bloc.dart';
+import 'loading_screen.dart';
 
 class InitialScreen extends StatelessWidget {
   const InitialScreen({super.key});
@@ -30,46 +32,65 @@ class InitialView extends StatelessWidget {
       //statusBarIconBrightness: Brightness.dark, // For Android
       //statusBarBrightness: Brightness.light, // For iOS
     ));
-    return BlocListener<CameraBloc, CameraState>(
-      bloc: BlocProvider.of<CameraBloc>(context),
-      listener: (context, state) {
-        if (state is PictureTakenState) {
-          //TODO: fix the push pop mess with the camera waiting screen
-          //Navigator.pop(context);
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              //navigating to the publish screen and passing the image path of the taken photo
-              builder: (context) => PublishScreen(imagePath: state.imagePath),
-            ),
-          );
-        } else if (state is CameraStartingState) {
-          Navigator.pushNamed(context, '/camera_screen');
-        } else if (state is CameraErrorState) {
-          Navigator.pop(context);
-        } else if (state is PictureSelectedState) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              //navigating to the publish screen and passing the image path of the taken photo
-              builder: (context) => PublishScreen(imagePath: state.imagePath),
-            ),
-          );
-        } else if (state is GalleryErrorState) {
-          //TODO: remove this  later
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.red,
-              content: Text(
-                state.message,
-                style: const TextStyle(
-                  color: Colors.white,
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<CameraBloc, CameraState>(
+          listener: (context, state) {
+            if (state is PictureTakenState) {
+              //TODO: fix the push pop mess with the camera waiting screen
+              //Navigator.pop(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  //navigating to the publish screen and passing the image path of the taken photo
+                  builder: (context) => PublishScreen(imagePath: state.imagePath),
                 ),
-              ),
-            ),
-          );
-        }
-      },
+              );
+            } else if (state is CameraStartingState) {
+              Navigator.pushNamed(context, '/camera_screen');
+            } else if (state is CameraErrorState) {
+              Navigator.pop(context);
+            } else if (state is PictureSelectedState) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  //navigating to the publish screen and passing the image path of the taken photo
+                  builder: (context) => PublishScreen(imagePath: state.imagePath),
+                ),
+              );
+            } else if (state is GalleryErrorState) {
+              //TODO: remove this  later
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Colors.red,
+                  content: Text(
+                    state.message,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              );
+            }
+          },
+        ),
+        BlocListener<LoadingBloc, LoadingState>(
+          listener: (context, state) {
+            if (state is LoadingShown) {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) {
+                  return LoadingScreen(loadingTextStream: BlocProvider.of<LoadingBloc>(context).loadingTextController.stream);
+                },
+              );
+            } else if (state is LoadingHidden) {
+              Navigator.of(context).pop();
+            }
+          },
+        ),
+      ],
+
       child: Scaffold(
         // appBar: AppBar(
         //   systemOverlayStyle: SystemUiOverlayStyle(

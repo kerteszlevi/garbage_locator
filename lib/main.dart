@@ -11,6 +11,8 @@ import 'package:garbage_locator/screens/map_screen.dart';
 import 'package:garbage_locator/themes/myTheme.dart';
 import 'package:provider/provider.dart';
 
+import 'bloc/loading/loading_bloc.dart';
+
 //design todos:
 //TODO: splash screen
 //TODO: icon
@@ -40,8 +42,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CameraBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<CameraBloc>(
+          create: (context) => CameraBloc(),
+        ),
+        BlocProvider<LoadingBloc>(
+          create: (context) => LoadingBloc(),
+        ),
+      ],
+
       child: MaterialApp(
         title: 'Garbage Collector',
         theme: myTheme,

@@ -26,6 +26,7 @@ dependencies:
   logger: ^2.2.0
   exif: ^3.3.0
   location: ^6.0.2
+  geocoding: ^3.0.0
 
 dev_dependencies:
   flutter_test:
