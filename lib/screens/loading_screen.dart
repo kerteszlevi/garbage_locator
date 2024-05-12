@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class LoadingScreen extends StatelessWidget {
@@ -8,30 +7,42 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const CircularProgressIndicator(),
-            const SizedBox(height: 20),
-            StreamBuilder<String>(
-              stream: loadingTextStream,
-              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                if (snapshot.hasData) {
-                  return Text(
-                    snapshot.data!,
-                    style: const TextStyle(fontSize: 20),
-                  );
-                } else {
-                  return const Text(
-                    'Loading...',
-                    style: TextStyle(fontSize: 20),
-                  );
-                }
-              },
-            ),
-          ],
+    return PopScope(
+      canPop: false,
+      //when the user tries to pop show a snack about wait
+      onPopInvoked: (bool didPop) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please wait...'),
+          ),
+        );
+      },
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const CircularProgressIndicator(),
+              const SizedBox(height: 20),
+              StreamBuilder<String>(
+                stream: loadingTextStream,
+                builder:
+                    (BuildContext context, AsyncSnapshot<String> snapshot) {
+                  if (snapshot.hasData) {
+                    return Text(
+                      snapshot.data!,
+                      style: const TextStyle(fontSize: 20),
+                    );
+                  } else {
+                    return const Text(
+                      'Loading...',
+                      style: TextStyle(fontSize: 20),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
