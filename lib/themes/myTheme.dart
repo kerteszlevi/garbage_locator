@@ -17,6 +17,5 @@ ThemeData myTheme = ThemeData(
       onError: Colors.white,
       onBackground: Colors.black,
       onSurface: Colors.black,
-
   ),
 );

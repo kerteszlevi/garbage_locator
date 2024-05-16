@@ -9,6 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garbage_locator/bloc/publish/publish_bloc.dart';
 import 'package:garbage_locator/models/garbage.dart';
 import 'package:garbage_locator/repository/data_source.dart';
+import 'package:garbage_locator/screens/collection_screen/my_collection_screen.dart';
+import 'package:garbage_locator/screens/initial_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'loading_screen.dart';
@@ -36,7 +38,9 @@ class PublishScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is PublishPublishedState) {
             //Navigator.pop(context);
-            Navigator.popUntil(context, ModalRoute.withName('/'));
+            //Navigator.popUntil(context, ModalRoute.withName('/'));
+            //Navigator.pushReplacementNamed(context, CollectionScreen.route);
+            Navigator.pushNamedAndRemoveUntil(context, CollectionScreen.route,ModalRoute.withName(InitialScreen.route));
             _loadingTextController.close();
           } else if (state is PublishPublishingState) {
             //push loading screen

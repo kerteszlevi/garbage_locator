@@ -26,7 +26,6 @@ Future<LocationData?> getCurrentLocation() async {
   }
 
   locationData = await location.getLocation();
-
   return locationData;
 }
 

@@ -24,7 +24,7 @@ class PublishBloc extends Bloc<PublishEvent, PublishState> {
       try {
         //loadingBloc.add(ShowLoading('Saving image...'));
         emit(PublishSavingImageState());
-        await Future.delayed(const Duration(seconds: 2));
+        //await Future.delayed(const Duration(seconds: 2));
         final imageFile = File(event.garbage.imagePath);
         final savedImage = await saveImage(imageFile);
 
@@ -34,14 +34,14 @@ class PublishBloc extends Bloc<PublishEvent, PublishState> {
         //get location of the user
         emit(PublishGettingLocationState());
         //TODO: remove debug delays
-        await Future.delayed(const Duration(seconds: 2));
+        //await Future.delayed(const Duration(seconds: 2));
 
         //loadingBloc.add(UpdateLoadingText('Getting location data...'));
         final locationData = await getCurrentLocation();
         //final GarbageLocation garbageLocation = await buildGarbageLocation(locationData!);
         String placemarkString;
         emit(PublishGettingPlacemarkState());
-        await Future.delayed(const Duration(seconds: 2));
+        //await Future.delayed(const Duration(seconds: 2));
         placemarkString = await getPlacemarkString(
             locationData?.latitude, locationData?.longitude);
 

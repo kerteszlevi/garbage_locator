@@ -27,7 +27,10 @@ class InitialView extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: Theme.of(context).primaryColor, //For Android
-      statusBarColor: Theme.of(context).colorScheme.background, //For Android
+      //statusBarColor: Theme.of(context).colorScheme.background, //For Android
+      statusBarColor: Colors.transparent,
+      //systemNavigationBarColor: Colors.transparent,
+
       //TODO: define for every screen
       //statusBarIconBrightness: Brightness.dark, // For Android
       //statusBarBrightness: Brightness.light, // For iOS
@@ -92,6 +95,9 @@ class InitialView extends StatelessWidget {
       ],
 
       child: Scaffold(
+        //extendBody: true, //TODO: not working as intended, find a way to stretch the scaffold behind the navbar on android
+        //bottomNavigationBar: const SizedBox(),
+        //extendBodyBehindAppBar: true,
         // appBar: AppBar(
         //   systemOverlayStyle: SystemUiOverlayStyle(
         //     statusBarColor: Theme.of(context).colorScheme.background,
@@ -284,7 +290,7 @@ class InitialView extends StatelessWidget {
                                 padding: const EdgeInsets.all(15),
                               ),
                               onPressed: () async {
-                                //TODO: popup menu is ugly find something usable an aesthetically pleasing
+                                //TODO: popup menu is ugly find something usable and aesthetically pleasing
                                 final selected = await showMenu(
                                     context: context,
                                     position: RelativeRect.fill,
