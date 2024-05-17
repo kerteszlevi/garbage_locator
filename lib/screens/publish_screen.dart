@@ -37,9 +37,6 @@ class PublishScreen extends StatelessWidget {
       child: BlocConsumer<PublishBloc, PublishState>(
         listener: (context, state) {
           if (state is PublishPublishedState) {
-            //Navigator.pop(context);
-            //Navigator.popUntil(context, ModalRoute.withName('/'));
-            //Navigator.pushReplacementNamed(context, CollectionScreen.route);
             Navigator.pushNamedAndRemoveUntil(context, CollectionScreen.route,ModalRoute.withName(InitialScreen.route));
             _loadingTextController.close();
           } else if (state is PublishPublishingState) {

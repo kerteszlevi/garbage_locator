@@ -42,12 +42,12 @@ class GarbageListItem extends StatelessWidget {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
               child: Container(
-                color: Colors.white, //TODO:blur not looking great remains white for now
+                color: Colors
+                    .white, //TODO:blur not looking great remains white for now
                 child: Padding(
                   padding: const EdgeInsets.only(
                       left: 15, right: 15, top: 5, bottom: 5),
                   child: Row(children: [
-                    //TODO: rework this mess listtitle is not the way to go...
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,12 +61,16 @@ class GarbageListItem extends StatelessWidget {
                                 color: Theme.of(context).primaryColor,
                                 size: 20,
                               ),
-                              Text(
-                                garbage.location.toUpperCase(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Theme.of(context).primaryColor,
+                              Flexible(
+                                child: Text(
+                                  garbage.location.toUpperCase(),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
                                 ),
                               ),
                             ],
@@ -88,7 +92,6 @@ class GarbageListItem extends StatelessWidget {
                       children: [
                         Text(
                           'Score',
-                          //textAlign: TextAlign.right,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
@@ -97,7 +100,6 @@ class GarbageListItem extends StatelessWidget {
                         ),
                         const Text(
                           '999',
-                          //  textAlign: TextAlign.right,
                           //TODO: font doesnt look right
                           style: TextStyle(
                             fontSize: 15,

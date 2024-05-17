@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_animations/flutter_map_animations.dart';
@@ -28,21 +27,37 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
-  List<Marker> markers = [];
+  List<AnimatedMarker> markers = [];
   LatLng? initialCenter;
   Location location = Location();
+  ValueNotifier<bool> isLoadingLocation = ValueNotifier<bool>(false);
+  final bool _useTransformer = true;
+  static const _useTransformerId = 'useTransformerId';
   late final _animatedMapController = AnimatedMapController(
     vsync: this,
     duration: const Duration(milliseconds: 500),
     curve: Curves.easeInOut,
-  ); // TODO: animated markers
+  );
 
-  //Garbage? selectedGarbage;
   ValueNotifier<Garbage?> selectedGarbage = ValueNotifier<Garbage?>(null);
 
   Future<String> getPath() async {
     final cacheDirectory = await getTemporaryDirectory();
     return cacheDirectory.path;
+  }
+
+  void centerMapOnMarkers(List<AnimatedMarker> markers) {
+    if (markers.length < 2) return;
+
+    final points = markers.map((m) => m.point).toList();
+    _animatedMapController.animatedFitCamera(
+      cameraFit: CameraFit.coordinates(
+        coordinates: points,
+        padding: const EdgeInsets.all(50),
+      ),
+      rotation: 0,
+      customId: _useTransformer ? _useTransformerId : null,
+    );
   }
 
   @override
@@ -57,12 +72,13 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
 
       setState(() {
         markers = garbages.map((garbage) {
-          return Marker(
+          return AnimatedMarker(
             width: 80.0,
             height: 80.0,
             point: LatLng(garbage.latitude!, garbage.longitude!),
             rotate: true,
-            child: ValueListenableBuilder<Garbage?>(
+            builder: (BuildContext context, Animation<double> animation) {
+              return ValueListenableBuilder<Garbage?>(
                 valueListenable: selectedGarbage,
                 builder: (context, value, child) {
                   return Transform.translate(
@@ -74,30 +90,37 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                           : Theme.of(context).primaryColor,
                       iconSize: 40.0,
                       onPressed: () {
+                        _animatedMapController.animateTo(
+                          zoom: 13.0,
+                          dest: LatLng(garbage.latitude!, garbage.longitude!),
+                          customId: _useTransformer ? _useTransformerId : null,
+                        );
                         selectedGarbage.value = garbage;
                       },
                     ),
                   );
-                }),
+                },
+              );
+            },
           );
         }).toList();
-
-        markers.add(
-          Marker(
+        markers.insert(
+          0,
+          AnimatedMarker(
             width: 80.0,
             height: 80.0,
             point: initialCenter!,
             rotate: true,
-            child: Builder(
-              builder: (ctx) => Transform.translate(
+            builder: (BuildContext context, Animation<double> animation) {
+              return Transform.translate(
                 offset: const Offset(0, -20.0),
                 child: const Icon(
                   Icons.boy,
                   color: Colors.blue,
                   size: 40,
                 ),
-              ),
-            ),
+              );
+            },
           ),
         );
       });
@@ -121,20 +144,10 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // bottomNavigationBar: ValueListenableBuilder<Garbage?>(
-      //     valueListenable: selectedGarbage,
-      //     builder: (context, value, child) {
-      //       if (value == null) {
-      //         return GarbageNavigationBar(
-      //             onTap: (index) => _onItemTapped(index, context));
-      //       } else {
-      //         return const SizedBox();
-      //       }
-      //     },
-      // ),
       body: initialCenter == null
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(child: Image.asset('assets/gifs/location.gif'))
           : Stack(children: [
+              //Map
               FutureBuilder(
                 future: getPath(),
                 builder: (context, snapshot) {
@@ -166,23 +179,92 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
-                      // RichAttributionWidget(
-                      //   attributions: [
-                      //     TextSourceAttribution(
-                      //       'OpenStreetMap contributors',
-                      //       onTap: () => launchUrl(Uri.parse(
-                      //           'https://openstreetmap.org/copyright')),
-                      //     ),
-                      //   ],
-                      // ),
-                      MarkerLayer(markers: markers),
+                      AnimatedMarkerLayer(markers: markers),
                     ],
                   );
                 },
               ),
-              Align(
-                  alignment: Alignment.bottomCenter,
-                  child: GarbageNavigationBar(onTap: (index) => _onItemTapped(index, context))),
+              //Navbar
+              Column(
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Wrap(
+                          direction: Axis.vertical,
+                          spacing: 15.0,
+                          children: [
+                            FloatingActionButton(
+                              tooltip: 'Center on Your Location',
+                              onPressed: () async {
+                                isLoadingLocation.value = true;
+                                final currentLocation =
+                                    await getCurrentLocation();
+                                setState(() {
+                                  markers.first = AnimatedMarker(
+                                    width: 80.0,
+                                    height: 80.0,
+                                    point: LatLng(
+                                      currentLocation!.latitude!,
+                                      currentLocation.longitude!,
+                                    ),
+                                    rotate: true,
+                                    builder: (BuildContext context,
+                                        Animation<double> animation) {
+                                      return Transform.translate(
+                                        offset: const Offset(0, -20.0),
+                                        child: const Icon(
+                                          Icons.boy,
+                                          color: Colors.blue,
+                                          size: 40,
+                                        ),
+                                      );
+                                    },
+                                  );
+                                });
+                                _animatedMapController.animateTo(
+                                  dest: LatLng(
+                                    currentLocation!.latitude!,
+                                    currentLocation.longitude!,
+                                  ),
+                                  customId: _useTransformer
+                                      ? _useTransformerId
+                                      : null,
+                                );
+                                isLoadingLocation.value = false;
+                              },
+                              child: ValueListenableBuilder<bool>(
+                                valueListenable: isLoadingLocation,
+                                builder: (context, value, child) {
+                                  return value
+                                      ? const CircularProgressIndicator(
+                                          backgroundColor: Colors.white,
+                                        )
+                                      : const Icon(Icons.my_location);
+                                },
+                              ),
+                            ),
+                            FloatingActionButton(
+                              tooltip: 'Center on markers',
+                              onPressed: () => centerMapOnMarkers(markers),
+                              child: const Icon(Icons.center_focus_strong),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: GarbageNavigationBar(
+                      onTap: (index) => _onItemTapped(index, context),
+                    ),
+                  ),
+                ],
+              ),
+              //Bottom part
               ValueListenableBuilder<Garbage?>(
                 valueListenable: selectedGarbage,
                 builder: (context, value, child) {
@@ -205,15 +287,17 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                           children: [
                             Row(
                               children: [
-                                Icon(Icons.location_on,
-                                    color: Theme.of(context).primaryColor,
+                                Icon(
+                                  Icons.location_on,
+                                  color: Theme.of(context).primaryColor,
                                 ),
-                                Text(selectedGarbage.value!.location,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        color: Theme.of(context).primaryColor
-                                    )
+                                Text(
+                                  selectedGarbage.value!.location,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
                                 ),
                               ],
                             ),

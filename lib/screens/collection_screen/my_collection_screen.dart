@@ -49,11 +49,9 @@ class _CollectionScreenState extends State<CollectionScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     final dataSource = Provider.of<DataSource>(context);
-    //final garbages = dataSource.getAllGarbage();
     return Scaffold(
       bottomNavigationBar: GarbageNavigationBar(onTap: _onItemTapped),
       appBar: AppBar(

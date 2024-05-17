@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,22 +7,62 @@ import '../bloc/camera/camera_bloc.dart';
 import '../bloc/loading/loading_bloc.dart';
 import 'loading_screen.dart';
 
-class InitialScreen extends StatelessWidget {
+class InitialScreen extends StatefulWidget {
   const InitialScreen({super.key});
 
   static String route = '/';
 
   @override
+  State<InitialScreen> createState() => _InitialScreenState();
+}
+
+class _InitialScreenState extends State<InitialScreen> {
+  @override
+  void initState(){
+    super.initState();
+    checkInternetConnectivity();
+  }
+
+  Future<void> checkInternetConnectivity() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult.first == ConnectivityResult.none) {
+      // No internet connection
+      ScaffoldMessenger.of(context).showMaterialBanner(
+        MaterialBanner(
+          content: const Text(
+              'No active network interface',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+          ),
+          backgroundColor: Colors.red,
+          actions: [
+            TextButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+              },
+              child: const Text(
+                  'Dismiss',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+
+  @override
   Widget build(BuildContext context) {
-    //final cb = CameraBloc();
     return const InitialView(/*cameraBloc: cb*/);
   }
 }
 
 class InitialView extends StatelessWidget {
   const InitialView({super.key /*, required this.cameraBloc*/});
-
-  //final CameraBloc cameraBloc;
 
   @override
   Widget build(BuildContext context) {

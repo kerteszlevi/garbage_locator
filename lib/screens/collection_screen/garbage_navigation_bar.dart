@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class GarbageNavigationBar extends StatelessWidget {
   final Function(int) onTap;
@@ -16,8 +17,7 @@ class GarbageNavigationBar extends StatelessWidget {
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          // icon: Icon(Icons.album_outlined),
-          icon: Image.asset('assets/icons/shutter_button.png'),
+          icon: SvgPicture.asset('assets/images/shutter.svg'),
           label: 'Camera',
         ),
         const BottomNavigationBarItem(

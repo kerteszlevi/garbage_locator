@@ -41,13 +41,13 @@ Future<LocationData?> getCurrentLocation() async {
 
 Future<String> getPlacemarkString(double? latitude, double? longitude) async {
   if(latitude == null || longitude == null) {
-    return 'Unknown location';
+    return 'Unknown place';
   }else{
     final List<geo.Placemark> placemarks;
     try {
       placemarks = await geo.placemarkFromCoordinates(latitude, longitude);
     }catch(e){
-      return 'lat: $latitude, long: $longitude';
+      return 'lat: $latitude\nlon: $longitude';
     }
 
     return '${(placemarks)[0].locality!}, ${(placemarks)[0].isoCountryCode!}';
