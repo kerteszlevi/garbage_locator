@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
@@ -24,20 +23,19 @@ class MapScreen extends StatefulWidget {
   static String route = '/map_screen';
 
   const MapScreen({super.key});
-    @override
-    _MapScreenState createState() => _MapScreenState();
-  }
+  @override
+  _MapScreenState createState() => _MapScreenState();
+}
 
-
-class _MapScreenState extends State<MapScreen> /*with TickerProviderStateMixin*/ {
+class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
   List<Marker> markers = [];
   LatLng? initialCenter;
   Location location = Location();
-  // late final _animatedMapController = AnimatedMapController(
-  //   vsync: this,
-  //   duration: const Duration(milliseconds: 500),
-  //   curve: Curves.easeInOut,
-  // );// TODO: animated markers
+  late final _animatedMapController = AnimatedMapController(
+    vsync: this,
+    duration: const Duration(milliseconds: 500),
+    curve: Curves.easeInOut,
+  ); // TODO: animated markers
 
   //Garbage? selectedGarbage;
   ValueNotifier<Garbage?> selectedGarbage = ValueNotifier<Garbage?>(null);
@@ -54,7 +52,8 @@ class _MapScreenState extends State<MapScreen> /*with TickerProviderStateMixin*/
       final dataSource = Provider.of<DataSource>(context, listen: false);
       final garbages = await dataSource.getAllGarbage();
       final currentLocation = await getCurrentLocation();
-      initialCenter = LatLng(currentLocation!.latitude!, currentLocation.longitude!);
+      initialCenter =
+          LatLng(currentLocation!.latitude!, currentLocation.longitude!);
 
       setState(() {
         markers = garbages.map((garbage) {
@@ -63,23 +62,23 @@ class _MapScreenState extends State<MapScreen> /*with TickerProviderStateMixin*/
             height: 80.0,
             point: LatLng(garbage.latitude!, garbage.longitude!),
             rotate: true,
-            child:
-            ValueListenableBuilder<Garbage?>(
-              valueListenable: selectedGarbage,
-              builder: (context, value, child) {
-                return Transform.translate(
-                  offset: const Offset(0, -20.0),
-                  child: IconButton(
-                    icon: const Icon(Icons.location_on),
-                    color: value == garbage ? MyColors.darkerPrimary : Theme.of(context).primaryColor,
-                    iconSize: 40.0,
-                    onPressed: () {
-                      selectedGarbage.value = garbage;
-                    },
-                  ),
-                );
-              }
-            ),
+            child: ValueListenableBuilder<Garbage?>(
+                valueListenable: selectedGarbage,
+                builder: (context, value, child) {
+                  return Transform.translate(
+                    offset: const Offset(0, -20.0),
+                    child: IconButton(
+                      icon: const Icon(Icons.location_on),
+                      color: value == garbage
+                          ? MyColors.darkerPrimary
+                          : Theme.of(context).primaryColor,
+                      iconSize: 40.0,
+                      onPressed: () {
+                        selectedGarbage.value = garbage;
+                      },
+                    ),
+                  );
+                }),
           );
         }).toList();
 
@@ -89,15 +88,15 @@ class _MapScreenState extends State<MapScreen> /*with TickerProviderStateMixin*/
             height: 80.0,
             point: initialCenter!,
             rotate: true,
-            child:
-            Builder(
-              builder: (ctx) =>
-                  Transform.translate(
-                    offset: const Offset(0, -20.0),
-                    child: const Icon(Icons.boy,
-                      color: Colors.blue,
-                      size: 40,),
-                  ),
+            child: Builder(
+              builder: (ctx) => Transform.translate(
+                offset: const Offset(0, -20.0),
+                child: const Icon(
+                  Icons.boy,
+                  color: Colors.blue,
+                  size: 40,
+                ),
+              ),
             ),
           ),
         );
@@ -114,7 +113,7 @@ class _MapScreenState extends State<MapScreen> /*with TickerProviderStateMixin*/
         Navigator.pushNamed(context, '/camera_screen');
         break;
       case 2:
-      //already on map screen
+        //already on map screen
         break;
     }
   }
@@ -122,68 +121,111 @@ class _MapScreenState extends State<MapScreen> /*with TickerProviderStateMixin*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: GarbageNavigationBar(onTap: (index) => _onItemTapped(index, context)),
-      body: initialCenter == null ? const Center(child: CircularProgressIndicator()) :
-      Stack(
-
-        children: [
-          FutureBuilder(
-
-            future: getPath(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              final path = snapshot.data as String;
-              return FlutterMap(
-                // mapController: _animatedMapController.mapController,
-                options: MapOptions(
-                  initialCenter: initialCenter!,
-                  initialZoom: 13.0,
-                ),
-                children: [
-                  TileLayer(
-                    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    userAgentPackageName: 'com.example.app',
-                    tileProvider: CachedTileProvider(
-                      maxStale: const Duration(days: 30),
-                      store: HiveCacheStore(
-                        path,
-                        hiveBoxName: 'HiveCacheStore',
+      // bottomNavigationBar: ValueListenableBuilder<Garbage?>(
+      //     valueListenable: selectedGarbage,
+      //     builder: (context, value, child) {
+      //       if (value == null) {
+      //         return GarbageNavigationBar(
+      //             onTap: (index) => _onItemTapped(index, context));
+      //       } else {
+      //         return const SizedBox();
+      //       }
+      //     },
+      // ),
+      body: initialCenter == null
+          ? const Center(child: CircularProgressIndicator())
+          : Stack(children: [
+              FutureBuilder(
+                future: getPath(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  final path = snapshot.data as String;
+                  return FlutterMap(
+                    mapController: _animatedMapController.mapController,
+                    options: MapOptions(
+                      initialCenter: initialCenter!,
+                      initialZoom: 13.0,
+                      onTap: (_, point) {
+                        selectedGarbage.value = null;
+                      },
+                    ),
+                    children: [
+                      TileLayer(
+                        urlTemplate:
+                            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        userAgentPackageName: 'com.example.app',
+                        tileProvider: CachedTileProvider(
+                          maxStale: const Duration(days: 30),
+                          store: HiveCacheStore(
+                            path,
+                            hiveBoxName: 'HiveCacheStore',
+                          ),
+                        ),
+                      ),
+                      // RichAttributionWidget(
+                      //   attributions: [
+                      //     TextSourceAttribution(
+                      //       'OpenStreetMap contributors',
+                      //       onTap: () => launchUrl(Uri.parse(
+                      //           'https://openstreetmap.org/copyright')),
+                      //     ),
+                      //   ],
+                      // ),
+                      MarkerLayer(markers: markers),
+                    ],
+                  );
+                },
+              ),
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: GarbageNavigationBar(onTap: (index) => _onItemTapped(index, context))),
+              ValueListenableBuilder<Garbage?>(
+                valueListenable: selectedGarbage,
+                builder: (context, value, child) {
+                  if (value == null) return const SizedBox.shrink();
+                  return Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                      ),
+                      //color: Colors.grey,
+                      child: SafeArea(
+                        top: false,
+                        minimum: const EdgeInsets.all(10),
+                        child: Wrap(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.location_on,
+                                    color: Theme.of(context).primaryColor,
+                                ),
+                                Text(selectedGarbage.value!.location,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: Theme.of(context).primaryColor
+                                    )
+                                ),
+                              ],
+                            ),
+                            GarbageListItem(garbage: value),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  RichAttributionWidget(
-                    attributions: [
-                      TextSourceAttribution(
-                        'OpenStreetMap contributors',
-                        onTap: () => launchUrl(Uri.parse('https://openstreetmap.org/copyright')),
-                      ),
-                    ],
-                  ),
-                  MarkerLayer(markers: markers),
-                ],
-              );
-            },
-          ),
-          ValueListenableBuilder<Garbage?>(
-            valueListenable: selectedGarbage,
-            builder: (context, value, child) {
-              if (value == null) return const SizedBox.shrink();
-              return Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  height: 200,
-                  color: Colors.grey,
-                  child: GarbageListItem(garbage: value),
-                ),
-              );
-            },
-          ),
-        ]
-      ),
+                  );
+                },
+              ),
+            ]),
     );
   }
 }

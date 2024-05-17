@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class GarbageNavigationBar extends StatelessWidget {
   final Function(int) onTap;
@@ -9,16 +10,17 @@ class GarbageNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
+      items: <BottomNavigationBarItem>[
+        const BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.album_outlined),
+          // icon: Icon(Icons.album_outlined),
+          icon: Image.asset('assets/icons/shutter_button.png'),
           label: 'Camera',
         ),
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
           icon: Icon(Icons.location_on),
           label: 'Location',
         ),
