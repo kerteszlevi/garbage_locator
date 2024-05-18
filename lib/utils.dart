@@ -1,4 +1,3 @@
-import 'package:garbage_locator/models/garbage_location.dart';
 import 'package:geocoding/geocoding.dart' as geo;
 import 'package:location/location.dart';
 
@@ -29,24 +28,14 @@ Future<LocationData?> getCurrentLocation() async {
   return locationData;
 }
 
-// Future<GarbageLocation> buildGarbageLocation(LocationData locationData) async {
-//   List<geo.Placemark> placemarks = await geo.placemarkFromCoordinates(locationData.latitude!, locationData.longitude!);
-//
-//   return GarbageLocation(
-//     latitude: locationData.latitude,
-//     longitude: locationData.longitude,
-//     placemarkString: '${(placemarks)[0].locality!}, ${(placemarks)[0].isoCountryCode!}'
-//   );
-// }
-
 Future<String> getPlacemarkString(double? latitude, double? longitude) async {
-  if(latitude == null || longitude == null) {
+  if (latitude == null || longitude == null) {
     return 'Unknown place';
-  }else{
+  } else {
     final List<geo.Placemark> placemarks;
     try {
       placemarks = await geo.placemarkFromCoordinates(latitude, longitude);
-    }catch(e){
+    } catch (e) {
       return 'lat: $latitude\nlon: $longitude';
     }
 

@@ -3,15 +3,12 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:exif/exif.dart';
-import 'package:garbage_locator/models/garbage_location.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:meta/meta.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../models/garbage.dart';
 import '../../repository/data_source.dart';
 import '../../utils.dart';
-import '../loading/loading_bloc.dart';
 
 part 'publish_event.dart';
 part 'publish_state.dart';
@@ -22,9 +19,7 @@ class PublishBloc extends Bloc<PublishEvent, PublishState> {
     on<PublishGarbage>((event, emit) async {
       emit(PublishPublishingState());
       try {
-        //loadingBloc.add(ShowLoading('Saving image...'));
         emit(PublishSavingImageState());
-        //await Future.delayed(const Duration(seconds: 2));
         final imageFile = File(event.garbage.imagePath);
         final savedImage = await saveImage(imageFile);
 
@@ -33,15 +28,9 @@ class PublishBloc extends Bloc<PublishEvent, PublishState> {
 
         //get location of the user
         emit(PublishGettingLocationState());
-        //TODO: remove debug delays
-        //await Future.delayed(const Duration(seconds: 2));
-
-        //loadingBloc.add(UpdateLoadingText('Getting location data...'));
         final locationData = await getCurrentLocation();
-        //final GarbageLocation garbageLocation = await buildGarbageLocation(locationData!);
         String placemarkString;
         emit(PublishGettingPlacemarkState());
-        //await Future.delayed(const Duration(seconds: 2));
         placemarkString = await getPlacemarkString(
             locationData?.latitude, locationData?.longitude);
 

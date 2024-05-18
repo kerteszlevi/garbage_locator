@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,7 +20,7 @@ class InitialScreen extends StatefulWidget {
 
 class _InitialScreenState extends State<InitialScreen> {
   @override
-  void initState(){
+  void initState() {
     super.initState();
     checkInternetConnectivity();
   }
@@ -30,10 +32,10 @@ class _InitialScreenState extends State<InitialScreen> {
       ScaffoldMessenger.of(context).showMaterialBanner(
         MaterialBanner(
           content: const Text(
-              'No active network interface',
-              style: TextStyle(
-                color: Colors.white,
-              ),
+            'No active network interface',
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
           backgroundColor: Colors.red,
           actions: [
@@ -42,10 +44,10 @@ class _InitialScreenState extends State<InitialScreen> {
                 ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
               },
               child: const Text(
-                  'Dismiss',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+                'Dismiss',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
               ),
             ),
           ],
@@ -53,7 +55,6 @@ class _InitialScreenState extends State<InitialScreen> {
       );
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +88,8 @@ class InitialView extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   //navigating to the publish screen and passing the image path of the taken photo
-                  builder: (context) => PublishScreen(imagePath: state.imagePath),
+                  builder: (context) =>
+                      PublishScreen(imagePath: state.imagePath),
                 ),
               );
             } else if (state is CameraStartingState) {
@@ -99,7 +101,8 @@ class InitialView extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   //navigating to the publish screen and passing the image path of the taken photo
-                  builder: (context) => PublishScreen(imagePath: state.imagePath),
+                  builder: (context) =>
+                      PublishScreen(imagePath: state.imagePath),
                 ),
               );
             } else if (state is GalleryErrorState) {
@@ -125,7 +128,10 @@ class InitialView extends StatelessWidget {
                 context: context,
                 barrierDismissible: false,
                 builder: (BuildContext context) {
-                  return LoadingScreen(loadingTextStream: BlocProvider.of<LoadingBloc>(context).loadingTextController.stream);
+                  return LoadingScreen(
+                      loadingTextStream: BlocProvider.of<LoadingBloc>(context)
+                          .loadingTextController
+                          .stream);
                 },
               );
             } else if (state is LoadingHidden) {
@@ -134,7 +140,6 @@ class InitialView extends StatelessWidget {
           },
         ),
       ],
-
       child: Scaffold(
         //extendBody: true, //TODO: not working as intended, find a way to stretch the scaffold behind the navbar on android
         //bottomNavigationBar: const SizedBox(),
@@ -202,41 +207,107 @@ class InitialView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             //TODO: make buttons scale dynamically
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.all(15),
-                              ),
-                              onPressed: () async {
-                                //TODO: popup menu is ugly find something usable an aesthetically pleasing
-                                final selected = await showMenu(
+                            Hero(
+                              tag: 'submitPhoto',
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.all(15),
+                                ),
+                                onPressed: () async {
+                                  showModalBottomSheet(
                                     context: context,
-                                    position: RelativeRect.fill,
-                                    items: [
-                                      const PopupMenuItem(
-                                        value: 'camera',
-                                        child: Text('Open Camera'),
-                                      ),
-                                      const PopupMenuItem(
-                                        value: 'gallery',
-                                        child: Text('Select from Gallery'),
-                                      ),
-                                    ]);
-                                if (selected == 'camera') {
-                                  BlocProvider.of<CameraBloc>(context)
-                                      .add(CameraRequest());
-                                } else if (selected == 'gallery') {
-                                  BlocProvider.of<CameraBloc>(context)
-                                      .add(GalleryRequested());
-                                }
-
-                                //TODO: push pop mess also here.
-                                //TODO: ui jitter fix when opening camera
-                                //BlocProvider.of<CameraBloc>(context).add(CameraRequest());
-                              },
-                              child: const Text('Submit Photo',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  )),
+                                    isScrollControlled: true,
+                                    builder: (BuildContext context) {
+                                      return ClipRRect(
+                                        borderRadius:
+                                            const BorderRadius.vertical(
+                                                top: Radius.circular(25.0)),
+                                        child: Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.375, // 3/5 of the screen
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          child: Wrap(
+                                            children: <Widget>[
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 15.0,
+                                                    bottom: 8.0,
+                                                    left: 8.0,
+                                                    right: 8.0),
+                                                child: ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            15),
+                                                  ),
+                                                  onPressed: () {
+                                                    BlocProvider.of<CameraBloc>(
+                                                            context)
+                                                        .add(CameraRequest());
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Icon(Icons.camera,
+                                                          size: 30),
+                                                      SizedBox(width: 10),
+                                                      Text('Open Camera',
+                                                          style: TextStyle(
+                                                              fontSize: 15)),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            15),
+                                                    foregroundColor:
+                                                        Colors.grey,
+                                                  ),
+                                                  onPressed: () {
+                                                    // BlocProvider.of<CameraBloc>(context).add(GalleryRequested());
+                                                    // Navigator.pop(context);
+                                                  },
+                                                  child: const Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Icon(Icons.photo_library,
+                                                          size: 30),
+                                                      SizedBox(width: 10),
+                                                      Text(
+                                                          'Select from Gallery [WIP]',
+                                                          style: TextStyle(
+                                                              fontSize: 15)),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: const Text('Submit Photo',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    )),
+                              ),
                             ),
                             Hero(
                               tag: 'myGarbageCollection',
@@ -248,24 +319,31 @@ class InitialView extends StatelessWidget {
                                   Navigator.pushNamed(
                                       context, '/collection_screen');
                                 },
-                                child: const Text('My garbage collection',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    )),
-                              ),
-                            ),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.all(15),
-                              ),
-                              onPressed: () {
-                                //navigate to the map screen
-                                Navigator.pushNamed(context, '/map_screen');
-                              },
-                              child: const Text('Map',
+                                child: const Text(
+                                  'My garbage collection',
                                   style: TextStyle(
                                     color: Colors.black,
-                                  )),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Hero(
+                              tag: 'mapScreen',
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.all(15),
+                                ),
+                                onPressed: () {
+                                  //navigate to the map screen
+                                  Navigator.pushNamed(context, '/map_screen');
+                                },
+                                child: const Text(
+                                  'Map',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -276,6 +354,7 @@ class InitialView extends StatelessWidget {
               ],
             );
           } else {
+            //landscape orientation TODO: ditch the popup menu TODO: very sketchy implementation, might disable landscape later
             return Row(
               children: [
                 Expanded(
@@ -372,10 +451,12 @@ class InitialView extends StatelessWidget {
                                   Navigator.pushNamed(
                                       context, '/collection_screen');
                                 },
-                                child: const Text('My garbage collection',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    )),
+                                child: const Text(
+                                  'My garbage collection',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                ),
                               ),
                             ),
                             ElevatedButton(
@@ -383,12 +464,14 @@ class InitialView extends StatelessWidget {
                                 padding: const EdgeInsets.all(15),
                               ),
                               onPressed: () {
-                                //TODO: navigate to the map screen
+                                Navigator.pushNamed(context, '/map_screen');
                               },
-                              child: const Text('Map',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  )),
+                              child: const Text(
+                                'Map',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
                             ),
                           ],
                         ),

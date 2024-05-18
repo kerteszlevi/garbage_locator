@@ -26,6 +26,7 @@ class DataSource {
   Stream<List<Garbage>> get allGarbageStream {
     return _getAllGarbageStream().asBroadcastStream();
   }
+
   Stream<List<Garbage>> _getAllGarbageStream() async* {
     while (true) {
       yield await getAllGarbage();

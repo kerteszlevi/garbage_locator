@@ -7,7 +7,8 @@ part 'loading_event.dart';
 part 'loading_state.dart';
 
 class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
-  final StreamController<String> loadingTextController = StreamController<String>();
+  final StreamController<String> loadingTextController =
+      StreamController<String>();
 
   LoadingBloc() : super(LoadingInitial()) {
     on<ShowLoading>((event, emit) {

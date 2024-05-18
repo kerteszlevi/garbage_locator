@@ -1,10 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:garbage_locator/models/garbage.dart';
 import 'package:garbage_locator/repository/data_source.dart';
 import 'package:garbage_locator/screens/collection_screen/garbage_list_item.dart';
-import 'package:garbage_locator/screens/map_screen.dart';
+import 'package:garbage_locator/screens/map_screen/map_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../camera_screen.dart';

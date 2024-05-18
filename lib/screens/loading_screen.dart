@@ -9,7 +9,6 @@ class LoadingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      //when the user tries to pop show a snack about wait
       onPopInvoked: (bool didPop) {
         if (didPop == false) {
           ScaffoldMessenger.of(context).showSnackBar(

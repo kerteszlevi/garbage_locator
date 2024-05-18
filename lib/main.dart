@@ -7,7 +7,7 @@ import 'package:garbage_locator/repository/floor_garbage_repository.dart';
 import 'package:garbage_locator/screens/camera_screen.dart';
 import 'package:garbage_locator/screens/initial_screen.dart';
 import 'package:garbage_locator/screens/collection_screen/my_collection_screen.dart';
-import 'package:garbage_locator/screens/map_screen.dart';
+import 'package:garbage_locator/screens/map_screen/map_screen.dart';
 import 'package:garbage_locator/themes/myTheme.dart';
 import 'package:provider/provider.dart';
 
@@ -51,11 +51,9 @@ class MyApp extends StatelessWidget {
           create: (context) => LoadingBloc(),
         ),
       ],
-
       child: MaterialApp(
         title: 'Garbage Collector',
         theme: myTheme,
-        //home: const InitialScreen(),
         initialRoute: InitialScreen.route,
         routes: {
           InitialScreen.route: (context) => const InitialScreen(),

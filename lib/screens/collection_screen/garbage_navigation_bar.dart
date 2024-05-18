@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class GarbageNavigationBar extends StatelessWidget {
   final Function(int) onTap;
 
-  const GarbageNavigationBar({Key? key, required this.onTap}) : super(key: key);
+  const GarbageNavigationBar({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class GarbageNavigationBar extends StatelessWidget {
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: SvgPicture.asset('assets/images/shutter.svg'),
+          icon: SvgPicture.asset('assets/vector/shutter.svg'),
           label: 'Camera',
         ),
         const BottomNavigationBarItem(

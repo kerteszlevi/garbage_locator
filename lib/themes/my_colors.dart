@@ -1,5 +1,5 @@
 import 'dart:ui';
 
-class MyColors{
+class MyColors {
   static const Color darkerPrimary = Color(0xFF00801C);
 }
