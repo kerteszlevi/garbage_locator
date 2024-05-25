@@ -3,7 +3,7 @@ abstract class GarbageRepository<T> {
 
   Future<List<T>> getAllGarbage();
 
-  Future<T> getGarbage(int id);
+  Future<T> getGarbage(String id);
 
   Future<void> deleteGarbage(T garbage);
 

@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:exif/exif.dart';
 import 'package:meta/meta.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../models/garbage.dart';
 import '../../repository/data_source.dart';
@@ -40,10 +41,13 @@ class PublishBloc extends Bloc<PublishEvent, PublishState> {
           location: placemarkString,
           latitude: locationData?.latitude,
           longitude: locationData?.longitude,
+          id: const Uuid().v4(),
         );
 
+        emit(PublishUploadingState());
         await dataSource.insertGarbage(garbage);
-        emit(PublishPublishedState(garbage));
+        emit(PublishPublishedState());
+        print("publish supposed to be done");
       } catch (e) {
         emit(PublishInitialState());
       }
@@ -65,19 +69,4 @@ class PublishBloc extends Bloc<PublishEvent, PublishState> {
     final bytes = await File(imagePath).readAsBytes();
     return readExifFromBytes(bytes);
   }
-  // Map<String, double> extractLocation(Map<String, IfdTag> data) {
-  //   final gpsLat = data['GPS GPSLatitude'];
-  //   final gpsLatRef = data['GPS GPSLatitudeRef'];
-  //   final gpsLon = data['GPS GPSLongitude'];
-  //   final gpsLonRef = data['GPS GPSLongitudeRef'];
-  //
-  //   double latitude = gpsLat != null ? convertRationalLatLon(gpsLat.values, gpsLatRef.printable) : 0.0;
-  //   double longitude = gpsLon != null ? convertRationalLatLon(gpsLon.values, gpsLonRef.printable) : 0.0;
-  //
-  //   return {'latitude': latitude, 'longitude': longitude};
-  // }
-  // double convertRationalLatLon(List<Rational> rational, String ref) {
-  //   double result = rational[0].toDouble() + rational[1].toDouble() / 60 + rational[2].toDouble() / 3600;
-  //   return ref == 'S' || ref == 'W' ? -result : result;
-  // }
 }

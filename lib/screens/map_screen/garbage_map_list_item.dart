@@ -25,7 +25,8 @@ class GarbageMapListItem extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(outerRadius),
           image: DecorationImage(
-            image: FileImage(File(garbage.imagePath)),
+            //image: FileImage(File(garbage.imagePath)),
+            image: NetworkImage(garbage.imagePath),
             fit: BoxFit.cover,
           ),
           border: Border.all(

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "765011984405",
+    "project_id": "garbage-locator-e6468",
+    "storage_bucket": "garbage-locator-e6468.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:765011984405:android:0461255265281cf4f68e1c",
+        "android_client_info": {
+          "package_name": "com.example.garbage_locator"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhHWeaDW705GMoDUEX-3vtfZ1YcoiU7Mg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

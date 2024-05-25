@@ -3,20 +3,29 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garbage_locator/bloc/camera/camera_bloc.dart';
 import 'package:garbage_locator/repository/data_source.dart';
+import 'package:garbage_locator/repository/firebase_garbage_repository.dart';
 import 'package:garbage_locator/repository/floor_garbage_repository.dart';
 import 'package:garbage_locator/screens/camera_screen.dart';
 import 'package:garbage_locator/screens/initial_screen.dart';
 import 'package:garbage_locator/screens/collection_screen/my_collection_screen.dart';
+import 'package:garbage_locator/screens/login_screen.dart';
 import 'package:garbage_locator/screens/map_screen/map_screen.dart';
 import 'package:garbage_locator/themes/myTheme.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_conditional_rendering/conditional.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'bloc/loading/loading_bloc.dart';
 
 //design todos:
 //TODO: splash screen
 //TODO: icon
 void main() async {
+  final Logger logger = Logger();
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
       //TODO: decide where to define status bar and navigation bar color later on, for now it is defined here
@@ -25,15 +34,75 @@ void main() async {
     statusBarIconBrightness: Brightness.dark, // For Android
   ));
 
-  final dataSource = DataSource(FloorGarbageRepository());
-  await dataSource.init();
+  //final dataSource = DataSource(FloorGarbageRepository());
+  //await dataSource.init();
 
   runApp(
-    Provider<DataSource>(
-      create: (_) => dataSource,
-      child: const MyApp(),
-    ),
+    // Provider<DataSource>(
+    //   create: (_) => dataSource,
+    //   child: const MyApp(),
+    // ),
+    FirebaseInitializer(),
   );
+}
+
+class FirebaseInitializer extends StatefulWidget{
+  @override
+  _FirebaseInitializerState createState() => _FirebaseInitializerState();
+}
+
+class _FirebaseInitializerState extends State<FirebaseInitializer>{
+  late Future<FirebaseApp> _initialization;
+
+  Future<FirebaseApp> initFirebase() async{
+    final fireBaseApp = await Firebase.initializeApp();
+    return fireBaseApp;
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    _initialization = initFirebase();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: _initialization,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text(
+                "Failed to initialize Firebase. :(",
+                textDirection: TextDirection.ltr,
+              ),
+            );
+          }
+
+          if (snapshot.hasData) {
+            return const MyApp();
+          }
+
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+  }
+}
+
+class HomeScreenRenderer extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return Conditional.single(
+      context: context,
+      conditionBuilder: (context) {
+        return FirebaseAuth.instance.currentUser != null;
+      },
+      widgetBuilder: (context) => const InitialScreen(),
+      fallbackBuilder: (context) => LoginPage(),
+    );
+  }
+
 }
 
 class MyApp extends StatelessWidget {
@@ -42,6 +111,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final dataSource = DataSource(FirebaseGarbageRepository());
+    dataSource.init();
     return MultiBlocProvider(
       providers: [
         BlocProvider<CameraBloc>(
@@ -51,16 +122,20 @@ class MyApp extends StatelessWidget {
           create: (context) => LoadingBloc(),
         ),
       ],
-      child: MaterialApp(
-        title: 'Garbage Collector',
-        theme: myTheme,
-        initialRoute: InitialScreen.route,
-        routes: {
-          InitialScreen.route: (context) => const InitialScreen(),
-          CameraScreen.route: (context) => const CameraScreen(),
-          CollectionScreen.route: (context) => const CollectionScreen(),
-          MapScreen.route: (context) => const MapScreen(),
-        },
+      child: Provider<DataSource>(
+        create: (_) => dataSource,
+        child: MaterialApp(
+          title: 'Garbage Collector',
+          theme: myTheme,
+          initialRoute: LoginPage.route,
+          routes: {
+            InitialScreen.route: (context) => const InitialScreen(),
+            CameraScreen.route: (context) => const CameraScreen(),
+            CollectionScreen.route: (context) => const CollectionScreen(),
+            MapScreen.route: (context) => const MapScreen(),
+            LoginPage.route: (context) => LoginPage(),
+          },
+        ),
       ),
     );
   }

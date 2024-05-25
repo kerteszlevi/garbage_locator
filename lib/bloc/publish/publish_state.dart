@@ -7,14 +7,12 @@ final class PublishInitialState extends PublishState {}
 
 class PublishPublishingState extends PublishState {}
 
-class PublishPublishedState extends PublishState {
-  final Garbage garbage;
-
-  PublishPublishedState(this.garbage);
-}
+class PublishPublishedState extends PublishState {}
 
 class PublishSavingImageState extends PublishState {}
 
 class PublishGettingLocationState extends PublishState {}
 
 class PublishGettingPlacemarkState extends PublishState {}
+
+class PublishUploadingState extends PublishState {}

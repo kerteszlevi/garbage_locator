@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart' as geo;
 import 'package:location/location.dart';
 
@@ -42,3 +43,13 @@ Future<String> getPlacemarkString(double? latitude, double? longitude) async {
     return '${(placemarks)[0].locality!}, ${(placemarks)[0].isoCountryCode!}';
   }
 }
+
+void changeNavigationBarColor(Color color) {
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      systemNavigationBarColor: color,
+    ),
+  );
+}
+
+
