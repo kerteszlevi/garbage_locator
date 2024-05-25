@@ -1,18 +1,21 @@
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garbage_locator/screens/publish_screen.dart';
 import '../bloc/camera/camera_bloc.dart';
 import '../bloc/loading/loading_bloc.dart';
+import '../utils.dart';
 import 'loading_screen.dart';
+import 'login_screen.dart';
 
 class InitialScreen extends StatefulWidget {
   const InitialScreen({super.key});
 
-  static String route = '/';
+  static String route = '/initial';
 
   @override
   State<InitialScreen> createState() => _InitialScreenState();
@@ -153,6 +156,31 @@ class InitialView extends StatelessWidget {
         //   ),
         // ),
 
+        appBar: AppBar(
+          leading: PopupMenuButton<String>(
+            icon: const Icon(Icons.logout, color: Colors.black),
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                value: 'SignOut',
+                child: Text('Sign Out', style: TextStyle(color: Colors.red)),
+              ),
+              const PopupMenuItem<String>(
+                value: 'Cancel',
+                child: Text('Cancel', style: TextStyle(color: Colors.black)),
+              ),
+            ],
+            onSelected: (String action) {
+              if (action == 'SignOut') {
+                logOut();
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                );
+              }
+            },
+          ),
+        ),
         body: OrientationBuilder(builder: (context, orientation) {
           if (orientation == Orientation.portrait) {
             return Column(

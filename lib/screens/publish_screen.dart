@@ -37,10 +37,10 @@ class PublishScreen extends StatelessWidget {
       child: BlocConsumer<PublishBloc, PublishState>(
         listener: (context, state) {
           if (state is PublishPublishedState) {
-            // Navigator.pushNamedAndRemoveUntil(context, CollectionScreen.route,
-            //     ModalRoute.withName(InitialScreen.route));
-            Navigator.popUntil(context, ModalRoute.withName(InitialScreen.route));
-            Navigator.pushNamed(context, CollectionScreen.route);
+            Navigator.pushNamedAndRemoveUntil(context, CollectionScreen.route,
+                ModalRoute.withName(InitialScreen.route));
+            //Navigator.popUntil(context, ModalRoute.withName(InitialScreen.route));
+            //naviNavigator.pushNamed(context, CollectionScreen.route);
             _loadingTextController.close();
           } else if (state is PublishPublishingState) {
             //push loading screen
@@ -148,6 +148,7 @@ class PublishScreen extends StatelessWidget {
                             onPressed: () {
                               //TODO: bloc
                               final garbage = Garbage(
+                                author: 'Unknown',
                                 imagePath: imagePath,
                                 comment: _commentController.text,
                                 location: 'Unknown',

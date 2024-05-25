@@ -8,4 +8,8 @@ abstract class GarbageRepository<T> {
   Future<void> deleteGarbage(T garbage);
 
   Future<void> insertGarbage(T garbage);
+
+  Future<List<T>> getAllAuthorGarbage(String author);
+
+  Stream<List<T>> getAllAuthorGarbageStream(String author);
 }

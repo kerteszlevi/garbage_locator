@@ -20,7 +20,7 @@ class DataSource {
 
   Future<List<Garbage>> getAllGarbage() async {
     final garbages = await database.getAllGarbage();
-    return garbages.map((floorGarbage) => floorGarbage).toList();
+    return garbages.map((garbageSource) => garbageSource).toList();
   }
 
   Stream<List<Garbage>> get allGarbageStream {
@@ -44,5 +44,13 @@ class DataSource {
 
   Future<void> deleteGarbage(Garbage garbage) async {
     return database.deleteGarbage(garbage);
+  }
+
+  Future<List<Garbage>> getAllAuthorGarbage(String author) async {
+    return database.getAllAuthorGarbage(author);
+  }
+
+  Stream<List<Garbage>> getAllAuthorGarbageStream(String author) {
+    return database.getAllAuthorGarbageStream(author);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart' as geo;
 import 'package:location/location.dart';
@@ -52,4 +53,6 @@ void changeNavigationBarColor(Color color) {
   );
 }
 
-
+Future<void> logOut() {
+  return FirebaseAuth.instance.signOut();
+}

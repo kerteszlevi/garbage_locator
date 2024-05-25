@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:garbage_locator/models/garbage.dart';
 import 'package:garbage_locator/repository/data_source.dart';
@@ -26,7 +27,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
 
     switch (index) {
       case 0:
-        Navigator.popUntil(context, (route) => route.isFirst);
+        Navigator.pushReplacementNamed(context, '/initial');
         break;
       case 1:
         Navigator.push(
@@ -58,7 +59,8 @@ class _CollectionScreenState extends State<CollectionScreen> {
       body: Hero(
         tag: 'myGarbageCollection',
         child: StreamBuilder<List<Garbage>>(
-          stream: dataSource.allGarbageStream,
+          stream: dataSource.getAllAuthorGarbageStream(
+              FirebaseAuth.instance.currentUser!.email!),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(

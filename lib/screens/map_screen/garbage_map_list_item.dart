@@ -23,16 +23,16 @@ class GarbageMapListItem extends StatelessWidget {
       height: 200,
       margin: const EdgeInsets.only(left: 35, right: 35, top: 10, bottom: 10),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(outerRadius),
-          image: DecorationImage(
-            //image: FileImage(File(garbage.imagePath)),
-            image: NetworkImage(garbage.imagePath),
-            fit: BoxFit.cover,
-          ),
-          border: Border.all(
-            color: Colors.grey,
-            width: 1,
-          ),
+        borderRadius: BorderRadius.circular(outerRadius),
+        image: DecorationImage(
+          //image: FileImage(File(garbage.imagePath)),
+          image: NetworkImage(garbage.imagePath),
+          fit: BoxFit.cover,
+        ),
+        border: Border.all(
+          color: Colors.grey,
+          width: 1,
+        ),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,

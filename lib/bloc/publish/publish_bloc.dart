@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:exif/exif.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
@@ -36,6 +37,7 @@ class PublishBloc extends Bloc<PublishEvent, PublishState> {
             locationData?.latitude, locationData?.longitude);
 
         final garbage = Garbage(
+          author: FirebaseAuth.instance.currentUser?.email ?? "Anonymous",
           imagePath: savedImage.path,
           comment: event.garbage.comment,
           location: placemarkString,
@@ -47,7 +49,6 @@ class PublishBloc extends Bloc<PublishEvent, PublishState> {
         emit(PublishUploadingState());
         await dataSource.insertGarbage(garbage);
         emit(PublishPublishedState());
-        print("publish supposed to be done");
       } catch (e) {
         emit(PublishInitialState());
       }

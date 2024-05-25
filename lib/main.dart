@@ -24,6 +24,10 @@ import 'bloc/loading/loading_bloc.dart';
 //design todos:
 //TODO: splash screen
 //TODO: icon
+//other todos:
+//TODO: localization
+//TODO:move logic out of the bloc-s
+
 void main() async {
   final Logger logger = Logger();
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,33 +38,26 @@ void main() async {
     statusBarIconBrightness: Brightness.dark, // For Android
   ));
 
-  //final dataSource = DataSource(FloorGarbageRepository());
-  //await dataSource.init();
-
   runApp(
-    // Provider<DataSource>(
-    //   create: (_) => dataSource,
-    //   child: const MyApp(),
-    // ),
     FirebaseInitializer(),
   );
 }
 
-class FirebaseInitializer extends StatefulWidget{
+class FirebaseInitializer extends StatefulWidget {
   @override
   _FirebaseInitializerState createState() => _FirebaseInitializerState();
 }
 
-class _FirebaseInitializerState extends State<FirebaseInitializer>{
+class _FirebaseInitializerState extends State<FirebaseInitializer> {
   late Future<FirebaseApp> _initialization;
 
-  Future<FirebaseApp> initFirebase() async{
+  Future<FirebaseApp> initFirebase() async {
     final fireBaseApp = await Firebase.initializeApp();
     return fireBaseApp;
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _initialization = initFirebase();
   }
@@ -90,7 +87,7 @@ class _FirebaseInitializerState extends State<FirebaseInitializer>{
   }
 }
 
-class HomeScreenRenderer extends StatelessWidget{
+class HomeScreenRenderer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Conditional.single(
@@ -102,7 +99,6 @@ class HomeScreenRenderer extends StatelessWidget{
       fallbackBuilder: (context) => LoginPage(),
     );
   }
-
 }
 
 class MyApp extends StatelessWidget {
@@ -127,7 +123,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Garbage Collector',
           theme: myTheme,
-          initialRoute: LoginPage.route,
+          home: HomeScreenRenderer(),
           routes: {
             InitialScreen.route: (context) => const InitialScreen(),
             CameraScreen.route: (context) => const CameraScreen(),

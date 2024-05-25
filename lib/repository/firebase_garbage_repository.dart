@@ -1,6 +1,3 @@
-
-
-
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -39,7 +36,9 @@ class FirebaseGarbageRepository implements GarbageRepository<Garbage> {
   Future<void> insertGarbage(Garbage garbage) async {
     final imageUrl = await uploadImage(File(garbage.imagePath));
     final garbageWithImage = garbage.copyWith(imagePath: imageUrl);
-    await _garbageCollection.doc(garbageWithImage.id).set(garbageWithImage.toJson());
+    await _garbageCollection
+        .doc(garbageWithImage.id)
+        .set(garbageWithImage.toJson());
   }
 
   Future<String> uploadImage(File imageFile) async {
@@ -48,5 +47,25 @@ class FirebaseGarbageRepository implements GarbageRepository<Garbage> {
     await imageRef.putFile(imageFile);
     final downloadUrl = await imageRef.getDownloadURL();
     return downloadUrl;
+  }
+
+  Future<List<Garbage>> getAllAuthorGarbage(String author) async {
+    QuerySnapshot querySnapshot =
+        await _garbageCollection.where('author', isEqualTo: author).get();
+    return querySnapshot.docs
+        .map((doc) => Garbage.fromJson(doc.data() as Map<String, dynamic>))
+        .toList();
+  }
+
+  @override
+  Stream<List<Garbage>> getAllAuthorGarbageStream(String author) {
+    return _garbageCollection
+        .where('author', isEqualTo: author)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => Garbage.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
+    });
   }
 }

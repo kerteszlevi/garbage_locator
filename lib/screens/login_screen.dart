@@ -1,6 +1,9 @@
 //import 'package:firebase_analytics/firebase_analytics.dart';
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -68,87 +71,116 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Theme.of(context).primaryColor, //For Android
+      statusBarColor: Colors.transparent,
+    ));
     return Scaffold(
-      appBar: AppBar(
-        title: Text("FlutterForum"),
-      ),
-      body: PopScope(
-        canPop: false,
-        child: Center(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints viewportConstraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: viewportConstraints.maxHeight,
+              ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.forum,
-                        color: Colors.orange,
-                        size: 120,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  //todo: localized text on the plate
+                  Image.asset('assets/images/cutetrashcan.png'),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
                       ),
-                    ],
-                  ),
-                  TextField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      alignLabelWithHint: true,
-                      labelText: "Email address",
-                      errorText: _emailValid
-                          ? null
-                          : "Please provide a valid email address",
                     ),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  TextField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      alignLabelWithHint: true,
-                      labelText: "Password",
-                      errorText: _passwordValid
-                          ? null
-                          : "The given password is invalid or not strong enough",
-                    ),
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: true,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              _tryLogin(context);
-                            },
-                            child: Text("Login".toUpperCase()),
-                          ),
+                    child: SafeArea(
+                      bottom: true,
+                      top: false,
+                      left: false,
+                      right: false,
+                      child: Container(
+                        margin: const EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            TextField(
+                              controller: _emailController,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                alignLabelWithHint: true,
+                                labelText: "Email address",
+                                labelStyle: TextStyle(color: Colors.black),
+                                errorText: _emailValid
+                                    ? null
+                                    : "Please provide a valid email address",
+                                errorStyle: TextStyle(color: Colors.red),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                              keyboardType: TextInputType.emailAddress,
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            SizedBox(height: 10),
+                            TextField(
+                              controller: _passwordController,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                alignLabelWithHint: true,
+                                labelText: "Password",
+                                labelStyle: TextStyle(color: Colors.black),
+                                errorText: _passwordValid
+                                    ? null
+                                    : "The given password is invalid or not strong enough",
+                                errorStyle: TextStyle(color: Colors.red),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                              keyboardType: TextInputType.visiblePassword,
+                              obscureText: true,
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      _tryLogin(context);
+                                    },
+                                    child: Text("Login".toUpperCase()),
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      _tryRegistration(context);
+                                    },
+                                    child: Text("Register".toUpperCase()),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              _tryRegistration(context);
-                            },
-                            child: Text("Register".toUpperCase()),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

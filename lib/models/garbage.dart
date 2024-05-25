@@ -9,6 +9,7 @@ class Garbage {
 //  @PrimaryKey(autoGenerate: true)
   final String? id;
   final String imagePath;
+  final String author;
   final double? latitude;
   final double? longitude;
   final String comment;
@@ -16,6 +17,7 @@ class Garbage {
 
   Garbage({
     this.id,
+    required this.author,
     required this.imagePath,
     required this.location,
     this.latitude,
@@ -25,6 +27,7 @@ class Garbage {
 
   Garbage copyWith({
     String? id,
+    String? author,
     String? imagePath,
     double? latitude,
     double? longitude,
@@ -33,6 +36,7 @@ class Garbage {
   }) {
     return Garbage(
       id: id ?? this.id,
+      author: author ?? this.author,
       imagePath: imagePath ?? this.imagePath,
       location: location ?? this.location,
       latitude: latitude ?? this.latitude,
@@ -41,7 +45,8 @@ class Garbage {
     );
   }
 
-  factory Garbage.fromJson(Map<String, dynamic> json) => _$GarbageFromJson(json);
+  factory Garbage.fromJson(Map<String, dynamic> json) =>
+      _$GarbageFromJson(json);
 
   Map<String, dynamic> toJson() => _$GarbageToJson(this);
 }
