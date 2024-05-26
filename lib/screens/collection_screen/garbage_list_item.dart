@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -99,13 +100,31 @@ class GarbageListItem extends StatelessWidget {
                             color: Theme.of(context).primaryColor,
                           ),
                         ),
-                        const Text(
-                          '999',
-                          //TODO: font doesnt look right
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        // const Text(
+                        //   '999',
+                        //   //TODO: font doesnt look right
+                        //   style: TextStyle(
+                        //     fontSize: 15,
+                        //     fontWeight: FontWeight.bold,
+                        //   ),
+                        // ),
+                        StreamBuilder<DocumentSnapshot>(
+                          stream: FirebaseFirestore.instance.collection('garbage').doc(garbage.id).snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return CircularProgressIndicator();
+                            }
+
+                            final updatedGarbage = Garbage.fromJson(snapshot.data!.data() as Map<String, dynamic>);
+                            final score = updatedGarbage.likes.length - updatedGarbage.dislikes.length;
+                            return Text(
+                              '$score',
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          },
                         ),
                       ],
                     )

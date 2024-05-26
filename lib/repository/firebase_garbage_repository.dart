@@ -71,4 +71,36 @@ class FirebaseGarbageRepository implements GarbageRepository<Garbage> {
       print('Error in getAllAuthorGarbageStream: $error');
     });
   }
+
+  @override
+  Future<void> likeGarbage(String garbageId, String userId) async {
+    DocumentSnapshot docSnapshot = await FirebaseFirestore.instance.collection('garbage').doc(garbageId).get();
+    Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
+    List<String> likes = List<String>.from(data['likes'] ?? []);
+    if (likes.contains(userId)) {
+      likes.remove(userId);
+    } else {
+      likes.add(userId);
+    }
+    await FirebaseFirestore.instance.collection('garbage').doc(garbageId).update({
+      'likes': likes,
+      'dislikes': FieldValue.arrayRemove([userId]),
+    });
+  }
+
+  @override
+  Future<void> dislikeGarbage(String garbageId, String userId) async {
+    DocumentSnapshot docSnapshot = await FirebaseFirestore.instance.collection('garbage').doc(garbageId).get();
+    Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
+    List<String> dislikes = List<String>.from(data['dislikes'] ?? []);
+    if (dislikes.contains(userId)) {
+      dislikes.remove(userId);
+    } else {
+      dislikes.add(userId);
+    }
+    await FirebaseFirestore.instance.collection('garbage').doc(garbageId).update({
+      'likes': FieldValue.arrayRemove([userId]),
+      'dislikes': dislikes,
+    });
+  }
 }

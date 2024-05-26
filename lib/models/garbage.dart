@@ -13,6 +13,8 @@ class Garbage {
   final double? longitude;
   final String comment;
   final String location;
+  List<String> likes;
+  List<String> dislikes;
 
   Garbage({
     this.id,
@@ -22,7 +24,10 @@ class Garbage {
     this.latitude,
     this.longitude,
     required this.comment,
-  });
+    List<String>? likes,
+    List<String>? dislikes,
+  })  : this.likes = likes ?? [],
+        this.dislikes = dislikes ?? [];
 
   Garbage copyWith({
     String? id,
@@ -32,6 +37,8 @@ class Garbage {
     double? longitude,
     String? comment,
     String? location,
+    List<String>? likes,
+    List<String>? dislikes,
   }) {
     return Garbage(
       id: id ?? this.id,
@@ -41,6 +48,8 @@ class Garbage {
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
       comment: comment ?? this.comment,
+      likes: likes ?? this.likes,
+      dislikes: dislikes ?? this.dislikes,
     );
   }
 

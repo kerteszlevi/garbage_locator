@@ -53,4 +53,11 @@ class DataSource {
   Stream<List<Garbage>> getAllAuthorGarbageStream(String author) {
     return database.getAllAuthorGarbageStream(author);
   }
+
+  Future<void> likeGarbage(String garbageId, String userId) async {
+    return database.likeGarbage(garbageId, userId);
+  }
+  Future<void> dislikeGarbage(String garbageId, String userId) async {
+    return database.dislikeGarbage(garbageId, userId);
+  }
 }

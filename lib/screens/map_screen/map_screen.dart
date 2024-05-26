@@ -326,6 +326,8 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                             //color: Colors.grey,
                             child: SafeArea(
                               top: false,
+                              right: false,
+                              left: false,
                               minimum: const EdgeInsets.all(10),
                               child: Wrap(
                                 children: [
@@ -345,7 +347,6 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                                       ),
                                     ],
                                   ),
-                                  //GarbageMapListItem(garbage: value),
                                   Container(
                                     height: MediaQuery.of(context).size.height * 0.3,
                                     width: MediaQuery.of(context).size.width,

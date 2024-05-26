@@ -14,6 +14,11 @@ Garbage _$GarbageFromJson(Map<String, dynamic> json) => Garbage(
       latitude: (json['latitude'] as num?)?.toDouble(),
       longitude: (json['longitude'] as num?)?.toDouble(),
       comment: json['comment'] as String,
+      likes:
+          (json['likes'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      dislikes: (json['dislikes'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$GarbageToJson(Garbage instance) => <String, dynamic>{
@@ -24,4 +29,6 @@ Map<String, dynamic> _$GarbageToJson(Garbage instance) => <String, dynamic>{
       'longitude': instance.longitude,
       'comment': instance.comment,
       'location': instance.location,
+      'likes': instance.likes,
+      'dislikes': instance.dislikes,
     };

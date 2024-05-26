@@ -12,4 +12,8 @@ abstract class GarbageRepository<T> {
   Future<List<T>> getAllAuthorGarbage(String author);
 
   Stream<List<T>> getAllAuthorGarbageStream(String author);
+
+  Future<void> likeGarbage(String garbageId, String userId) async {}
+
+  Future<void> dislikeGarbage(String garbageId, String userId) async {}
 }
