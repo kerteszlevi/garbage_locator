@@ -22,6 +22,8 @@ import 'bloc/loading/loading_bloc.dart';
 // has not been tested on every api level and ios version, i was  using api level 34 and ios 17
 // landscape mode is not supported on the initial screen, everywhere else i think it works fine
 
+//account with some pictures taken in emulator for testing: user: a@a.com pw: abcdefgh
+
 // commands:
 // build runner: flutter pub run build_runner build --delete-conflicting-outputs
 // to generate icons: flutter pub run flutter_launcher_icons
