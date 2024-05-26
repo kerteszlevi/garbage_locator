@@ -49,6 +49,7 @@ class FirebaseGarbageRepository implements GarbageRepository<Garbage> {
     return downloadUrl;
   }
 
+  @override
   Future<List<Garbage>> getAllAuthorGarbage(String author) async {
     QuerySnapshot querySnapshot =
         await _garbageCollection.where('author', isEqualTo: author).get();

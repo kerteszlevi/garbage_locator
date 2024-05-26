@@ -40,6 +40,19 @@ class _CollectionScreenState extends State<CollectionScreen> {
     });
   }
 
+  Widget _flightShuttleBuilder(
+      BuildContext flightContext,
+      Animation<double> animation,
+      HeroFlightDirection flightDirection,
+      BuildContext fromHeroContext,
+      BuildContext toHeroContext,
+      ) {
+    return DefaultTextStyle(
+      style: DefaultTextStyle.of(toHeroContext).style,
+      child: toHeroContext.widget,
+    );
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -88,6 +101,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
           title: const Text('My Collection'),
         ),
         body: Hero(
+          flightShuttleBuilder: _flightShuttleBuilder,
           tag: 'myGarbageCollection',
           child: FutureBuilder<List<Garbage>>(
             future: dataSource

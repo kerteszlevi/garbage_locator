@@ -62,6 +62,22 @@ class _InitialScreenState extends State<InitialScreen> {
     return const InitialView(/*cameraBloc: cb*/);
   }
 }
+Widget _flightShuttleBuilder(
+    BuildContext flightContext,
+    Animation<double> animation,
+    HeroFlightDirection flightDirection,
+    BuildContext fromHeroContext,
+    BuildContext toHeroContext,
+    ) {
+  return DefaultTextStyle(
+    //style: DefaultTextStyle.of(toHeroContext).style,
+    style: const TextStyle(
+      fontSize: 20,
+      color: Colors.black,
+    ),
+    child: toHeroContext.widget,
+  );
+}
 
 class InitialView extends StatelessWidget {
   const InitialView({super.key /*, required this.cameraBloc*/});
@@ -470,6 +486,7 @@ class InitialView extends StatelessWidget {
                                     )),
                               ),
                               Hero(
+                                flightShuttleBuilder: _flightShuttleBuilder,
                                 tag: 'myGarbageCollection',
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(

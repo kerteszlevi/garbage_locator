@@ -66,7 +66,7 @@ class PublishScreen extends StatelessWidget {
           return AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
               statusBarColor: Colors.transparent,
-              statusBarIconBrightness: Brightness.dark, // For Android
+              statusBarIconBrightness: Brightness.light, // For Android
               statusBarBrightness: Brightness.light, // For iOS
               systemNavigationBarColor: Colors.transparent,
             ),

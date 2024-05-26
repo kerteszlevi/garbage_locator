@@ -27,7 +27,12 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
   List<AnimatedMarker> markers = [];
   LatLng? initialCenter;
   Location location = Location();
+
   ValueNotifier<bool> isLoadingLocation = ValueNotifier<bool>(false);
+  //ValueNotifier<List<Garbage>> garbageList = ValueNotifier<List<Garbage>>([]);
+  ValueNotifier<Garbage?> selectedGarbage = ValueNotifier<Garbage?>(null);
+  ValueNotifier<List<Garbage>> sameLocationGarbages = ValueNotifier<List<Garbage>>([]);
+
   final bool _useTransformer = true;
   static const _useTransformerId = 'useTransformerId';
   late AnimationController _animationController;
@@ -36,8 +41,9 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     duration: const Duration(milliseconds: 500),
     curve: Curves.easeInOut,
   );
+  ScrollController scrollController = ScrollController();
 
-  ValueNotifier<Garbage?> selectedGarbage = ValueNotifier<Garbage?>(null);
+
 
   Future<String> getPath() async {
     final cacheDirectory = await getTemporaryDirectory();
@@ -58,6 +64,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       customId: _useTransformer ? _useTransformerId : null,
     );
   }
+
 
   @override
   void initState() {
@@ -94,11 +101,21 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                       iconSize: 40.0,
                       onPressed: () {
                         _animatedMapController.animateTo(
-                          //zoom: 15.0,
+                          zoom: 15.0,
                           dest: LatLng(garbage.latitude!, garbage.longitude!),
                           customId: _useTransformer ? _useTransformerId : null,
                         );
                         selectedGarbage.value = garbage;
+                        sameLocationGarbages.value = garbages
+                            .where((g) => g.location == garbage.location)
+                            .toList();
+                        sameLocationGarbages.value.remove(garbage);
+                        sameLocationGarbages.value.insert(0, garbage);
+                        scrollController.animateTo(
+                          0.0,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeOut,
+                        );
                       },
                     ),
                   );
@@ -107,8 +124,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
             },
           );
         }).toList();
-        markers.insert(
-          0,
+        markers.add(
           AnimatedMarker(
             width: 80.0,
             height: 80.0,
@@ -211,7 +227,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                                                 await getCurrentLocation();
                                             //TODO: avoid setState
                                             setState(() {
-                                              markers.first = AnimatedMarker(
+                                              markers.last = AnimatedMarker(
                                                 width: 80.0,
                                                 height: 80.0,
                                                 point: LatLng(
@@ -329,7 +345,20 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                                       ),
                                     ],
                                   ),
-                                  GarbageMapListItem(garbage: value),
+                                  //GarbageMapListItem(garbage: value),
+                                  Container(
+                                    height: MediaQuery.of(context).size.height * 0.3,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: ListView.builder(
+                                      controller: scrollController,
+                                      scrollDirection: Axis.horizontal,
+
+                                      itemCount: sameLocationGarbages.value.length,
+                                      itemBuilder: (context, index) {
+                                        return GarbageMapListItem(garbage: sameLocationGarbages.value[index]);
+                                      },
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),

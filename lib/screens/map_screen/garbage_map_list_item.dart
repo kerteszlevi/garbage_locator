@@ -20,7 +20,8 @@ class GarbageMapListItem extends StatelessWidget {
     const borderThickness = 1.0;
     return Container(
       height: 200,
-      margin: const EdgeInsets.only(left: 35, right: 35, top: 10, bottom: 10),
+      width: 300,
+      margin: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(outerRadius),
         image: DecorationImage(
