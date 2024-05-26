@@ -89,7 +89,8 @@ class _LoginPageState extends State<LoginPage> {
                   children: <Widget>[
                     //todo: localized text on the plate
                     Image.asset('assets/images/cutetrashcan.png',
-                        width: MediaQuery.of(context).size.width * 0.8),
+                        height: MediaQuery.of(context).size.height * 0.4,
+                    ),
                     Container(
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.primary,

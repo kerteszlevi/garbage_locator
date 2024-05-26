@@ -67,26 +67,29 @@ class _FirebaseInitializerState extends State<FirebaseInitializer> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: _initialization,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
+    return Container(
+      color: Colors.white,
+      child: FutureBuilder(
+          future: _initialization,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Center(
+                child: Text(
+                  "Failed to initialize Firebase. :(",
+                  textDirection: TextDirection.ltr,
+                ),
+              );
+            }
+
+            if (snapshot.hasData) {
+              return const MyApp();
+            }
+
             return const Center(
-              child: Text(
-                "Failed to initialize Firebase. :(",
-                textDirection: TextDirection.ltr,
-              ),
+              child: CircularProgressIndicator(),
             );
-          }
-
-          if (snapshot.hasData) {
-            return const MyApp();
-          }
-
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        });
+          }),
+    );
   }
 }
 
