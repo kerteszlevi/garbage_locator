@@ -29,48 +29,56 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.black,
-      statusBarColor: Colors.black,
-      statusBarIconBrightness: Brightness.light, // For Android
-      statusBarBrightness: Brightness.light, // For iOS
-    ));
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Hero(
-        tag: 'submitPhoto',
-        child: Stack(
-          children: [
-            const Center(
-              child: Icon(
-                Icons.camera_alt,
-                color: Colors.grey,
-                size: 100,
+    // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    //   systemNavigationBarColor: Colors.black,
+    //   statusBarColor: Colors.black,
+    //   statusBarIconBrightness: Brightness.light, // For Android
+    //   statusBarBrightness: Brightness.light, // For iOS
+    // ));
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.black,
+        statusBarColor: Colors.black,
+        statusBarIconBrightness: Brightness.light, // For Android
+        statusBarBrightness: Brightness.light, // For iOS
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Hero(
+          tag: 'submitPhoto',
+          child: Stack(
+            children: [
+              const Center(
+                child: Icon(
+                  Icons.camera_alt,
+                  color: Colors.grey,
+                  size: 100,
+                ),
               ),
-            ),
-            if (_showButton)
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.all(15),
-                    ),
-                    onPressed: () {
-                      BlocProvider.of<CameraBloc>(context)
-                          .add(GalleryRequested());
-                    },
-                    child: const Text(
-                      'Open from Gallery',
-                      style: TextStyle(
-                        color: Colors.black,
+              if (_showButton)
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(15),
+                      ),
+                      onPressed: () {
+                        BlocProvider.of<CameraBloc>(context)
+                            .add(GalleryRequested());
+                      },
+                      child: const Text(
+                        'Open from Gallery',
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

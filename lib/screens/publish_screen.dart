@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garbage_locator/bloc/publish/publish_bloc.dart';
+import 'package:garbage_locator/main.dart';
 import 'package:garbage_locator/models/garbage.dart';
 import 'package:garbage_locator/repository/data_source.dart';
 import 'package:garbage_locator/screens/collection_screen/my_collection_screen.dart';
@@ -37,10 +38,23 @@ class PublishScreen extends StatelessWidget {
       child: BlocConsumer<PublishBloc, PublishState>(
         listener: (context, state) {
           if (state is PublishPublishedState) {
-            Navigator.pushNamedAndRemoveUntil(context, CollectionScreen.route,
-                ModalRoute.withName(InitialScreen.route));
-            //Navigator.popUntil(context, ModalRoute.withName(InitialScreen.route));
-            //naviNavigator.pushNamed(context, CollectionScreen.route);
+            //Navigator.pushNamedAndRemoveUntil(context, CollectionScreen.route,
+            //   ModalRoute.withName(InitialScreen.route));
+            //Navigator.popUntil(context, (route) => false);
+            //Navigator.popUntil(
+            //    context, ModalRoute.withName(InitialScreen.route));
+            //Navigator.popUntil(context, (route) => route.settings.name == '/');
+            //Navigator.pushNamed(context, '/collection_screen');
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => HomeScreenRenderer()),
+              (Route<dynamic> route) => false,
+            );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const CollectionScreen(),
+              ),
+            );
             _loadingTextController.close();
           } else if (state is PublishPublishingState) {
             //push loading screen

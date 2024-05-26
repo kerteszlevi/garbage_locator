@@ -94,7 +94,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                       iconSize: 40.0,
                       onPressed: () {
                         _animatedMapController.animateTo(
-                          zoom: 13.0,
+                          //zoom: 15.0,
                           dest: LatLng(garbage.latitude!, garbage.longitude!),
                           customId: _useTransformer ? _useTransformerId : null,
                         );
@@ -209,6 +209,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                                             isLoadingLocation.value = true;
                                             final currentLocation =
                                                 await getCurrentLocation();
+                                            //TODO: avoid setState
                                             setState(() {
                                               markers.first = AnimatedMarker(
                                                 width: 80.0,

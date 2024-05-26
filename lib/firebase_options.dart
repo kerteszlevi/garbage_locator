@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'garbage-locator-e6468.appspot.com',
     measurementId: 'G-GJBTV1ZJ1G',
   );
+
 }

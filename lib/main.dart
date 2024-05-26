@@ -26,17 +26,18 @@ import 'bloc/loading/loading_bloc.dart';
 //TODO: icon
 //other todos:
 //TODO: localization
-//TODO:move logic out of the bloc-s
+//TODO: move logic out of the bloc-s
+//TODO: cache images
 
 void main() async {
   final Logger logger = Logger();
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setSystemUIOverlayStyle(
-      //TODO: decide where to define status bar and navigation bar color later on, for now it is defined here
-      const SystemUiOverlayStyle(
-    statusBarBrightness: Brightness.light, // For iOS
-    statusBarIconBrightness: Brightness.dark, // For Android
-  ));
+  // SystemChrome.setSystemUIOverlayStyle(
+  //     //TODO: decide where to define status bar and navigation bar color later on, for now it is defined here
+  //     const SystemUiOverlayStyle(
+  //   statusBarBrightness: Brightness.light, // For iOS
+  //   statusBarIconBrightness: Brightness.dark, // For Android
+  // ));
 
   runApp(
     FirebaseInitializer(),
@@ -52,7 +53,16 @@ class _FirebaseInitializerState extends State<FirebaseInitializer> {
   late Future<FirebaseApp> _initialization;
 
   Future<FirebaseApp> initFirebase() async {
-    final fireBaseApp = await Firebase.initializeApp();
+    final fireBaseApp = await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    //print email f current user
+    if (FirebaseAuth.instance.currentUser != null) {
+      print(FirebaseAuth.instance.currentUser!.email);
+    } else {
+      print("No user logged in");
+    }
+
     return fireBaseApp;
   }
 
@@ -88,6 +98,7 @@ class _FirebaseInitializerState extends State<FirebaseInitializer> {
 }
 
 class HomeScreenRenderer extends StatelessWidget {
+  static const route = '/';
   @override
   Widget build(BuildContext context) {
     return Conditional.single(

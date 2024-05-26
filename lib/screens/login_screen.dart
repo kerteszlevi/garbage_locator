@@ -87,7 +87,8 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   //todo: localized text on the plate
-                  Image.asset('assets/images/cutetrashcan.png'),
+                  Image.asset('assets/images/cutetrashcan.png',
+                      width: MediaQuery.of(context).size.width * 0.8),
                   Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primary,
@@ -99,8 +100,8 @@ class _LoginPageState extends State<LoginPage> {
                     child: SafeArea(
                       bottom: true,
                       top: false,
-                      left: false,
-                      right: false,
+                      left: true,
+                      right: true,
                       child: Container(
                         margin: const EdgeInsets.all(20),
                         child: Column(

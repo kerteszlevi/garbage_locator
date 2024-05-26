@@ -66,6 +66,8 @@ class FirebaseGarbageRepository implements GarbageRepository<Garbage> {
       return snapshot.docs
           .map((doc) => Garbage.fromJson(doc.data() as Map<String, dynamic>))
           .toList();
+    }).handleError((error) {
+      print('Error in getAllAuthorGarbageStream: $error');
     });
   }
 }
