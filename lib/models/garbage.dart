@@ -1,4 +1,3 @@
-import 'package:floor/floor.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'garbage.g.dart';

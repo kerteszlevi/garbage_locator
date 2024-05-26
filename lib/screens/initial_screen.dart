@@ -1,7 +1,5 @@
-import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -70,16 +68,6 @@ class InitialView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: Theme.of(context).primaryColor, //For Android
-      //statusBarColor: Theme.of(context).colorScheme.background, //For Android
-      statusBarColor: Colors.transparent,
-      //systemNavigationBarColor: Colors.transparent,
-
-      //TODO: define for every screen
-      //statusBarIconBrightness: Brightness.dark, // For Android
-      //statusBarBrightness: Brightness.light, // For iOS
-    ));
     return MultiBlocListener(
       listeners: [
         BlocListener<CameraBloc, CameraState>(

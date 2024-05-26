@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garbage_locator/bloc/camera/camera_bloc.dart';
 import 'package:garbage_locator/repository/data_source.dart';
 import 'package:garbage_locator/repository/firebase_garbage_repository.dart';
-import 'package:garbage_locator/repository/floor_garbage_repository.dart';
 import 'package:garbage_locator/screens/camera_screen.dart';
 import 'package:garbage_locator/screens/initial_screen.dart';
 import 'package:garbage_locator/screens/collection_screen/my_collection_screen.dart';
@@ -32,12 +31,6 @@ import 'bloc/loading/loading_bloc.dart';
 void main() async {
   final Logger logger = Logger();
   WidgetsFlutterBinding.ensureInitialized();
-  // SystemChrome.setSystemUIOverlayStyle(
-  //     //TODO: decide where to define status bar and navigation bar color later on, for now it is defined here
-  //     const SystemUiOverlayStyle(
-  //   statusBarBrightness: Brightness.light, // For iOS
-  //   statusBarIconBrightness: Brightness.dark, // For Android
-  // ));
 
   runApp(
     FirebaseInitializer(),

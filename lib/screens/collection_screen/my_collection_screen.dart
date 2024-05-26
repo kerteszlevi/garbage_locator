@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:garbage_locator/main.dart';
 import 'package:garbage_locator/models/garbage.dart';
 import 'package:garbage_locator/repository/data_source.dart';
@@ -74,42 +75,50 @@ class _CollectionScreenState extends State<CollectionScreen> {
   @override
   Widget build(BuildContext context) {
     final dataSource = Provider.of<DataSource>(context);
-    return Scaffold(
-      bottomNavigationBar: GarbageNavigationBar(onTap: _onItemTapped),
-      appBar: AppBar(
-        title: const Text('My Collection'),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark, // For Android
+        statusBarBrightness: Brightness.light, // For iOS
+        systemNavigationBarColor: Theme.of(context).primaryColor,
       ),
-      body: Hero(
-        tag: 'myGarbageCollection',
-        child: FutureBuilder<List<Garbage>>(
-          future: dataSource
-              .getAllAuthorGarbage(FirebaseAuth.instance.currentUser!.email!),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-              return const Center(
-                child: Text('An error occurred!'),
-              );
-            } else {
-              initialGarbages = snapshot.data;
-              return StreamBuilder<List<Garbage>>(
-                stream: garbageStream,
-                builder: (context, snapshot) {
-                  final garbages = snapshot.data ?? initialGarbages;
-                  return ListView.builder(
-                    itemCount: garbages!.length,
-                    itemBuilder: (context, index) {
-                      final garbage = garbages[index];
-                      return GarbageListItem(garbage: garbage);
-                    },
-                  );
-                },
-              );
-            }
-          },
+      child: Scaffold(
+        bottomNavigationBar: GarbageNavigationBar(onTap: _onItemTapped),
+        appBar: AppBar(
+          title: const Text('My Collection'),
+        ),
+        body: Hero(
+          tag: 'myGarbageCollection',
+          child: FutureBuilder<List<Garbage>>(
+            future: dataSource
+                .getAllAuthorGarbage(FirebaseAuth.instance.currentUser!.email!),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasError) {
+                return const Center(
+                  child: Text('An error occurred!'),
+                );
+              } else {
+                initialGarbages = snapshot.data;
+                return StreamBuilder<List<Garbage>>(
+                  stream: garbageStream,
+                  builder: (context, snapshot) {
+                    final garbages = snapshot.data ?? initialGarbages;
+                    return ListView.builder(
+                      itemCount: garbages!.length,
+                      itemBuilder: (context, index) {
+                        final garbage = garbages[index];
+                        return GarbageListItem(garbage: garbage);
+                      },
+                    );
+                  },
+                );
+              }
+            },
+          ),
         ),
       ),
     );

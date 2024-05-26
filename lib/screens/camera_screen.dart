@@ -29,12 +29,6 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    //   systemNavigationBarColor: Colors.black,
-    //   statusBarColor: Colors.black,
-    //   statusBarIconBrightness: Brightness.light, // For Android
-    //   statusBarBrightness: Brightness.light, // For iOS
-    // ));
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
         systemNavigationBarColor: Colors.black,

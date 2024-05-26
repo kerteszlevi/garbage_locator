@@ -45,13 +45,6 @@ Future<String> getPlacemarkString(double? latitude, double? longitude) async {
   }
 }
 
-void changeNavigationBarColor(Color color) {
-  SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(
-      systemNavigationBarColor: color,
-    ),
-  );
-}
 
 Future<void> logOut() {
   return FirebaseAuth.instance.signOut();
