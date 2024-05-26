@@ -16,9 +16,10 @@ import '../collection_screen/garbage_navigation_bar.dart';
 import 'garbage_map_list_item.dart';
 
 class MapScreen extends StatefulWidget {
+  final Garbage? garbagePassed;
   static String route = '/map_screen';
 
-  const MapScreen({super.key});
+  const MapScreen({super.key, this.garbagePassed});
   @override
   _MapScreenState createState() => _MapScreenState();
 }
@@ -64,7 +65,20 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       customId: _useTransformer ? _useTransformerId : null,
     );
   }
-
+//TODO: also open the list when the garbage is clicke
+//TODO: also animate maplistitems
+  void animateToPassedGarbage() {
+    if (widget.garbagePassed != null) {
+      _animatedMapController.animateTo(
+        dest: LatLng(
+          widget.garbagePassed!.latitude!,
+          widget.garbagePassed!.longitude!,
+        ),
+        customId: _useTransformer ? _useTransformerId : null,
+        zoom: 17.0,
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -142,6 +156,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
             },
           ),
         );
+
       });
     });
   }
@@ -191,6 +206,9 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                                     initialZoom: 13.0,
                                     onTap: (_, point) {
                                       selectedGarbage.value = null;
+                                    },
+                                    onMapReady: () {
+                                      animateToPassedGarbage();
                                     },
                                   ),
                                   children: [
