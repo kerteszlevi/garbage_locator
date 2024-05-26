@@ -59,7 +59,7 @@ class _InitialScreenState extends State<InitialScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const InitialView(/*cameraBloc: cb*/);
+    return const InitialView();
   }
 }
 Widget _flightShuttleBuilder(
@@ -70,17 +70,13 @@ Widget _flightShuttleBuilder(
     BuildContext toHeroContext,
     ) {
   return DefaultTextStyle(
-    //style: DefaultTextStyle.of(toHeroContext).style,
-    style: const TextStyle(
-      fontSize: 20,
-      color: Colors.black,
-    ),
+    style: DefaultTextStyle.of(toHeroContext).style,
     child: toHeroContext.widget,
   );
 }
 
 class InitialView extends StatelessWidget {
-  const InitialView({super.key /*, required this.cameraBloc*/});
+  const InitialView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +86,6 @@ class InitialView extends StatelessWidget {
           listener: (context, state) {
             if (state is PictureTakenState) {
               //TODO: fix the push pop mess with the camera waiting screen
-              //Navigator.pop(context);
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -156,16 +151,6 @@ class InitialView extends StatelessWidget {
         ),
         child: Scaffold(
           //extendBody: true, //TODO: not working as intended, find a way to stretch the scaffold behind the navbar on android
-          //bottomNavigationBar: const SizedBox(),
-          //extendBodyBehindAppBar: true,
-          // appBar: AppBar(
-          //   systemOverlayStyle: SystemUiOverlayStyle(
-          //     statusBarColor: Theme.of(context).colorScheme.background,
-          //
-          //     statusBarIconBrightness: Brightness.dark, // For Android
-          //     statusBarBrightness: Brightness.light, // For iOS
-          //   ),
-          // ),
 
           appBar: AppBar(
             leading: PopupMenuButton<String>(
