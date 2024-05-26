@@ -17,9 +17,10 @@ import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'bloc/loading/loading_bloc.dart';
 
+//DISCLAIMER: the icons im using are not my own, i migrated and used a considerable amount of code from the github of the subject (github.com/bmeaut/VIAUAV45)
 //other todos:
 //TODO: localization
-//TODO: move logic out of the bloc-s didn't have time sorry about that:((
+//TODO: move logic out of the bloc-s didn't have time, sorry about that:((
 //TODO: cache images
 
 void main() async {
