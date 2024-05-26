@@ -1,3 +1,4 @@
+//TODO: might bring back floor for caching and offline use
 // import 'package:garbage_locator/data/database/floor/floor_garbage_dao.dart';
 // import 'package:garbage_locator/data/database/floor/floor_garbage_database.dart';
 // import 'package:garbage_locator/models/garbage.dart';

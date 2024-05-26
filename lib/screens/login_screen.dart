@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 
 class LoginPage extends StatefulWidget {
   static String route = '/login';
+
+  const LoginPage({super.key});
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -14,8 +16,8 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  var _emailValid = true;
-  var _passwordValid = true;
+  final _emailValid = true;
+  final _passwordValid = true;
 
   Future<void> _tryLogin(BuildContext context) async {
     final email = _emailController.text;
@@ -34,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
     } on Exception catch (e) {
       print("Login failed: ${e.toString()}");
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Login failed, please try again!")));
+          const SnackBar(content: Text("Login failed, please try again!")));
     }
   }
 
@@ -62,8 +64,8 @@ class _LoginPageState extends State<LoginPage> {
     } on Exception catch (e) {
       print("User registration/login failed: ${e.toString()}");
       //analytics.logEvent(name: "registration_failed");
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Registration failed, please try again!")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Registration failed, please try again!")));
     }
   }
 
@@ -71,11 +73,10 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark, // For Android
-        statusBarBrightness: Brightness.light, // For iOS
-        systemNavigationBarColor: Theme.of(context).primaryColor
-      ),
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark, // For Android
+          statusBarBrightness: Brightness.light, // For iOS
+          systemNavigationBarColor: Theme.of(context).primaryColor),
       child: Scaffold(
         body: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {
@@ -88,8 +89,9 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     //todo: localized text on the plate
-                    Image.asset('assets/images/cutetrashcan.png',
-                        height: MediaQuery.of(context).size.height * 0.4,
+                    Image.asset(
+                      'assets/images/cutetrashcan.png',
+                      height: MediaQuery.of(context).size.height * 0.4,
                     ),
                     Container(
                       decoration: BoxDecoration(
@@ -117,20 +119,22 @@ class _LoginPageState extends State<LoginPage> {
                                   fillColor: Colors.white,
                                   alignLabelWithHint: true,
                                   labelText: "Email address",
-                                  labelStyle: TextStyle(color: Colors.black),
+                                  labelStyle:
+                                      const TextStyle(color: Colors.black),
                                   errorText: _emailValid
                                       ? null
                                       : "Please provide a valid email address",
-                                  errorStyle: TextStyle(color: Colors.red),
+                                  errorStyle:
+                                      const TextStyle(color: Colors.red),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(15),
                                     borderSide: BorderSide.none,
                                   ),
                                 ),
                                 keyboardType: TextInputType.emailAddress,
-                                style: TextStyle(color: Colors.black),
+                                style: const TextStyle(color: Colors.black),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               TextField(
                                 controller: _passwordController,
                                 decoration: InputDecoration(
@@ -138,11 +142,13 @@ class _LoginPageState extends State<LoginPage> {
                                   fillColor: Colors.white,
                                   alignLabelWithHint: true,
                                   labelText: "Password",
-                                  labelStyle: TextStyle(color: Colors.black),
+                                  labelStyle:
+                                      const TextStyle(color: Colors.black),
                                   errorText: _passwordValid
                                       ? null
                                       : "The given password is invalid or not strong enough",
-                                  errorStyle: TextStyle(color: Colors.red),
+                                  errorStyle:
+                                      const TextStyle(color: Colors.red),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(15),
                                     borderSide: BorderSide.none,
@@ -150,9 +156,9 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 keyboardType: TextInputType.visiblePassword,
                                 obscureText: true,
-                                style: TextStyle(color: Colors.black),
+                                style: const TextStyle(color: Colors.black),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Row(
                                 children: [
                                   Expanded(
@@ -163,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                                       child: Text("Login".toUpperCase()),
                                     ),
                                   ),
-                                  SizedBox(width: 10),
+                                  const SizedBox(width: 10),
                                   Expanded(
                                     child: ElevatedButton(
                                       onPressed: () {

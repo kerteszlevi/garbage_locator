@@ -92,8 +92,9 @@ class PublishScreen extends StatelessWidget {
                             width: 300,
                             height: 200,
                             decoration: BoxDecoration(
-                              color:
-                                  Theme.of(context).primaryColor.withOpacity(0.5),
+                              color: Theme.of(context)
+                                  .primaryColor
+                                  .withOpacity(0.5),
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: Column(
@@ -119,17 +120,20 @@ class PublishScreen extends StatelessWidget {
                                           color: Colors.grey,
                                         ),
                                         border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(20),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
                                           borderSide: const BorderSide(
                                               color: Colors.white),
                                         ),
                                         focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(20),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
                                           borderSide: const BorderSide(
                                               color: Colors.green),
                                         ),
                                         enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(20),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
                                           borderSide: const BorderSide(
                                               color: Colors.white),
                                         ),

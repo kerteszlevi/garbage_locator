@@ -42,7 +42,7 @@ class FirebaseGarbageRepository implements GarbageRepository<Garbage> {
   }
 
   Future<String> uploadImage(File imageFile) async {
-    final imageName = "${Uuid().v4()}.jpg";
+    final imageName = "${const Uuid().v4()}.jpg";
     final imageRef = _storage.ref().child("images/$imageName");
     await imageRef.putFile(imageFile);
     final downloadUrl = await imageRef.getDownloadURL();
@@ -74,7 +74,10 @@ class FirebaseGarbageRepository implements GarbageRepository<Garbage> {
 
   @override
   Future<void> likeGarbage(String garbageId, String userId) async {
-    DocumentSnapshot docSnapshot = await FirebaseFirestore.instance.collection('garbage').doc(garbageId).get();
+    DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
+        .collection('garbage')
+        .doc(garbageId)
+        .get();
     Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
     List<String> likes = List<String>.from(data['likes'] ?? []);
     if (likes.contains(userId)) {
@@ -82,7 +85,10 @@ class FirebaseGarbageRepository implements GarbageRepository<Garbage> {
     } else {
       likes.add(userId);
     }
-    await FirebaseFirestore.instance.collection('garbage').doc(garbageId).update({
+    await FirebaseFirestore.instance
+        .collection('garbage')
+        .doc(garbageId)
+        .update({
       'likes': likes,
       'dislikes': FieldValue.arrayRemove([userId]),
     });
@@ -90,7 +96,10 @@ class FirebaseGarbageRepository implements GarbageRepository<Garbage> {
 
   @override
   Future<void> dislikeGarbage(String garbageId, String userId) async {
-    DocumentSnapshot docSnapshot = await FirebaseFirestore.instance.collection('garbage').doc(garbageId).get();
+    DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
+        .collection('garbage')
+        .doc(garbageId)
+        .get();
     Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
     List<String> dislikes = List<String>.from(data['dislikes'] ?? []);
     if (dislikes.contains(userId)) {
@@ -98,7 +107,10 @@ class FirebaseGarbageRepository implements GarbageRepository<Garbage> {
     } else {
       dislikes.add(userId);
     }
-    await FirebaseFirestore.instance.collection('garbage').doc(garbageId).update({
+    await FirebaseFirestore.instance
+        .collection('garbage')
+        .doc(garbageId)
+        .update({
       'likes': FieldValue.arrayRemove([userId]),
       'dislikes': dislikes,
     });

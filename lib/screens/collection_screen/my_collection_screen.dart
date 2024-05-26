@@ -9,7 +9,6 @@ import 'package:garbage_locator/screens/map_screen/map_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../camera_screen.dart';
-import '../initial_screen.dart';
 import 'garbage_navigation_bar.dart';
 
 class CollectionScreen extends StatefulWidget {
@@ -41,12 +40,12 @@ class _CollectionScreenState extends State<CollectionScreen> {
   }
 
   Widget _flightShuttleBuilder(
-      BuildContext flightContext,
-      Animation<double> animation,
-      HeroFlightDirection flightDirection,
-      BuildContext fromHeroContext,
-      BuildContext toHeroContext,
-      ) {
+    BuildContext flightContext,
+    Animation<double> animation,
+    HeroFlightDirection flightDirection,
+    BuildContext fromHeroContext,
+    BuildContext toHeroContext,
+  ) {
     return DefaultTextStyle(
       style: DefaultTextStyle.of(toHeroContext).style,
       child: toHeroContext.widget,

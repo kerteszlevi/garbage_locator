@@ -17,7 +17,7 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       BlocProvider.of<CameraBloc>(context).add(CameraScreenUp());
     });
     Future.delayed(const Duration(seconds: 2), () {

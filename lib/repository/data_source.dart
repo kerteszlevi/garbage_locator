@@ -15,7 +15,6 @@ class DataSource {
     } catch (e) {
       _logger.e('Error initializing database', error: e);
     }
-    //await database.init();
   }
 
   Future<List<Garbage>> getAllGarbage() async {
@@ -57,6 +56,7 @@ class DataSource {
   Future<void> likeGarbage(String garbageId, String userId) async {
     return database.likeGarbage(garbageId, userId);
   }
+
   Future<void> dislikeGarbage(String garbageId, String userId) async {
     return database.dislikeGarbage(garbageId, userId);
   }

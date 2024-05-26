@@ -18,7 +18,6 @@ class GarbageListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const outerRadius = 30.0;
-    const borderThickness = 1.0;
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -34,7 +33,6 @@ class GarbageListItem extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(outerRadius),
           image: DecorationImage(
-            //image: FileImage(File(garbage.imagePath)),
             image: NetworkImage(garbage.imagePath),
             fit: BoxFit.cover,
           ),
@@ -67,7 +65,6 @@ class GarbageListItem extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                //insert a green icon of location here
                                 Icon(
                                   Icons.location_on,
                                   color: Theme.of(context).primaryColor,
@@ -110,23 +107,21 @@ class GarbageListItem extends StatelessWidget {
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
-                          // const Text(
-                          //   '999',
-                          //   //TODO: font doesnt look right
-                          //   style: TextStyle(
-                          //     fontSize: 15,
-                          //     fontWeight: FontWeight.bold,
-                          //   ),
-                          // ),
                           StreamBuilder<DocumentSnapshot>(
-                            stream: FirebaseFirestore.instance.collection('garbage').doc(garbage.id).snapshots(),
+                            stream: FirebaseFirestore.instance
+                                .collection('garbage')
+                                .doc(garbage.id)
+                                .snapshots(),
                             builder: (context, snapshot) {
                               if (!snapshot.hasData) {
                                 return CircularProgressIndicator();
                               }
 
-                              final updatedGarbage = Garbage.fromJson(snapshot.data!.data() as Map<String, dynamic>);
-                              final score = updatedGarbage.likes.length - updatedGarbage.dislikes.length;
+                              final updatedGarbage = Garbage.fromJson(
+                                  snapshot.data!.data()
+                                      as Map<String, dynamic>);
+                              final score = updatedGarbage.likes.length -
+                                  updatedGarbage.dislikes.length;
                               return Text(
                                 '$score',
                                 style: const TextStyle(

@@ -1,4 +1,3 @@
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -62,13 +61,14 @@ class _InitialScreenState extends State<InitialScreen> {
     return const InitialView();
   }
 }
+
 Widget _flightShuttleBuilder(
-    BuildContext flightContext,
-    Animation<double> animation,
-    HeroFlightDirection flightDirection,
-    BuildContext fromHeroContext,
-    BuildContext toHeroContext,
-    ) {
+  BuildContext flightContext,
+  Animation<double> animation,
+  HeroFlightDirection flightDirection,
+  BuildContext fromHeroContext,
+  BuildContext toHeroContext,
+) {
   return DefaultTextStyle(
     style: DefaultTextStyle.of(toHeroContext).style,
     child: toHeroContext.widget,
@@ -318,9 +318,11 @@ class InitialView extends StatelessWidget {
                                                             size: 30),
                                                         SizedBox(width: 10),
                                                         Text(
-                                                            'Select from Gallery [WIP]',
-                                                            style: TextStyle(
-                                                                fontSize: 15)),
+                                                          'Select from Gallery [WIP]',
+                                                          style: TextStyle(
+                                                            fontSize: 15,
+                                                          ),
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
@@ -332,10 +334,12 @@ class InitialView extends StatelessWidget {
                                       },
                                     );
                                   },
-                                  child: const Text('Submit Photo',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      )),
+                                  child: const Text(
+                                    'Submit Photo',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
                                 ),
                               ),
                               Hero(
@@ -383,7 +387,7 @@ class InitialView extends StatelessWidget {
                 ],
               );
             } else {
-              //landscape orientation TODO: ditch the popup menu TODO: very sketchy implementation, might disable landscape later
+              //landscape orientation TODO: ditch the popup menu TODO: very sketchy implementation, might disable landscape later REMOVE LANDSCAPE ITS NOT FINISHED
               return Row(
                 children: [
                   Expanded(

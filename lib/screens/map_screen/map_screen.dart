@@ -30,9 +30,9 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
   Location location = Location();
 
   ValueNotifier<bool> isLoadingLocation = ValueNotifier<bool>(false);
-  //ValueNotifier<List<Garbage>> garbageList = ValueNotifier<List<Garbage>>([]);
   ValueNotifier<Garbage?> selectedGarbage = ValueNotifier<Garbage?>(null);
-  ValueNotifier<List<Garbage>> sameLocationGarbages = ValueNotifier<List<Garbage>>([]);
+  ValueNotifier<List<Garbage>> sameLocationGarbages =
+      ValueNotifier<List<Garbage>>([]);
 
   final bool _useTransformer = true;
   static const _useTransformerId = 'useTransformerId';
@@ -43,8 +43,6 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     curve: Curves.easeInOut,
   );
   ScrollController scrollController = ScrollController();
-
-
 
   Future<String> getPath() async {
     final cacheDirectory = await getTemporaryDirectory();
@@ -65,6 +63,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       customId: _useTransformer ? _useTransformerId : null,
     );
   }
+
 //TODO: also open the list when the garbage is clicke
 //TODO: also animate maplistitems
   void animateToPassedGarbage() {
@@ -156,7 +155,6 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
             },
           ),
         );
-
       });
     });
   }
@@ -314,7 +312,6 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                       );
                     },
                   ),
-                  //TODO: implement a list here, where all the garbage is shown with a matching placement string
                   //Bottom part
                   ValueListenableBuilder<Garbage?>(
                     valueListenable: selectedGarbage,
@@ -341,7 +338,6 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                                 topRight: Radius.circular(20),
                               ),
                             ),
-                            //color: Colors.grey,
                             child: SafeArea(
                               top: false,
                               right: false,
@@ -366,15 +362,18 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                                     ],
                                   ),
                                   Container(
-                                    height: MediaQuery.of(context).size.height * 0.3,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.3,
                                     width: MediaQuery.of(context).size.width,
                                     child: ListView.builder(
                                       controller: scrollController,
                                       scrollDirection: Axis.horizontal,
-
-                                      itemCount: sameLocationGarbages.value.length,
+                                      itemCount:
+                                          sameLocationGarbages.value.length,
                                       itemBuilder: (context, index) {
-                                        return GarbageMapListItem(garbage: sameLocationGarbages.value[index]);
+                                        return GarbageMapListItem(
+                                            garbage: sameLocationGarbages
+                                                .value[index]);
                                       },
                                     ),
                                   ),

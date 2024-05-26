@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garbage_locator/bloc/camera/camera_bloc.dart';
 import 'package:garbage_locator/repository/data_source.dart';
@@ -10,34 +9,30 @@ import 'package:garbage_locator/screens/collection_screen/my_collection_screen.d
 import 'package:garbage_locator/screens/login_screen.dart';
 import 'package:garbage_locator/screens/map_screen/map_screen.dart';
 import 'package:garbage_locator/themes/myTheme.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'bloc/loading/loading_bloc.dart';
 
-//design todos:
-//TODO: splash screen
-//TODO: icon
 //other todos:
 //TODO: localization
-//TODO: move logic out of the bloc-s
+//TODO: move logic out of the bloc-s didn't have time sorry about that:((
 //TODO: cache images
 
 void main() async {
-  final Logger logger = Logger();
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
-    FirebaseInitializer(),
+    const FirebaseInitializer(),
   );
 }
 
 class FirebaseInitializer extends StatefulWidget {
+  const FirebaseInitializer({super.key});
+
   @override
   _FirebaseInitializerState createState() => _FirebaseInitializerState();
 }
@@ -55,7 +50,6 @@ class _FirebaseInitializerState extends State<FirebaseInitializer> {
     } else {
       print("No user logged in");
     }
-
     return fireBaseApp;
   }
 
@@ -75,7 +69,7 @@ class _FirebaseInitializerState extends State<FirebaseInitializer> {
             if (snapshot.hasError) {
               return const Center(
                 child: Text(
-                  "Failed to initialize Firebase. :(",
+                  "Failed to initialize Firebase.",
                   textDirection: TextDirection.ltr,
                 ),
               );
@@ -111,7 +105,6 @@ class HomeScreenRenderer extends StatelessWidget {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     final dataSource = DataSource(FirebaseGarbageRepository());
