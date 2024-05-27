@@ -187,12 +187,20 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
           tag: 'mapScreen',
           child: Container(
             child: initialCenter == null
-                ? Center(child: Image.asset('assets/gifs/location.gif'))
+                ? AnnotatedRegion<SystemUiOverlayStyle>(
+                    value: const SystemUiOverlayStyle(
+                      statusBarColor: Colors.transparent,
+                      statusBarIconBrightness: Brightness.dark,
+                      systemNavigationBarColor: Colors.white,
+                    ),
+                    child:
+                        Center(child: Image.asset('assets/gifs/location.gif')))
                 : Stack(children: [
                     FutureBuilder(
                       future: getPath(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
@@ -258,12 +266,13 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                                                     currentLocation.longitude!,
                                                   ),
                                                   rotate: true,
-                                                  builder: (BuildContext context,
-                                                      Animation<double>
-                                                          animation) {
+                                                  builder:
+                                                      (BuildContext context,
+                                                          Animation<double>
+                                                              animation) {
                                                     return Transform.translate(
-                                                      offset:
-                                                          const Offset(0, -20.0),
+                                                      offset: const Offset(
+                                                          0, -20.0),
                                                       child: const Icon(
                                                         Icons.boy,
                                                         color: Colors.blue,
@@ -285,7 +294,8 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                                               isLoadingLocation.value = false;
                                             },
                                             child: ValueListenableBuilder<bool>(
-                                              valueListenable: isLoadingLocation,
+                                              valueListenable:
+                                                  isLoadingLocation,
                                               builder: (context, value, child) {
                                                 return value
                                                     ? const CircularProgressIndicator(
@@ -331,7 +341,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                         }
                         _animationController.forward();
                         return AnnotatedRegion<SystemUiOverlayStyle>(
-                          value: SystemUiOverlayStyle(
+                          value: const SystemUiOverlayStyle(
                             statusBarColor: Colors.transparent,
                             statusBarIconBrightness: Brightness.dark,
                             systemNavigationBarColor: Colors.white,
@@ -362,22 +372,26 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                                         children: [
                                           Icon(
                                             Icons.location_on,
-                                            color: Theme.of(context).primaryColor,
+                                            color:
+                                                Theme.of(context).primaryColor,
                                           ),
                                           Text(
                                             selectedGarbage.value!.location,
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20,
-                                              color: Theme.of(context).primaryColor,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
                                             ),
                                           ),
                                         ],
                                       ),
                                       Container(
-                                        height: MediaQuery.of(context).size.height *
-                                            0.3,
-                                        width: MediaQuery.of(context).size.width,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.3,
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                         child: ListView.builder(
                                           controller: scrollController,
                                           scrollDirection: Axis.horizontal,
