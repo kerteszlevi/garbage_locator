@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../themes/my_colors.dart';
+
 class LoginPage extends StatefulWidget {
   static String route = '/login';
 
@@ -18,6 +20,8 @@ class _LoginPageState extends State<LoginPage> {
 
   final _emailValid = true;
   final _passwordValid = true;
+
+  bool _isPasswordVisible = false;
 
   Future<void> _tryLogin(BuildContext context) async {
     final email = _emailController.text;
@@ -153,9 +157,20 @@ class _LoginPageState extends State<LoginPage> {
                                     borderRadius: BorderRadius.circular(15),
                                     borderSide: BorderSide.none,
                                   ),
+                                  suffixIcon:IconButton(
+                                    icon: Icon(
+                                      _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                                    color: _isPasswordVisible ? Colors.black : Colors.grey,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _isPasswordVisible = !_isPasswordVisible;
+                                      });
+                                    },
+                                  ),
                                 ),
                                 keyboardType: TextInputType.visiblePassword,
-                                obscureText: true,
+                                obscureText: !_isPasswordVisible,
                                 style: const TextStyle(color: Colors.black),
                               ),
                               const SizedBox(height: 10),
