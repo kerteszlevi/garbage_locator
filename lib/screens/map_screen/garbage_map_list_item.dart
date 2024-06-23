@@ -23,14 +23,14 @@ class GarbageMapListItem extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AnnotatedRegion<SystemUiOverlayStyle>(
-              value: const SystemUiOverlayStyle(
-                systemNavigationBarColor: Colors.grey,
-              ),
-              child: Dialog(
-                child: Stack(
+            context: context,
+            builder: (BuildContext context) {
+              return AnnotatedRegion<SystemUiOverlayStyle>(
+                value: const SystemUiOverlayStyle(
+                  systemNavigationBarColor: Colors.grey,
+                ),
+                child: Dialog(
+                    child: Stack(
                   alignment: Alignment.topRight,
                   children: [
                     InteractiveViewer(
@@ -46,11 +46,9 @@ class GarbageMapListItem extends StatelessWidget {
                       ),
                     )
                   ],
-                )
-              ),
-            );
-          }
-        );
+                )),
+              );
+            });
       },
       child: Container(
         height: 200,
@@ -139,7 +137,8 @@ class GarbageMapListItem extends StatelessWidget {
                               }
 
                               final updatedGarbage = Garbage.fromJson(
-                                  snapshot.data!.data() as Map<String, dynamic>);
+                                  snapshot.data!.data()
+                                      as Map<String, dynamic>);
                               final score = updatedGarbage.likes.length -
                                   updatedGarbage.dislikes.length;
                               return Text(
