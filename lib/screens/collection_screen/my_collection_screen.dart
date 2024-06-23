@@ -16,7 +16,7 @@ class CollectionScreen extends StatefulWidget {
 
   const CollectionScreen({super.key});
   @override
-  _CollectionScreenState createState() => _CollectionScreenState();
+  State<CollectionScreen> createState() => _CollectionScreenState();
 }
 
 class _CollectionScreenState extends State<CollectionScreen> {
@@ -61,8 +61,8 @@ class _CollectionScreenState extends State<CollectionScreen> {
       case 0:
         Navigator.replaceRouteBelow(context,
             anchorRoute: ModalRoute.of(context)!,
-            newRoute:
-                MaterialPageRoute(builder: (context) => HomeScreenRenderer()));
+            newRoute: MaterialPageRoute(
+                builder: (context) => const HomeScreenRenderer()));
         Navigator.pop(context);
         break;
       case 1:

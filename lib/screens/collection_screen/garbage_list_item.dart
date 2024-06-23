@@ -1,11 +1,7 @@
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 
 import '../../models/garbage.dart';
 import '../map_screen/map_screen.dart';
@@ -114,7 +110,7 @@ class GarbageListItem extends StatelessWidget {
                                 .snapshots(),
                             builder: (context, snapshot) {
                               if (!snapshot.hasData) {
-                                return CircularProgressIndicator();
+                                return const CircularProgressIndicator();
                               }
 
                               final updatedGarbage = Garbage.fromJson(

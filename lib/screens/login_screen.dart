@@ -9,7 +9,7 @@ class LoginPage extends StatefulWidget {
 
   const LoginPage({super.key});
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -35,10 +35,16 @@ class _LoginPageState extends State<LoginPage> {
       //analytics.logLogin();
 
       Navigator.pushReplacementNamed(context, "/");
-    } on Exception catch (e) {
-      print("Login failed: ${e.toString()}");
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Login failed, please try again!")));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-credential') {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Email or password is incorrect!")));
+        return;
+      } else {
+        print("Login failed: ${e.toString()}");
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Login failed:${e.code}")));
+      }
     }
   }
 
@@ -89,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
+                  children: [
                     //todo: localized text on the plate
                     Image.asset(
                       'assets/images/cutetrashcan.png',
@@ -155,14 +161,19 @@ class _LoginPageState extends State<LoginPage> {
                                     borderRadius: BorderRadius.circular(15),
                                     borderSide: BorderSide.none,
                                   ),
-                                  suffixIcon:IconButton(
+                                  suffixIcon: IconButton(
                                     icon: Icon(
-                                      _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                                    color: _isPasswordVisible ? Colors.black : Colors.grey,
+                                      _isPasswordVisible
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
+                                      color: _isPasswordVisible
+                                          ? Colors.black
+                                          : Colors.grey,
                                     ),
                                     onPressed: () {
                                       setState(() {
-                                        _isPasswordVisible = !_isPasswordVisible;
+                                        _isPasswordVisible =
+                                            !_isPasswordVisible;
                                       });
                                     },
                                   ),

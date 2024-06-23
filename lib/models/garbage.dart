@@ -26,8 +26,8 @@ class Garbage {
     required this.comment,
     List<String>? likes,
     List<String>? dislikes,
-  })  : this.likes = likes ?? [],
-        this.dislikes = dislikes ?? [];
+  })  : likes = likes ?? [],
+        dislikes = dislikes ?? [];
 
   Garbage copyWith({
     String? id,

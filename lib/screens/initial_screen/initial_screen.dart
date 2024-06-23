@@ -2,12 +2,14 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:garbage_locator/screens/publish_screen.dart';
-import '../bloc/camera/camera_bloc.dart';
-import '../bloc/loading/loading_bloc.dart';
-import '../utils.dart';
-import 'loading_screen.dart';
-import 'login_screen.dart';
+import 'package:garbage_locator/screens/initial_screen/initial_button.dart';
+import 'package:garbage_locator/screens/publish_screen/publish_screen.dart';
+import '../../bloc/camera/camera_bloc.dart';
+import '../../bloc/loading/loading_bloc.dart';
+import 'initial_bottom_sheet.dart';
+import '../../utils.dart';
+import '../loading_screen.dart';
+import '../login_screen.dart';
 
 class InitialScreen extends StatefulWidget {
   const InitialScreen({super.key});
@@ -170,7 +172,7 @@ class InitialView extends StatelessWidget {
                   logOut();
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => LoginPage(),
+                      builder: (context) => const LoginPage(),
                     ),
                   );
                 }
@@ -233,149 +235,42 @@ class InitialView extends StatelessWidget {
                               //TODO: make buttons scale dynamically
                               Hero(
                                 tag: 'submitPhoto',
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.all(15),
-                                  ),
+                                child: MyInitialButton(
+                                  text: 'Submit Photo',
                                   onPressed: () async {
                                     showModalBottomSheet(
                                       context: context,
                                       isScrollControlled: true,
                                       builder: (BuildContext context) {
-                                        return ClipRRect(
-                                          borderRadius:
-                                              const BorderRadius.vertical(
-                                                  top: Radius.circular(25.0)),
-                                          child: Container(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.375, // 3/5 of the screen
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            child: Wrap(
-                                              children: <Widget>[
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 15.0,
-                                                          bottom: 8.0,
-                                                          left: 8.0,
-                                                          right: 8.0),
-                                                  child: ElevatedButton(
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              15),
-                                                    ),
-                                                    onPressed: () {
-                                                      BlocProvider.of<
-                                                                  CameraBloc>(
-                                                              context)
-                                                          .add(CameraRequest());
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: const Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Icon(Icons.camera,
-                                                            size: 30),
-                                                        SizedBox(width: 10),
-                                                        Text('Open Camera',
-                                                            style: TextStyle(
-                                                                fontSize: 15)),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: ElevatedButton(
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              15),
-                                                      foregroundColor:
-                                                          Colors.grey,
-                                                    ),
-                                                    onPressed: () {
-                                                      // BlocProvider.of<CameraBloc>(context).add(GalleryRequested());
-                                                      // Navigator.pop(context);
-                                                    },
-                                                    child: const Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Icon(
-                                                            Icons.photo_library,
-                                                            size: 30),
-                                                        SizedBox(width: 10),
-                                                        Text(
-                                                          'Select from Gallery [WIP]',
-                                                          style: TextStyle(
-                                                            fontSize: 15,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
+                                        return MyBottomSheet(
+                                          onPressed: () {
+                                            BlocProvider.of<CameraBloc>(context)
+                                                .add(CameraRequest());
+                                            Navigator.pop(context);
+                                          },
                                         );
                                       },
                                     );
                                   },
-                                  child: const Text(
-                                    'Submit Photo',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                  ),
                                 ),
                               ),
                               Hero(
                                 tag: 'myGarbageCollection',
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.all(15),
-                                  ),
+                                child: MyInitialButton(
+                                  text: 'My garbage collection',
                                   onPressed: () {
                                     Navigator.pushNamed(
                                         context, '/collection_screen');
                                   },
-                                  child: const Text(
-                                    'My garbage collection',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                  ),
                                 ),
                               ),
                               Hero(
                                 tag: 'mapScreen',
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.all(15),
-                                  ),
+                                child: MyInitialButton(
+                                  text: 'Map',
                                   onPressed: () {
-                                    //navigate to the map screen
                                     Navigator.pushNamed(context, '/map_screen');
                                   },
-                                  child: const Text(
-                                    'Map',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                  ),
                                 ),
                               ),
                             ],
@@ -438,73 +333,46 @@ class InitialView extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               //TODO: make buttons scale dynamically
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.all(15),
-                                ),
-                                onPressed: () async {
-                                  //TODO: popup menu is ugly find something usable and aesthetically pleasing
-                                  final selected = await showMenu(
-                                      context: context,
-                                      position: RelativeRect.fill,
-                                      items: [
-                                        const PopupMenuItem(
-                                          value: 'camera',
-                                          child: Text('Open Camera'),
-                                        ),
-                                        const PopupMenuItem(
-                                          value: 'gallery',
-                                          child: Text('Select from Gallery'),
-                                        ),
-                                      ]);
-                                  if (selected == 'camera') {
-                                    BlocProvider.of<CameraBloc>(context)
-                                        .add(CameraRequest());
-                                  } else if (selected == 'gallery') {
-                                    BlocProvider.of<CameraBloc>(context)
-                                        .add(GalleryRequested());
-                                  }
-
-                                  //TODO: push pop mess also here.
-                                  //TODO: ui jitter fix when opening camera
-                                  //BlocProvider.of<CameraBloc>(context).add(CameraRequest());
-                                },
-                                child: const Text('Submit Photo',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    )),
-                              ),
+                              //submit button
                               Hero(
-                                flightShuttleBuilder: _flightShuttleBuilder,
+                                tag: 'submitPhoto',
+                                child: MyInitialButton(
+                                  text: 'Submit Photo',
+                                  onPressed: () async {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      builder: (BuildContext context) {
+                                        return MyBottomSheet(
+                                          onPressed: () {
+                                            BlocProvider.of<CameraBloc>(context)
+                                                .add(CameraRequest());
+                                            Navigator.pop(context);
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                              //collection button
+                              Hero(
                                 tag: 'myGarbageCollection',
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.all(15),
-                                  ),
+                                child: MyInitialButton(
+                                  text: 'My garbage collection',
                                   onPressed: () {
                                     Navigator.pushNamed(
                                         context, '/collection_screen');
                                   },
-                                  child: const Text(
-                                    'My garbage collection',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                  ),
                                 ),
                               ),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.all(15),
-                                ),
-                                onPressed: () {
-                                  Navigator.pushNamed(context, '/map_screen');
-                                },
-                                child: const Text(
-                                  'Map',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  ),
+                              Hero(
+                                tag: 'mapScreen',
+                                child: MyInitialButton(
+                                  text: 'Map',
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, '/map_screen');
+                                  },
                                 ),
                               ),
                             ],

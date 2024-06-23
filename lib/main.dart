@@ -4,7 +4,7 @@ import 'package:garbage_locator/bloc/camera/camera_bloc.dart';
 import 'package:garbage_locator/repository/data_source.dart';
 import 'package:garbage_locator/repository/firebase_garbage_repository.dart';
 import 'package:garbage_locator/screens/camera_screen.dart';
-import 'package:garbage_locator/screens/initial_screen.dart';
+import 'package:garbage_locator/screens/initial_screen/initial_screen.dart';
 import 'package:garbage_locator/screens/collection_screen/my_collection_screen.dart';
 import 'package:garbage_locator/screens/login_screen.dart';
 import 'package:garbage_locator/screens/map_screen/map_screen.dart';
@@ -22,7 +22,7 @@ import 'bloc/loading/loading_bloc.dart';
 // has not been tested on every api level and ios version, i was  using api level 34 and ios 17
 // landscape mode is not supported on the initial screen, everywhere else i think it works fine
 
-//account with some pictures taken in emulator for testing: user: a@a.com pw: abcdefgh
+// account with some pictures taken in emulator for testing: user: a@a.com pw: abcdefgh
 
 // commands:
 // build runner: flutter pub run build_runner build --delete-conflicting-outputs
@@ -44,7 +44,7 @@ class FirebaseInitializer extends StatefulWidget {
   const FirebaseInitializer({super.key});
 
   @override
-  _FirebaseInitializerState createState() => _FirebaseInitializerState();
+  State<FirebaseInitializer> createState() => _FirebaseInitializerState();
 }
 
 class _FirebaseInitializerState extends State<FirebaseInitializer> {
@@ -99,6 +99,8 @@ class _FirebaseInitializerState extends State<FirebaseInitializer> {
 
 class HomeScreenRenderer extends StatelessWidget {
   static const route = '/';
+
+  const HomeScreenRenderer({super.key});
   @override
   Widget build(BuildContext context) {
     return Conditional.single(
@@ -107,7 +109,7 @@ class HomeScreenRenderer extends StatelessWidget {
         return FirebaseAuth.instance.currentUser != null;
       },
       widgetBuilder: (context) => const InitialScreen(),
-      fallbackBuilder: (context) => LoginPage(),
+      fallbackBuilder: (context) => const LoginPage(),
     );
   }
 }
@@ -133,13 +135,13 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Garbage Collector',
           theme: myTheme,
-          home: HomeScreenRenderer(),
+          home: const HomeScreenRenderer(),
           routes: {
             InitialScreen.route: (context) => const InitialScreen(),
             CameraScreen.route: (context) => const CameraScreen(),
             CollectionScreen.route: (context) => const CollectionScreen(),
             MapScreen.route: (context) => const MapScreen(),
-            LoginPage.route: (context) => LoginPage(),
+            LoginPage.route: (context) => const LoginPage(),
           },
         ),
       ),
