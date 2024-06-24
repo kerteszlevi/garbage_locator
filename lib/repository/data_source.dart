@@ -33,8 +33,8 @@ class DataSource {
   }
 
   Future<Garbage> getGarbage(String id) async {
-    final floorTodo = await database.getGarbage(id);
-    return floorTodo;
+    final garbage = await database.getGarbage(id);
+    return garbage;
   }
 
   Future<void> insertGarbage(Garbage garbage) async {

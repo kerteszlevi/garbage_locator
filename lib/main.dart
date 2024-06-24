@@ -17,10 +17,10 @@ import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'bloc/loading/loading_bloc.dart';
 
-// DISCLAIMER: the icons im using are not my own, i migrated and used a considerable amount of code from the github of the subject (github.com/bmeaut/VIAUAV45)
-// ANOTHER DISCLAIMER: for some reason the app crashes after being relaunched on the emulator, i get weird opengl errors, but works fine on a real device i tested it both with an ios android device.
-// has not been tested on every api level and ios version, i was  using api level 34 and ios 17
-// landscape mode is not supported on the initial screen, everywhere else i think it works fine
+// DISCLAIMER: the icons i'm using are not my own, i migrated and used a considerable amount of code from the github of the subject (github.com/bmeaut/VIAUAV45)
+// ANOTHER DISCLAIMER: for some reason the app crashes after being relaunched on the emulator, i get weird opengl errors, but works fine on a real device i tested it both with an ios and android device.
+// has not been tested on every api level nor ios version, i was  using api level 34 and ios 17 for testing
+// landscape mode is not supported on the initial screen, everywhere else it works fine
 
 // account with some pictures taken in emulator for testing: user: a@a.com pw: abcdefgh
 
@@ -31,6 +31,7 @@ import 'bloc/loading/loading_bloc.dart';
 //TODO: localization
 //TODO: move logic out of the bloc-s didn't have time, sorry about that:((
 //TODO: cache images
+//TODO: finish extracting duplicated widgets
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,9 +55,9 @@ class _FirebaseInitializerState extends State<FirebaseInitializer> {
     final fireBaseApp = await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    //print email f current user
+    //print email of current user
     if (FirebaseAuth.instance.currentUser != null) {
-      print(FirebaseAuth.instance.currentUser!.email);
+      print(FirebaseAuth.instance.currentUser?.email);
     } else {
       print("No user logged in");
     }
