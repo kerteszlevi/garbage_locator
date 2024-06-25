@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:garbage_locator/bloc/camera/camera_bloc.dart';
 import 'package:garbage_locator/repository/data_source.dart';
 import 'package:garbage_locator/repository/firebase_garbage_repository.dart';
 import 'package:garbage_locator/screens/camera_screen.dart';
@@ -14,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'bloc/camera_cubit/camera_cubit.dart';
 import 'bloc/loading_cubit/loading_cubit.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -125,8 +125,8 @@ class MyApp extends StatelessWidget {
     dataSource.init();
     return MultiBlocProvider(
       providers: [
-        BlocProvider<CameraBloc>(
-          create: (context) => CameraBloc(),
+        BlocProvider<CameraCubit>(
+          create: (context) => CameraCubit(),
         ),
         BlocProvider<LoadingCubit>(
           create: (context) => LoadingCubit(),

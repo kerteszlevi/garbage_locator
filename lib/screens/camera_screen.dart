@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:garbage_locator/bloc/camera/camera_bloc.dart';
+
+import '../bloc/camera_cubit/camera_cubit.dart';
 
 //TODO: make selecting from gallery an option
 class CameraScreen extends StatefulWidget {
@@ -18,7 +19,7 @@ class _CameraScreenState extends State<CameraScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      BlocProvider.of<CameraBloc>(context).add(CameraScreenUp());
+      BlocProvider.of<CameraCubit>(context).cameraScreenUp();
     });
     Future.delayed(const Duration(seconds: 2), () {
       setState(() {
@@ -59,8 +60,8 @@ class _CameraScreenState extends State<CameraScreen> {
                         padding: const EdgeInsets.all(15),
                       ),
                       onPressed: () {
-                        BlocProvider.of<CameraBloc>(context)
-                            .add(GalleryRequested());
+                        BlocProvider.of<CameraCubit>(context)
+                            .galleryRequested();
                       },
                       child: const Text(
                         'Open from Gallery',

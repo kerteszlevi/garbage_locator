@@ -1,9 +1,8 @@
-part of 'camera_bloc.dart';
+part of 'camera_cubit.dart';
 
 @immutable
 sealed class CameraState {}
 
-//initial state
 final class CameraInitialState extends CameraState {}
 
 final class CameraErrorState extends CameraState {

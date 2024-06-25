@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garbage_locator/screens/initial_screen/initial_button.dart';
 import 'package:garbage_locator/screens/publish_screen/publish_screen.dart';
-import '../../bloc/camera/camera_bloc.dart';
+// ignore: unused_import
+import '../../bloc/camera_cubit/camera_cubit.dart';
 import '../../bloc/loading_cubit/loading_cubit.dart';
 import 'initial_bottom_sheet.dart';
 import '../../utils.dart';
@@ -86,7 +87,7 @@ class InitialView extends StatelessWidget {
 
     return MultiBlocListener(
       listeners: [
-        BlocListener<CameraBloc, CameraState>(
+        BlocListener<CameraCubit, CameraState>(
           listener: (context, state) {
             if (state is PictureTakenState) {
               //TODO: fix the push pop mess with the camera waiting screen
@@ -245,8 +246,9 @@ class InitialView extends StatelessWidget {
                                       builder: (BuildContext context) {
                                         return MyBottomSheet(
                                           onPressed: () {
-                                            BlocProvider.of<CameraBloc>(context)
-                                                .add(CameraRequest());
+                                            BlocProvider.of<CameraCubit>(
+                                                    context)
+                                                .cameraRequest();
                                             Navigator.pop(context);
                                           },
                                         );
@@ -346,8 +348,9 @@ class InitialView extends StatelessWidget {
                                       builder: (BuildContext context) {
                                         return MyBottomSheet(
                                           onPressed: () {
-                                            BlocProvider.of<CameraBloc>(context)
-                                                .add(CameraRequest());
+                                            BlocProvider.of<CameraCubit>(
+                                                    context)
+                                                .cameraRequest();
                                             Navigator.pop(context);
                                           },
                                         );
