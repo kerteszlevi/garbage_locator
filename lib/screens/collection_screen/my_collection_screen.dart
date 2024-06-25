@@ -127,6 +127,14 @@ class _CollectionScreenState extends State<CollectionScreen> {
                         return GarbageListItem(garbage: garbage);
                       },
                     );
+                    // return GridView.count(
+                    //   crossAxisCount: 2,
+                    //   children: garbages!
+                    //       .map(
+                    //         (item) => GarbageListItem(garbage: item),
+                    //       )
+                    //       .toList(),
+                    // );
                   },
                 );
               }

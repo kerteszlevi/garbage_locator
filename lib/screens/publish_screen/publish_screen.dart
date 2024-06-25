@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:garbage_locator/bloc/loading/loading_bloc.dart';
 import 'package:garbage_locator/bloc/publish/publish_bloc.dart';
 import 'package:garbage_locator/main.dart';
 import 'package:garbage_locator/models/garbage.dart';
@@ -13,12 +14,10 @@ import 'package:garbage_locator/repository/data_source.dart';
 import 'package:garbage_locator/screens/collection_screen/my_collection_screen.dart';
 import 'package:provider/provider.dart';
 
-import '../loading_screen.dart';
-
 class PublishScreen extends StatelessWidget {
   final String imagePath;
   final _commentController = TextEditingController();
-  final _loadingTextController = StreamController<String>();
+
   PublishScreen({super.key, required this.imagePath});
 
   static String route = '/publish';
@@ -55,26 +54,42 @@ class PublishScreen extends StatelessWidget {
                 builder: (context) => const CollectionScreen(),
               ),
             );
-            _loadingTextController.close();
           } else if (state is PublishPublishingState) {
-            //push loading screen
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LoadingScreen(
-                  loadingTextStream: _loadingTextController.stream,
-                ),
-              ),
-            );
-            _loadingTextController.add('Publishing...');
+            context.read<LoadingBloc>().add(ShowLoading('Publishing...'));
           } else if (state is PublishSavingImageState) {
-            _loadingTextController.add('Saving image...');
+            context
+                .read<LoadingBloc>()
+                .add(UpdateLoadingText('Saving image...'));
           } else if (state is PublishGettingLocationState) {
-            _loadingTextController.add('Getting location data...');
+            context
+                .read<LoadingBloc>()
+                .add(UpdateLoadingText('Getting location...'));
           } else if (state is PublishGettingPlacemarkState) {
-            _loadingTextController.add('Getting placemark data...');
+            context
+                .read<LoadingBloc>()
+                .add(UpdateLoadingText('Getting placemark...'));
           } else if (state is PublishUploadingState) {
-            _loadingTextController.add('Uploading data...');
+            context.read<LoadingBloc>().add(UpdateLoadingText('Uploading...'));
+          } else if (state is PublishErrorState) {
+            print('Error: ${state.error}');
+            //show error dialog
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('Error'),
+                  content: Text(state.error),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                );
+              },
+            );
           }
         },
         builder: (context, state) {

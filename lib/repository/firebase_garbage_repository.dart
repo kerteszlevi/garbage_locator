@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
@@ -34,17 +35,19 @@ class FirebaseGarbageRepository implements GarbageRepository<Garbage> {
 
   @override
   Future<void> insertGarbage(Garbage garbage) async {
-    final imageUrl = await uploadImage(File(garbage.imagePath));
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    final imageUrl = await uploadImage(File(garbage.imagePath), userId);
     final garbageWithImage = garbage.copyWith(imagePath: imageUrl);
     await _garbageCollection
         .doc(garbageWithImage.id)
         .set(garbageWithImage.toJson());
   }
 
-  Future<String> uploadImage(File imageFile) async {
+  Future<String> uploadImage(File imageFile, String userId) async {
     final imageName = "${const Uuid().v4()}.jpg";
     final imageRef = _storage.ref().child("images/$imageName");
-    await imageRef.putFile(imageFile);
+    await imageRef.putFile(
+        imageFile, SettableMetadata(customMetadata: {'userId': userId}));
     final downloadUrl = await imageRef.getDownloadURL();
     return downloadUrl;
   }

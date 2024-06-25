@@ -87,7 +87,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
-    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       final dataSource = Provider.of<DataSource>(context, listen: false);
       final garbages = await dataSource.getAllGarbage();
       final currentLocation = await getCurrentLocation();

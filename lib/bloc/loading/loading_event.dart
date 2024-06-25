@@ -14,3 +14,5 @@ class UpdateLoadingText extends LoadingEvent {
 
   UpdateLoadingText(this.loadingText);
 }
+
+class HideLoading extends LoadingEvent {}

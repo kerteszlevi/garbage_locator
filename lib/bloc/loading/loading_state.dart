@@ -3,8 +3,14 @@ part of 'loading_bloc.dart';
 @immutable
 sealed class LoadingState {}
 
-final class LoadingInitial extends LoadingState {}
+class LoadingShown extends LoadingState {
+  final String loadingText;
+  LoadingShown({required this.loadingText}) : super();
+}
 
-class LoadingShown extends LoadingState {}
+class LoadingUpdate extends LoadingState {
+  final String loadingText;
+  LoadingUpdate({required this.loadingText}) : super();
+}
 
 class LoadingHidden extends LoadingState {}

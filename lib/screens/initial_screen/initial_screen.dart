@@ -132,10 +132,7 @@ class InitialView extends StatelessWidget {
                 context: context,
                 barrierDismissible: false,
                 builder: (BuildContext context) {
-                  return LoadingScreen(
-                      loadingTextStream: BlocProvider.of<LoadingBloc>(context)
-                          .loadingTextController
-                          .stream);
+                  return LoadingScreen();
                 },
               );
             } else if (state is LoadingHidden) {

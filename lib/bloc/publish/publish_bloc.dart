@@ -11,7 +11,6 @@ import 'package:uuid/uuid.dart';
 import '../../models/garbage.dart';
 import '../../repository/data_source.dart';
 import '../../utils.dart';
-
 part 'publish_event.dart';
 part 'publish_state.dart';
 
@@ -26,7 +25,7 @@ class PublishBloc extends Bloc<PublishEvent, PublishState> {
         final savedImage = await saveImage(imageFile);
 
         final exifData = await readExifData(savedImage.path);
-        //TODO: extract location from image exif, or disable gallery import option alltogether
+        //TODO: extract location from image exif, or disable gallery import option altogether
 
         //get location of the user
         emit(PublishGettingLocationState());
@@ -50,7 +49,7 @@ class PublishBloc extends Bloc<PublishEvent, PublishState> {
         await dataSource.insertGarbage(garbage);
         emit(PublishPublishedState());
       } catch (e) {
-        emit(PublishInitialState());
+        emit(PublishErrorState(error: e.toString()));
       }
     });
   }

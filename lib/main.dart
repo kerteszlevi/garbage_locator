@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garbage_locator/bloc/camera/camera_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:garbage_locator/repository/firebase_garbage_repository.dart';
 import 'package:garbage_locator/screens/camera_screen.dart';
 import 'package:garbage_locator/screens/initial_screen/initial_screen.dart';
 import 'package:garbage_locator/screens/collection_screen/my_collection_screen.dart';
+import 'package:garbage_locator/screens/loading_screen.dart';
 import 'package:garbage_locator/screens/login_screen.dart';
 import 'package:garbage_locator/screens/map_screen/map_screen.dart';
 import 'package:garbage_locator/themes/myTheme.dart';
@@ -143,6 +145,7 @@ class MyApp extends StatelessWidget {
             CollectionScreen.route: (context) => const CollectionScreen(),
             MapScreen.route: (context) => const MapScreen(),
             LoginPage.route: (context) => const LoginPage(),
+            LoadingScreen.route: (context) => const LoadingScreen(),
           },
         ),
       ),
