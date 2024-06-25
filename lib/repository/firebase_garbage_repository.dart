@@ -17,6 +17,10 @@ class FirebaseGarbageRepository implements GarbageRepository<Garbage> {
   @override
   Future<void> deleteGarbage(Garbage garbage) async {
     await _garbageCollection.doc(garbage.id).delete();
+
+    //delete the image from firebase storage
+    final imageRef = _storage.refFromURL(garbage.imagePath);
+    await imageRef.delete();
   }
 
   @override
@@ -46,10 +50,18 @@ class FirebaseGarbageRepository implements GarbageRepository<Garbage> {
   Future<String> uploadImage(File imageFile, String userId) async {
     final imageName = "${const Uuid().v4()}.jpg";
     final imageRef = _storage.ref().child("images/$imageName");
-    await imageRef.putFile(
-        imageFile, SettableMetadata(customMetadata: {'userId': userId}));
-    final downloadUrl = await imageRef.getDownloadURL();
-    return downloadUrl;
+
+    try {
+      //this should throw an error if the file does not exist
+      final existingImageUrl = await imageRef.getDownloadURL();
+      return existingImageUrl;
+    } catch (e) {
+      //upload the image
+      await imageRef.putFile(
+          imageFile, SettableMetadata(customMetadata: {'userId': userId}));
+      final downloadUrl = await imageRef.getDownloadURL();
+      return downloadUrl;
+    }
   }
 
   @override
