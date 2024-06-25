@@ -13,8 +13,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'bloc/camera_cubit/camera_cubit.dart';
-import 'bloc/loading_cubit/loading_cubit.dart';
+import 'bloc/camera/camera_cubit.dart';
+import 'bloc/loading/loading_cubit.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

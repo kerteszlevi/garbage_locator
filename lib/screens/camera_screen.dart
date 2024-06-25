@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/camera_cubit/camera_cubit.dart';
+import '../bloc/camera/camera_cubit.dart';
 
 //TODO: make selecting from gallery an option
 class CameraScreen extends StatefulWidget {

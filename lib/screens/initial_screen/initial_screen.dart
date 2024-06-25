@@ -4,9 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garbage_locator/screens/initial_screen/initial_button.dart';
 import 'package:garbage_locator/screens/publish_screen/publish_screen.dart';
-// ignore: unused_import
-import '../../bloc/camera_cubit/camera_cubit.dart';
-import '../../bloc/loading_cubit/loading_cubit.dart';
+import '../../bloc/camera/camera_cubit.dart';
+import '../../bloc/loading/loading_cubit.dart';
 import 'initial_bottom_sheet.dart';
 import '../../utils.dart';
 import '../loading_screen.dart';
@@ -136,7 +135,7 @@ class InitialView extends StatelessWidget {
                 context: context,
                 barrierDismissible: false,
                 builder: (BuildContext context) {
-                  return LoadingScreen();
+                  return const LoadingScreen();
                 },
               );
             } else if (state is LoadingHidden && isLoadingScreenShown) {

@@ -1,4 +1,4 @@
-part of 'publish_bloc.dart';
+part of 'publish_cubit.dart';
 
 @immutable
 sealed class PublishState {}
