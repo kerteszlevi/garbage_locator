@@ -1,10 +1,7 @@
-import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:garbage_locator/bloc/loading/loading_bloc.dart';
 import 'package:garbage_locator/bloc/publish/publish_bloc.dart';
 import 'package:garbage_locator/main.dart';
 import 'package:garbage_locator/models/garbage.dart';
@@ -13,6 +10,8 @@ import 'package:garbage_locator/screens/publish_screen/submit_button.dart';
 import 'package:garbage_locator/repository/data_source.dart';
 import 'package:garbage_locator/screens/collection_screen/my_collection_screen.dart';
 import 'package:provider/provider.dart';
+
+import '../../bloc/loading_cubit/loading_cubit.dart';
 
 class PublishScreen extends StatelessWidget {
   final String imagePath;
@@ -55,21 +54,19 @@ class PublishScreen extends StatelessWidget {
               ),
             );
           } else if (state is PublishPublishingState) {
-            context.read<LoadingBloc>().add(ShowLoading('Publishing...'));
+            context.read<LoadingCubit>().showLoading('Publishing...');
           } else if (state is PublishSavingImageState) {
-            context
-                .read<LoadingBloc>()
-                .add(UpdateLoadingText('Saving image...'));
+            context.read<LoadingCubit>().updateLoadingText('Saving image...');
           } else if (state is PublishGettingLocationState) {
             context
-                .read<LoadingBloc>()
-                .add(UpdateLoadingText('Getting location...'));
+                .read<LoadingCubit>()
+                .updateLoadingText('Getting location...');
           } else if (state is PublishGettingPlacemarkState) {
             context
-                .read<LoadingBloc>()
-                .add(UpdateLoadingText('Getting placemark...'));
+                .read<LoadingCubit>()
+                .updateLoadingText('Getting placemark...');
           } else if (state is PublishUploadingState) {
-            context.read<LoadingBloc>().add(UpdateLoadingText('Uploading...'));
+            context.read<LoadingCubit>().updateLoadingText('Uploading...');
           } else if (state is PublishErrorState) {
             print('Error: ${state.error}');
             //show error dialog
@@ -84,7 +81,7 @@ class PublishScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.pop(context);
                         //hide the loading screen
-                        context.read<LoadingBloc>().add(HideLoading());
+                        context.read<LoadingCubit>().hideLoading();
                       },
                       child: const Text('OK'),
                     ),

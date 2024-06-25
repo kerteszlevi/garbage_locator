@@ -1,4 +1,4 @@
-part of 'loading_bloc.dart';
+part of 'loading_cubit.dart';
 
 @immutable
 sealed class LoadingState {}

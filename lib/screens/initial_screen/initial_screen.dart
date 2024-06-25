@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garbage_locator/screens/initial_screen/initial_button.dart';
 import 'package:garbage_locator/screens/publish_screen/publish_screen.dart';
 import '../../bloc/camera/camera_bloc.dart';
-import '../../bloc/loading/loading_bloc.dart';
+import '../../bloc/loading_cubit/loading_cubit.dart';
 import 'initial_bottom_sheet.dart';
 import '../../utils.dart';
 import '../loading_screen.dart';
@@ -127,7 +127,7 @@ class InitialView extends StatelessWidget {
             }
           },
         ),
-        BlocListener<LoadingBloc, LoadingState>(
+        BlocListener<LoadingCubit, LoadingState>(
           listener: (context, state) {
             if (state is LoadingShown && !isLoadingScreenShown) {
               isLoadingScreenShown = true;

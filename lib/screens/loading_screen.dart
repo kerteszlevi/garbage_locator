@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/loading/loading_bloc.dart';
+import '../bloc/loading_cubit/loading_cubit.dart';
 
 class LoadingScreen extends StatelessWidget {
   static const route = '/loading';
@@ -11,7 +11,7 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoadingBloc, LoadingState>(
+    return BlocBuilder<LoadingCubit, LoadingState>(
       builder: (context, state) {
         if (state is LoadingShown) {
           return PopScope(

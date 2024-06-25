@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garbage_locator/bloc/camera/camera_bloc.dart';
@@ -15,9 +14,9 @@ import 'package:provider/provider.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'bloc/loading_cubit/loading_cubit.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'bloc/loading/loading_bloc.dart';
 
 // DISCLAIMER: the icons i'm using are not my own, i migrated and used a considerable amount of code from the github of the subject (github.com/bmeaut/VIAUAV45)
 // ANOTHER DISCLAIMER: for some reason the app crashes after being relaunched on the emulator, i get weird opengl errors, but works fine on a real device i tested it both with an ios and android device.
@@ -129,8 +128,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<CameraBloc>(
           create: (context) => CameraBloc(),
         ),
-        BlocProvider<LoadingBloc>(
-          create: (context) => LoadingBloc(),
+        BlocProvider<LoadingCubit>(
+          create: (context) => LoadingCubit(),
         ),
       ],
       child: Provider<DataSource>(
