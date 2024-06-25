@@ -8,9 +8,4 @@ class LoadingShown extends LoadingState {
   LoadingShown({required this.loadingText}) : super();
 }
 
-class LoadingUpdate extends LoadingState {
-  final String loadingText;
-  LoadingUpdate({required this.loadingText}) : super();
-}
-
 class LoadingHidden extends LoadingState {}

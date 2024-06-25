@@ -27,7 +27,7 @@ class LoadingScreen extends StatelessWidget {
             },
             child: AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
-                statusBarColor: Colors.transparent,
+                statusBarColor: Colors.white,
                 statusBarIconBrightness: Brightness.dark, // For Android
                 statusBarBrightness: Brightness.light, // For iOS
                 systemNavigationBarColor: Colors.white,
@@ -50,9 +50,7 @@ class LoadingScreen extends StatelessWidget {
             ),
           );
         } else {
-          return Container(
-            child: const Text('Loading Hidden'),
-          );
+          return Container();
         }
       },
     );

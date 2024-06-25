@@ -13,5 +13,9 @@ class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
     on<UpdateLoadingText>((event, emit) {
       emit(LoadingShown(loadingText: event.loadingText));
     });
+
+    on<HideLoading>((event, emit) {
+      emit(LoadingHidden());
+    });
   }
 }

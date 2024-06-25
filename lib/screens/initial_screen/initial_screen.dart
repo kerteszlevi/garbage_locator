@@ -82,6 +82,8 @@ class InitialView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isLoadingScreenShown = false;
+
     return MultiBlocListener(
       listeners: [
         BlocListener<CameraBloc, CameraState>(
@@ -127,7 +129,8 @@ class InitialView extends StatelessWidget {
         ),
         BlocListener<LoadingBloc, LoadingState>(
           listener: (context, state) {
-            if (state is LoadingShown) {
+            if (state is LoadingShown && !isLoadingScreenShown) {
+              isLoadingScreenShown = true;
               showDialog(
                 context: context,
                 barrierDismissible: false,
@@ -135,7 +138,8 @@ class InitialView extends StatelessWidget {
                   return LoadingScreen();
                 },
               );
-            } else if (state is LoadingHidden) {
+            } else if (state is LoadingHidden && isLoadingScreenShown) {
+              isLoadingScreenShown = false;
               Navigator.of(context).pop();
             }
           },

@@ -83,6 +83,8 @@ class PublishScreen extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context);
+                        //hide the loading screen
+                        context.read<LoadingBloc>().add(HideLoading());
                       },
                       child: const Text('OK'),
                     ),
