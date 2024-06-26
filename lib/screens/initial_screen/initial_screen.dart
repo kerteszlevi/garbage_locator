@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garbage_locator/screens/initial_screen/initial_button.dart';
+import 'package:garbage_locator/screens/login_screen/login_register_screen.dart';
 import 'package:garbage_locator/screens/publish_screen/publish_screen.dart';
 import '../../bloc/camera/camera_cubit.dart';
 import '../../bloc/loading/loading_cubit.dart';
 import 'initial_bottom_sheet.dart';
 import '../../utils.dart';
 import '../loading_screen.dart';
-import '../login_screen.dart';
 
 class InitialScreen extends StatefulWidget {
   const InitialScreen({super.key});
@@ -173,7 +173,7 @@ class InitialView extends StatelessWidget {
                   logOut();
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => const LoginPage(),
+                      builder: (context) => const LoginRegisterScreen(),
                     ),
                   );
                 }
