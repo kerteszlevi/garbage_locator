@@ -1,9 +1,9 @@
 //import 'package:firebase_analytics/firebase_analytics.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -51,12 +51,9 @@ class _RegisterPageState extends State<RegisterPage> {
             .signInWithEmailAndPassword(email: email, password: password);
       } else {
         didPasswordsMatch = false;
-        //passwords dont match error popup
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("passwords don't match")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!.passwordsDoNotMatch)));
       }
-
-      //Navigator.pushReplacementNamed(context, "/");
 
       Navigator.pop(context);
       if (didPasswordsMatch) {
@@ -64,8 +61,8 @@ class _RegisterPageState extends State<RegisterPage> {
       }
     } on Exception catch (e) {
       print("User registration failed: ${e.toString()}");
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Registration failed, please try again!")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(AppLocalizations.of(context)!.registrationFailed)));
     }
   }
 
@@ -81,14 +78,12 @@ class _RegisterPageState extends State<RegisterPage> {
         body: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {
             return Column(
-              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 //todo: localized text on the plate
                 Expanded(
                   child: LayoutBuilder(
                     builder:
                         (BuildContext context, BoxConstraints constraints) {
-                      // Calculate the size of the logo
                       final logoSize = constraints.maxWidth >
                               MediaQuery.of(context).size.width * 0.8
                           ? MediaQuery.of(context).size.width * 0.8
@@ -105,9 +100,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 // welcome back text
-                const Text(
-                  "Register here!",
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.registerHere,
+                  style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
@@ -142,7 +137,8 @@ class _RegisterPageState extends State<RegisterPage> {
                               filled: true,
                               fillColor: Colors.white,
                               alignLabelWithHint: true,
-                              labelText: "Email address",
+                              labelText:
+                                  AppLocalizations.of(context)!.emailAddress,
                               labelStyle: const TextStyle(color: Colors.black),
                               errorText: _emailValid
                                   ? null
@@ -164,7 +160,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               filled: true,
                               fillColor: Colors.white,
                               alignLabelWithHint: true,
-                              labelText: "Password",
+                              labelText: AppLocalizations.of(context)!.password,
                               labelStyle: const TextStyle(color: Colors.black),
                               errorText: _passwordValid
                                   ? null
@@ -187,7 +183,8 @@ class _RegisterPageState extends State<RegisterPage> {
                               filled: true,
                               fillColor: Colors.white,
                               alignLabelWithHint: true,
-                              labelText: "Confirm Password",
+                              labelText:
+                                  AppLocalizations.of(context)!.confirmPassword,
                               labelStyle: const TextStyle(color: Colors.black),
                               errorText: _passwordValid
                                   ? null
@@ -203,12 +200,12 @@ class _RegisterPageState extends State<RegisterPage> {
                             style: const TextStyle(color: Colors.black),
                           ),
                           const SizedBox(height: 10),
-                          const Row(
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                "Forgot your password?",
-                                style: TextStyle(
+                                AppLocalizations.of(context)!.passwordForgot,
+                                style: const TextStyle(
                                   color: Colors.black87,
                                 ),
                               ),
@@ -223,9 +220,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             onPressed: () {
                               _tryRegistration(context);
                             },
-                            child: const Text(
-                              "Create an account",
-                              style: TextStyle(
+                            child: Text(
+                              AppLocalizations.of(context)!.createAccount,
+                              style: const TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
@@ -237,18 +234,19 @@ class _RegisterPageState extends State<RegisterPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text(
-                                "Already have an account?",
-                                style: TextStyle(
+                              Text(
+                                AppLocalizations.of(context)!
+                                    .alreadyHaveAccount,
+                                style: const TextStyle(
                                   color: Colors.black87,
                                 ),
                               ),
                               const SizedBox(width: 7),
                               GestureDetector(
                                 onTap: widget.onTap,
-                                child: const Text(
-                                  "Log in",
-                                  style: TextStyle(
+                                child: Text(
+                                  AppLocalizations.of(context)!.logIn,
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                   ),

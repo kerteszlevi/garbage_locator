@@ -18,6 +18,9 @@ import 'bloc/loading/loading_cubit.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 // DISCLAIMER: the icons i'm using are not my own, i migrated and used a considerable amount of code from the github of the subject (github.com/bmeaut/VIAUAV45)
 // ANOTHER DISCLAIMER: for some reason the app crashes after being relaunched on the emulator, i get weird opengl errors, but works fine on a real device i tested it both with an ios and android device.
 // has not been tested on every api level nor ios version, i was  using api level 34 and ios 17 for testing
@@ -137,6 +140,16 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Garbage Collector',
           theme: myTheme,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en'),
+            Locale('hu'),
+          ],
           home: const HomeScreenRenderer(),
           routes: {
             InitialScreen.route: (context) => const InitialScreen(),

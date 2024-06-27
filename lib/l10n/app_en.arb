@@ -1,0 +1,26 @@
+{
+  "emailPasswordIncorrect": "Email or password is incorrect!",
+  "loginFailed": "Login failed! {errorCode}",
+  "@loginFailed": {
+    "placeholders": {
+        "errorCode": {
+            "type": "String",
+            "example": "errorCode"
+        }
+    }
+  },
+  "welcomeMsg": "Welcome back!",
+  "passwordForgot": "Forgot your password?",
+  "signIn": "Sign In",
+  "noAccountYet": "Don't have an account?",
+  "registerNow": "Register now",
+  "passwordsDoNotMatch": "passwords don't match",
+  "registrationFailed": "Registration failed, please try again!",
+  "registerHere": "Register here!",
+  "createAccount": "Create an account",
+  "alreadyHaveAccount": "Already have an account?",
+  "logIn": "Log in",
+  "emailAddress": "Email address",
+  "password": "Password",
+  "confirmPassword": "Confirm Password"
+}

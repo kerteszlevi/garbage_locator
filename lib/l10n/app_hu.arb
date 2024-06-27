@@ -1,0 +1,26 @@
+{
+  "emailPasswordIncorrect": "Hibás e-mail vagy jelszó!",
+  "loginFailed": "Bejelentkezési hiba: {errorCode}",
+  "@loginFailed": {
+    "placeholders": {
+        "errorCode": {
+            "type": "String",
+            "example": "errorCode"
+        }
+    }
+  },
+  "welcomeMsg": "Üdv újra itt!",
+  "passwordForgot": "Elfelejtette jelszavát?",
+  "signIn": "Bejelentkezés",
+  "noAccountYet": "Nincs még fiókod?",
+  "registerNow": "Regisztrálj most",
+  "passwordsDoNotMatch": "Jelszavak nem egyeznek!",
+  "registrationFailed": "Regisztráció sikertelen, kérjük próbáld újra!",
+  "registerHere": "Regisztrálj itt!",
+  "createAccount": "Fiók elkészítése",
+  "alreadyHaveAccount": "Már van fiókod?",
+  "logIn": "Jelenkezz be",
+  "emailAddress": "Email cím",
+  "password": "Jelszó",
+  "confirmPassword": "Jelszó megerősítése"
+}

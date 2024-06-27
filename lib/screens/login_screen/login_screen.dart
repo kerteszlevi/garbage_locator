@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
@@ -23,7 +24,6 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _tryLogin(BuildContext context) async {
     final email = _emailController.text;
     final password = _passwordController.text;
-    //final analytics = Provider.of<FirebaseAnalytics>(context, listen: false);
 
     showDialog(
       context: context,
@@ -39,19 +39,19 @@ class _LoginPageState extends State<LoginPage> {
 
       print("Logging in...");
 
-      //analytics.logLogin();
       Navigator.pop(context);
       Navigator.pushReplacementNamed(context, "/");
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
       if (e.code == 'invalid-credential') {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Email or password is incorrect!")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content:
+                Text(AppLocalizations.of(context)!.emailPasswordIncorrect)));
         return;
       } else {
         print("Login failed: ${e.toString()}");
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Login failed:${e.code}")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!.loginFailed(e.code))));
       }
     }
   }
@@ -68,20 +68,12 @@ class _LoginPageState extends State<LoginPage> {
         body: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {
             return Column(
-              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 //todo: localized text on the plate
-                // Expanded(
-                //   child: Image.asset(
-                //     'assets/images/cutetrashcan.png',
-                //     height: MediaQuery.of(context).size.height * 0.4,
-                //   ),
-                // ),
                 Expanded(
                   child: LayoutBuilder(
                     builder:
                         (BuildContext context, BoxConstraints constraints) {
-                      // Calculate the size of the logo
                       final logoSize = constraints.maxWidth >
                               MediaQuery.of(context).size.width * 0.8
                           ? MediaQuery.of(context).size.width * 0.8
@@ -97,10 +89,10 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
                 ),
-                // welcome bac text
-                const Text(
-                  "Welcome back!",
-                  style: TextStyle(
+                // welcome back text
+                Text(
+                  AppLocalizations.of(context)!.welcomeMsg,
+                  style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
@@ -134,7 +126,8 @@ class _LoginPageState extends State<LoginPage> {
                               filled: true,
                               fillColor: Colors.white,
                               alignLabelWithHint: true,
-                              labelText: "Email address",
+                              labelText:
+                                  AppLocalizations.of(context)!.emailAddress,
                               labelStyle: const TextStyle(color: Colors.black),
                               errorText: _emailValid
                                   ? null
@@ -156,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
                               filled: true,
                               fillColor: Colors.white,
                               alignLabelWithHint: true,
-                              labelText: "Password",
+                              labelText: AppLocalizations.of(context)!.password,
                               labelStyle: const TextStyle(color: Colors.black),
                               errorText: _passwordValid
                                   ? null
@@ -187,12 +180,12 @@ class _LoginPageState extends State<LoginPage> {
                             style: const TextStyle(color: Colors.black),
                           ),
                           const SizedBox(height: 10),
-                          const Row(
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                "Forgot your password?",
-                                style: TextStyle(
+                                AppLocalizations.of(context)!.passwordForgot,
+                                style: const TextStyle(
                                   color: Colors.black87,
                                 ),
                               ),
@@ -207,9 +200,9 @@ class _LoginPageState extends State<LoginPage> {
                             onPressed: () {
                               _tryLogin(context);
                             },
-                            child: const Text(
-                              "Sign In",
-                              style: TextStyle(
+                            child: Text(
+                              AppLocalizations.of(context)!.signIn,
+                              style: const TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
@@ -221,18 +214,18 @@ class _LoginPageState extends State<LoginPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text(
-                                "Don't have an account?",
-                                style: TextStyle(
+                              Text(
+                                AppLocalizations.of(context)!.noAccountYet,
+                                style: const TextStyle(
                                   color: Colors.black87,
                                 ),
                               ),
                               const SizedBox(width: 7),
                               GestureDetector(
                                 onTap: widget.onTap,
-                                child: const Text(
-                                  "Register now",
-                                  style: TextStyle(
+                                child: Text(
+                                  AppLocalizations.of(context)!.registerNow,
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                   ),
