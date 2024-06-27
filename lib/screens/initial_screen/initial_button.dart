@@ -17,6 +17,8 @@ class MyInitialButton extends StatelessWidget {
         text,
         style: const TextStyle(
           color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
         ),
       ),
     );

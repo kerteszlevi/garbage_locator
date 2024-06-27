@@ -140,6 +140,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Garbage Collector',
           theme: myTheme,
+          debugShowCheckedModeBanner: false,
           localizationsDelegates: const [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
