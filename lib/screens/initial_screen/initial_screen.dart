@@ -33,22 +33,22 @@ class _InitialScreenState extends State<InitialScreen> {
       // No internet connection
       ScaffoldMessenger.of(context).showMaterialBanner(
         MaterialBanner(
-          content: const Text(
+          content: Text(
             'No active network interface',
             style: TextStyle(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onError,
             ),
           ),
-          backgroundColor: Colors.red,
+          backgroundColor: Theme.of(context).colorScheme.error,
           actions: [
             TextButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
               },
-              child: const Text(
+              child: Text(
                 'Dismiss',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onError,
                 ),
               ),
             ),
@@ -115,11 +115,11 @@ class InitialView extends StatelessWidget {
               //TODO: remove this  later
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  backgroundColor: Colors.red,
+                  backgroundColor: Theme.of(context).colorScheme.error,
                   content: Text(
                     state.message,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onError,
                     ),
                   ),
                 ),
@@ -148,24 +148,35 @@ class InitialView extends StatelessWidget {
       child: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark, // For Android
-          statusBarBrightness: Brightness.light, // For iOS
-          systemNavigationBarColor: Theme.of(context).primaryColor,
+          statusBarIconBrightness:
+              Theme.of(context).colorScheme.brightness == Brightness.light
+                  ? Brightness.dark
+                  : Brightness.light, // for Android
+          statusBarBrightness:
+              Theme.of(context).colorScheme.brightness, // For iOS
+          systemNavigationBarColor: Theme.of(context).colorScheme.primary,
         ),
         child: Scaffold(
           //extendBody: true, //TODO: not working as intended, find a way to stretch the scaffold behind the navbar on android
 
           appBar: AppBar(
+            foregroundColor: Theme.of(context).colorScheme.surface,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             leading: PopupMenuButton<String>(
-              icon: const Icon(Icons.logout, color: Colors.black),
+              icon: Icon(Icons.logout,
+                  color: Theme.of(context).colorScheme.onSurface),
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                const PopupMenuItem<String>(
+                PopupMenuItem<String>(
                   value: 'SignOut',
-                  child: Text('Sign Out', style: TextStyle(color: Colors.red)),
+                  child: Text('Sign Out',
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.error)),
                 ),
-                const PopupMenuItem<String>(
+                PopupMenuItem<String>(
                   value: 'Cancel',
-                  child: Text('Cancel', style: TextStyle(color: Colors.black)),
+                  child: Text('Cancel',
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface)),
                 ),
               ],
               onSelected: (String action) {

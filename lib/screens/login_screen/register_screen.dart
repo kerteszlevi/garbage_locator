@@ -71,9 +71,13 @@ class _RegisterPageState extends State<RegisterPage> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark, // For Android
-          statusBarBrightness: Brightness.light, // For iOS
-          systemNavigationBarColor: Theme.of(context).primaryColor),
+          statusBarIconBrightness:
+              Theme.of(context).colorScheme.brightness == Brightness.light
+                  ? Brightness.dark
+                  : Brightness.light,
+          statusBarBrightness:
+              Theme.of(context).colorScheme.brightness, // For iOS
+          systemNavigationBarColor: Theme.of(context).colorScheme.primary),
       child: Scaffold(
         body: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {
@@ -135,22 +139,29 @@ class _RegisterPageState extends State<RegisterPage> {
                             controller: _emailController,
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
+                              fillColor:
+                                  Theme.of(context).colorScheme.secondary,
                               alignLabelWithHint: true,
                               labelText:
                                   AppLocalizations.of(context)!.emailAddress,
-                              labelStyle: const TextStyle(color: Colors.black),
+                              labelStyle: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondary),
                               errorText: _emailValid
                                   ? null
                                   : "Please provide a valid email address",
-                              errorStyle: const TextStyle(color: Colors.red),
+                              errorStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.error),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide: BorderSide.none,
                               ),
                             ),
                             keyboardType: TextInputType.emailAddress,
-                            style: const TextStyle(color: Colors.black),
+                            style: TextStyle(
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary),
                           ),
                           const SizedBox(height: 10),
                           //password textfield
@@ -158,14 +169,19 @@ class _RegisterPageState extends State<RegisterPage> {
                             controller: _passwordController,
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
+                              fillColor:
+                                  Theme.of(context).colorScheme.secondary,
                               alignLabelWithHint: true,
                               labelText: AppLocalizations.of(context)!.password,
-                              labelStyle: const TextStyle(color: Colors.black),
+                              labelStyle: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondary),
                               errorText: _passwordValid
                                   ? null
                                   : "The given password is invalid or not strong enough",
-                              errorStyle: const TextStyle(color: Colors.red),
+                              errorStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.error),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide: BorderSide.none,
@@ -173,7 +189,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                             keyboardType: TextInputType.visiblePassword,
                             obscureText: !_isPasswordVisible,
-                            style: const TextStyle(color: Colors.black),
+                            style: TextStyle(
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary),
                           ),
                           const SizedBox(height: 10),
                           //confirm password textfield
@@ -181,15 +199,20 @@ class _RegisterPageState extends State<RegisterPage> {
                             controller: _confirmPasswordController,
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
+                              fillColor:
+                                  Theme.of(context).colorScheme.secondary,
                               alignLabelWithHint: true,
                               labelText:
                                   AppLocalizations.of(context)!.confirmPassword,
-                              labelStyle: const TextStyle(color: Colors.black),
+                              labelStyle: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondary),
                               errorText: _passwordValid
                                   ? null
                                   : "The given password is invalid or not strong enough",
-                              errorStyle: const TextStyle(color: Colors.red),
+                              errorStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.error),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide: BorderSide.none,
@@ -197,7 +220,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                             keyboardType: TextInputType.visiblePassword,
                             obscureText: !_isPasswordVisible,
-                            style: const TextStyle(color: Colors.black),
+                            style: TextStyle(
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary),
                           ),
                           const SizedBox(height: 10),
                           Row(
@@ -205,8 +230,10 @@ class _RegisterPageState extends State<RegisterPage> {
                             children: [
                               Text(
                                 AppLocalizations.of(context)!.passwordForgot,
-                                style: const TextStyle(
-                                  color: Colors.black87,
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryFixed,
                                 ),
                               ),
                             ],
@@ -216,14 +243,16 @@ class _RegisterPageState extends State<RegisterPage> {
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.all(15),
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.tertiary,
                             ),
                             onPressed: () {
                               _tryRegistration(context);
                             },
                             child: Text(
                               AppLocalizations.of(context)!.createAccount,
-                              style: const TextStyle(
-                                color: Colors.black,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onTertiary,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               ),
@@ -237,8 +266,10 @@ class _RegisterPageState extends State<RegisterPage> {
                               Text(
                                 AppLocalizations.of(context)!
                                     .alreadyHaveAccount,
-                                style: const TextStyle(
-                                  color: Colors.black87,
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryFixed,
                                 ),
                               ),
                               const SizedBox(width: 7),
@@ -246,8 +277,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                 onTap: widget.onTap,
                                 child: Text(
                                   AppLocalizations.of(context)!.logIn,
-                                  style: const TextStyle(
-                                    color: Colors.white,
+                                  style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.outline,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),

@@ -20,6 +20,7 @@ class MyBottomSheet extends StatelessWidget {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(15),
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
                 ),
                 onPressed: onPressed,
                 child: const Row(
@@ -38,6 +39,7 @@ class MyBottomSheet extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(15),
                   foregroundColor: Colors.grey,
+                  backgroundColor: Theme.of(context).colorScheme.tertiary,
                 ),
                 onPressed: () {
                   // BlocProvider.of<CameraBloc>(context).add(GalleryRequested());

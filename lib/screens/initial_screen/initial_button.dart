@@ -10,13 +10,14 @@ class MyInitialButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.all(15),
+        padding: EdgeInsets.all(15),
+        backgroundColor: Theme.of(context).colorScheme.tertiary,
       ),
       onPressed: onPressed,
       child: Text(
         text,
-        style: const TextStyle(
-          color: Colors.black,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onTertiary,
           fontWeight: FontWeight.bold,
           fontSize: 16,
         ),

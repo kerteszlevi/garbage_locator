@@ -9,6 +9,7 @@ import 'package:garbage_locator/screens/loading_screen.dart';
 import 'package:garbage_locator/screens/login_screen/login_register_screen.dart';
 import 'package:garbage_locator/screens/map_screen/map_screen.dart';
 import 'package:garbage_locator/themes/myTheme.dart';
+import 'package:garbage_locator/themes/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 
@@ -139,7 +140,9 @@ class MyApp extends StatelessWidget {
         create: (_) => dataSource,
         child: MaterialApp(
           title: 'Garbage Collector',
-          theme: myTheme,
+          theme: lightMode,
+          //TODO: finish dark mode
+          //darkTheme: darkMode,
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [
             AppLocalizations.delegate,

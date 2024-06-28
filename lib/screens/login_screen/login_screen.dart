@@ -61,9 +61,13 @@ class _LoginPageState extends State<LoginPage> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark, // For Android
-          statusBarBrightness: Brightness.light, // For iOS
-          systemNavigationBarColor: Theme.of(context).primaryColor),
+          statusBarIconBrightness:
+              Theme.of(context).colorScheme.brightness == Brightness.light
+                  ? Brightness.dark
+                  : Brightness.light,
+          statusBarBrightness:
+              Theme.of(context).colorScheme.brightness, // For iOS
+          systemNavigationBarColor: Theme.of(context).colorScheme.primary),
       child: Scaffold(
         body: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {
@@ -124,22 +128,29 @@ class _LoginPageState extends State<LoginPage> {
                             controller: _emailController,
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
+                              fillColor:
+                                  Theme.of(context).colorScheme.secondary,
                               alignLabelWithHint: true,
                               labelText:
                                   AppLocalizations.of(context)!.emailAddress,
-                              labelStyle: const TextStyle(color: Colors.black),
+                              labelStyle: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondary),
                               errorText: _emailValid
                                   ? null
                                   : "Please provide a valid email address",
-                              errorStyle: const TextStyle(color: Colors.red),
+                              errorStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.error),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide: BorderSide.none,
                               ),
                             ),
                             keyboardType: TextInputType.emailAddress,
-                            style: const TextStyle(color: Colors.black),
+                            style: TextStyle(
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary),
                           ),
                           const SizedBox(height: 10),
                           //password textfield
@@ -147,14 +158,19 @@ class _LoginPageState extends State<LoginPage> {
                             controller: _passwordController,
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
+                              fillColor:
+                                  Theme.of(context).colorScheme.secondary,
                               alignLabelWithHint: true,
                               labelText: AppLocalizations.of(context)!.password,
-                              labelStyle: const TextStyle(color: Colors.black),
+                              labelStyle: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondary),
                               errorText: _passwordValid
                                   ? null
                                   : "The given password is invalid or not strong enough",
-                              errorStyle: const TextStyle(color: Colors.red),
+                              errorStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.error),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide: BorderSide.none,
@@ -177,7 +193,9 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             keyboardType: TextInputType.visiblePassword,
                             obscureText: !_isPasswordVisible,
-                            style: const TextStyle(color: Colors.black),
+                            style: TextStyle(
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary),
                           ),
                           const SizedBox(height: 10),
                           Row(
@@ -185,8 +203,10 @@ class _LoginPageState extends State<LoginPage> {
                             children: [
                               Text(
                                 AppLocalizations.of(context)!.passwordForgot,
-                                style: const TextStyle(
-                                  color: Colors.black87,
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryFixed,
                                 ),
                               ),
                             ],
@@ -196,14 +216,16 @@ class _LoginPageState extends State<LoginPage> {
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.all(15),
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.tertiary,
                             ),
                             onPressed: () {
                               _tryLogin(context);
                             },
                             child: Text(
                               AppLocalizations.of(context)!.signIn,
-                              style: const TextStyle(
-                                color: Colors.black,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onTertiary,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               ),
@@ -216,8 +238,10 @@ class _LoginPageState extends State<LoginPage> {
                             children: [
                               Text(
                                 AppLocalizations.of(context)!.noAccountYet,
-                                style: const TextStyle(
-                                  color: Colors.black87,
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryFixed,
                                 ),
                               ),
                               const SizedBox(width: 7),
@@ -225,8 +249,9 @@ class _LoginPageState extends State<LoginPage> {
                                 onTap: widget.onTap,
                                 child: Text(
                                   AppLocalizations.of(context)!.registerNow,
-                                  style: const TextStyle(
-                                    color: Colors.white,
+                                  style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.outline,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
